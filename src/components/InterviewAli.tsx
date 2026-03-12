@@ -1,6 +1,11 @@
 import {FormEvent, useState} from 'react';
 import {GoogleGenAI} from '@google/genai';
-import {buildProfileContext, profile} from '../content/profile';
+import {
+  buildProfileContext,
+  GitHubRepo,
+  GitHubUser,
+  profile,
+} from '../content/profile';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -12,7 +17,13 @@ const apiKey = process.env.GEMINI_API_KEY;
 const fallbackReply =
   'Interview Ali is ready, but no `GEMINI_API_KEY` is configured yet. Add one to enable live answers based on the profile template.';
 
-export default function InterviewAli() {
+type Props = {
+  githubUser?: GitHubUser | null;
+  repos: GitHubRepo[];
+  repoSummary: string;
+};
+
+export default function InterviewAli({githubUser, repos, repoSummary}: Props) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -48,7 +59,7 @@ export default function InterviewAli() {
 
     try {
       const client = new GoogleGenAI({apiKey});
-      const profileContext = buildProfileContext();
+      const profileContext = buildProfileContext({githubUser, repos, repoSummary});
       const response = await client.models.generateContent({
         model: 'gemini-2.0-flash',
         contents: [
@@ -58,8 +69,8 @@ export default function InterviewAli() {
               {
                 text: [
                   'You are "Interview Ali", an interview assistant for Ali Ahmed.',
-                  'Answer in first person when describing Ali, but stay grounded in the provided profile.',
-                  'If the profile does not contain an answer, say that clearly and suggest what should be added.',
+                  'Answer in first person when describing Ali, but stay grounded in the provided profile, LinkedIn note, and recent GitHub activity.',
+                  'Do not invent LinkedIn facts. If LinkedIn data is missing, say so directly.',
                   'Keep answers concise, direct, and easy to scan.',
                   '',
                   'PROFILE',
@@ -99,7 +110,7 @@ export default function InterviewAli() {
     <section id="interview" className="panel">
       <div className="section-heading">
         <p className="eyebrow">Interview Ali</p>
-        <h2>Ask the site what Ali does, how he works, and where he fits.</h2>
+        <h2>Ask what Ali seems to be working on right now.</h2>
       </div>
 
       <div className="chat-shell">
@@ -142,7 +153,7 @@ export default function InterviewAli() {
           <div className="chat-actions">
             <p className="chat-note">
               {apiKey
-                ? 'Live AI answers use the profile template as source material.'
+                ? 'Live AI answers use the LinkedIn note plus recent GitHub activity.'
                 : 'Live AI is disabled until `GEMINI_API_KEY` is configured.'}
             </p>
             <button className="send-button" type="submit" disabled={status === 'loading'}>
