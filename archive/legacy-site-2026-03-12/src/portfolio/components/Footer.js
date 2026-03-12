@@ -1,0 +1,3 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+const Footer = () => (_jsx("footer", { className: "aa-footer", children: _jsxs("div", { className: "aa-container aa-footer-grid", children: [_jsxs("div", { children: [_jsx("p", { className: "aa-eyebrow", children: "aliahmed.co" }), _jsx("h3", { children: "Minimalist software engineering and design." }), _jsx("p", { className: "aa-footer-copy", children: "Building applications, analyzing risk, and crafting digital experiences." })] }), _jsxs("div", { className: "aa-footer-meta", children: [_jsx("p", { children: "Based in the U.S." }), _jsxs("p", { children: ["\u00A9 ", new Date().getFullYear(), " aliahmed.co. All rights reserved."] })] })] }) }));
+export default Footer;

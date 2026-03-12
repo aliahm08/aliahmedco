@@ -1,0 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { ArrowRight } from 'lucide-react';
+import Reveal from '../components/Reveal';
+import SectionHeading from '../components/SectionHeading';
+import SectionShell from '../components/SectionShell';
+import useGithubRepos from '../hooks/useGithubRepos';
+const ProjectsSection = () => {
+    const { projects, loading, error } = useGithubRepos('aliahm08');
+    return (_jsxs(SectionShell, { id: "projects", children: [_jsxs("div", { className: "aa-row-header", children: [_jsx(Reveal, { children: _jsx(SectionHeading, { eyebrow: "Selected Projects", title: "Recent Work", subtitle: "Open source contributions, side projects, and major production systems." }) }), _jsx(Reveal, { delayMs: 120, children: _jsxs("a", { href: "https://github.com/aliahm08", target: "_blank", rel: "noopener noreferrer", className: "aa-btn aa-btn--ghost", children: ["View GitHub ", _jsx(ArrowRight, { size: 14 })] }) })] }), _jsxs("div", { className: "aa-card-grid aa-card-grid--stack", children: [loading && _jsx("p", { style: { color: 'var(--aa-text-muted)', textAlign: 'center' }, children: "Loading repositories..." }), error && _jsxs("p", { style: { color: 'red', textAlign: 'center' }, children: ["Error loading repositories: ", error.message] }), !loading && !error && projects.map((project, index) => (_jsx(Reveal, { delayMs: index * 90, children: _jsxs("article", { className: "aa-card aa-card--engagement", children: [_jsxs("div", { className: "aa-engagement-main", children: [_jsx("p", { className: "aa-eyebrow", children: project.role }), _jsx("h3", { children: project.title }), _jsx("h4", { children: project.outcome }), _jsx("p", { children: project.summary })] }), _jsxs("div", { style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }, children: [_jsx("div", { className: "aa-tag-list", "aria-label": `${project.title} technologies`, children: project.tags.map((tag) => (_jsx("span", { className: "aa-tag", children: tag }, tag))) }), project.link && (_jsxs("a", { href: project.link, target: "_blank", rel: "noopener noreferrer", className: "aa-btn aa-btn--ghost", children: ["Source Code ", _jsx(ArrowRight, { size: 14 })] }))] })] }) }, project.title)))] })] }));
+};
+export default ProjectsSection;

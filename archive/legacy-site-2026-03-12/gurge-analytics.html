@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Fleet Performance Dashboard</title>
+    <!-- Tailwind CSS with typography plugin for improved text styling -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <!-- d3 for charts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Google fonts used in the design -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .tooltip {
+            position: absolute;
+            font-family: 'Roboto Condensed', sans-serif;
+            text-align: left;
+            padding: 10px 15px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.45);
+            color: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 60;
+            max-width: 300px;
+        }
+        .axis-label {
+            font-size: 12px;
+            font-weight: 500;
+            fill: #4b5563;
+        }
+        .tick text {
+            font-size: 11px;
+            fill: #6b7280;
+        }
+        .domain, .tick line {
+            stroke: #d1d5db;
+        }
+        #chart-container {
+            position: relative;
+        }
+        .cluster-text {
+            fill: white;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+        }
+        /* Fleet card styles and animations */
+        .fleet-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+            background-color: white;
+        }
+        .fleet-card:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .fleet-card.selected {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background-color: #eff6ff;
+        }
+        .sort-btn {
+            color: #64748b;
+        }
+        .sort-btn.active {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .sort-btn:hover {
+            text-decoration: underline;
+            color: #1d4ed8;
+        }
+        .sparkline-path {
+            fill: none;
+            stroke: #4f46e5;
+            stroke-width: 2;
+        }
+        .sparkline-area {
+            fill: url(#sparkline-gradient);
+        }
+        /* Modal overlay styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 600px;
+            width: 90%;
+            transform: scale(0.95);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+        /* Info box transitions */
+        .info-box {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+        }
+        /* View mode buttons for visualization styles */
+        .view-btn {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #4b5563;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+        .view-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        .view-btn.active {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        .view-title {
+            display: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .view-btn.active .view-title {
+            display: inline;
+        }
+
+        /* Hover effects for clickable text items */
+        .clickable-text {
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .clickable-text:hover {
+            color: #2563eb;
+        }
+        .chart-legend {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 12px;
+        }
+        /* Spider chart styles */
+        .spider-axis { fill: #6b7280; font-size: 12px; }
+        .spider-web { stroke: #e5e7eb; stroke-width: 1px; }
+        .spider-area { fill-opacity: 0.5; }
+        .spider-stroke { fill: none; stroke-width: 2px; }
+
+        /* Fleet card improvements */
+        .fleet-card {
+            overflow: hidden; /* prevent sparkline overflow */
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-color: #e0e7ff;
+        }
+        /* Chart container shift when fleet panel is open */
+        #chart-container.panel-open {
+            /* when the left panel is pinned open, shift the chart to the right */
+            margin-left: 280px;
+        }
+        /* Color gradient for performance legend.  Matches the diverging scheme used in the plot. */
+        #color-gradient {
+            position: relative;
+            background: linear-gradient(to right, #ef4444, #f59e0b, #10b981, #0ea5e9);
+        }
+        /* On hover, expand the legend and reveal text */
+        #color-gradient:hover {
+            width: 8rem; /* expand to indicate more detail */
+        }
+        #color-gradient::after {
+            content: 'Low → High Performance';
+            position: absolute;
+            top: -1.3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.625rem;
+            color: #4b5563;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #color-gradient:hover::after {
+            opacity: 1;
+        }
+        /* Responsive left panel for fleet selection */
+        #fleet-panel {
+            position: fixed;
+            top: 10px;
+            bottom: 10px;
+            left: 10px;
+            width: 260px;
+            max-width: 90vw;
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        #fleet-panel.hidden {
+            transform: translateX(-110%);
+        }
+        /* Fleet panel toggle now sits inside the control bar, not fixed on the page */
+        #fleet-panel-toggle {
+            position: relative;
+            top: auto;
+            left: auto;
+            z-index: auto;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 9999px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #fleet-panel-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        /* Scroll container for cards */
+        #fleet-card-scroll {
+            overflow-y: auto;
+            padding: 0.5rem;
+            flex: 1;
+        }
+
+        /* Dark mode styles */
+        body.dark {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        body.dark .info-box,
+        body.dark .modal-content {
+            background: rgba(31, 41, 55, 0.75);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+        body.dark #fleet-panel {
+            background: rgba(31, 41, 55, 0.65);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        body.dark .viz-btn {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #d1d5db;
+        }
+        body.dark .viz-btn.active {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: #f9fafb;
+        }
+        body.dark #color-menu {
+            background: rgba(31, 41, 55, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        body.dark .text-gray-800 { color: #e2e8f0 !important; }
+        body.dark .text-gray-700 { color: #d1d5db !important; }
+        body.dark .text-gray-600 { color: #9ca3af !important; }
+
+        /* Chart title container orientation: rotate 180 degrees to create vertical reading from top to bottom */
+        #chart-title-container {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            white-space: nowrap;
+            align-items: flex-start;
+        }
+        body.dark .text-gray-500 { color: #6b7280 !important; }
+    </style>
+</head>
+<body class="flex items-start justify-center min-h-screen">
+    <!-- Fleet selection panel toggle is now included in the header bar -->
+    <div id="fleet-panel" class="hidden">
+        <div class="p-4 border-b border-gray-200">
+            <h2 class="text-lg font-bold text-gray-800">Fleets</h2>
+            <p class="text-xs text-gray-500 mt-1">Select one or more fleets to filter the data.</p>
+            <div class="mt-3 flex items-center justify-between">
+                <input id="fleet-search" type="text" placeholder="Search fleets..." class="w-full p-2 rounded-md border border-gray-300 text-sm" />
+            </div>
+            <div class="flex items-center space-x-4 text-sm font-medium mt-3">
+                <span>Sort by:</span>
+                <button class="sort-btn" data-sort="risk">Risk</button>
+                <button class="sort-btn active" data-sort="age">Age</button>
+                <button class="sort-btn" data-sort="size">Size</button>
+                <button class="sort-btn" data-sort="name">Name</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Grade reflects performance; bar shows MDBF trend (90d).</p>
+        </div>
+        <div id="fleet-card-scroll">
+            <div id="fleet-selection-container" class="grid grid-cols-1 gap-4"></div>
+        </div>
+    </div>
+    <!-- Main content container -->
+    <div class="flex-1 mt-6 mx-auto px-4 max-w-7xl">
+        <!-- Header bar with title and utility icons.  Panel toggle has been moved to the control bar below. -->
+        <div id="header-bar" class="w-full px-0 flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-gray-800">Overhaul Reliability</h2>
+            <div class="hidden sm:flex items-center space-x-3">
+                <!-- Export data button -->
+                <button id="export-data-btn" title="Export data" class="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-600 hover:bg-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v16h16V4H4zm8 4v8m4-4H8"></path></svg>
+                </button>
+                <!-- Save progress button -->
+                <button id="save-progress-btn" title="Save progress" class="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-600 hover:bg-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </button>
+                <!-- Account/login button -->
+                <button id="account-btn" title="Account / Login" class="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-600 hover:bg-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A6.944 6.944 0 0112 15c2.004 0 3.847.804 5.121 2.804M12 15c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"></path></svg>
+                </button>
+                <!-- Info button -->
+                <button id="info-btn" class="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-600 hover:bg-white" title="Dashboard Guide">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </button>
+                <!-- Dark mode toggle -->
+                <button id="dark-mode-toggle" class="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-600 hover:bg-white" title="Toggle Dark Mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3.25a9 9 0 1 0 9 9A9 9 0 0 1 12 3.25zm0 1.5v15m7.5-7.5H4.5"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Control bar: contains the fleet panel toggle, visualization mode buttons, dynamic chart description and legend -->
+        <div id="control-bar" class="w-full mt-3 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
+            <div class="flex items-center flex-wrap gap-2">
+                <!-- Fleet panel toggle is now integrated here -->
+                <button id="fleet-panel-toggle" title="Toggle Fleets Panel" class="relative flex items-center justify-center w-9 h-9 rounded-full bg-white/80 backdrop-blur-md border border-gray-300 text-gray-700 hover:bg-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18"></path></svg>
+                </button>
+                <!-- Visualization mode buttons (labels appear on hover or when active) -->
+                <!-- View mode buttons: icons only; chart title appears separately -->
+                <button id="viz-expanded" class="viz-btn" title="Expanded View">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+                <button id="viz-clusters" class="viz-btn" title="Overhaul Action Items">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-5M3 4h5V9M21 4h-5v5M7 20H2v-5"></path>
+                    </svg>
+                </button>
+                <button id="viz-matrix" class="viz-btn" title="Matrix View">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                    </svg>
+                </button>
+                <!-- Dynamic chart title container: vertical orientation next to view icons -->
+                <div id="chart-title-container" class="flex flex-col items-center ml-2 space-y-1">
+                    <span class="text-xs text-gray-600">Mean Distance Between Failure per</span>
+                    <span id="view-level-selector" class="clickable-text text-blue-600">Bus</span>
+                    <button id="view-reset-btn" class="text-[10px] text-gray-500 hover:text-blue-600 underline">Reset</button>
+                </div>
+            </div>
+            <!-- Performance legend with hover expansion -->
+        <!-- Legend container with interactive color menu -->
+        <div id="legend-container" class="relative flex flex-col items-center">
+                <span id="legend-label" class="text-sm font-medium">Performance</span>
+                <div id="color-gradient" class="h-4 w-24 rounded-full mt-1 cursor-pointer transition-all duration-300"></div>
+                <!-- Color selection menu (hidden by default) -->
+                <div id="color-menu" class="absolute top-full mt-2 right-0 hidden z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-600 rounded shadow-lg p-2 space-y-1">
+                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-300">Color by</div>
+                    <button class="color-option block w-full text-left text-sm px-2 py-1 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="performance">Performance</button>
+                    <button class="color-option block w-full text-left text-sm px-2 py-1 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="route">Route</button>
+                    <button class="color-option block w-full text-left text-sm px-2 py-1 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="bestComponent">Best Component</button>
+                    <button class="color-option block w-full text-left text-sm px-2 py-1 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="worstComponent">Worst Component</button>
+                    <button class="color-option block w-full text-left text-sm px-2 py-1 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="fleet">Fleet</button>
+                </div>
+            </div>
+        </div>
+        <!-- Chart container -->
+        <div id="chart-container" class="w-full h-[550px] relative">
+            <!-- Cluster Info Box -->
+            <div id="cluster-info-box" class="info-box absolute hidden p-4 bg-white/75 backdrop-blur-md rounded-lg shadow-lg border border-gray-200 w-96 max-w-sm z-10">
+                <button id="close-cluster-info-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl leading-none">&times;</button>
+                <h3 class="font-bold text-lg text-gray-800 mb-2" id="info-box-name"></h3>
+                <p class="text-sm text-gray-600 mb-3" id="info-box-interpretation"></p>
+                <div class="flex flex-col space-y-2">
+                    <button id="info-box-action-btn" class="w-full text-white bg-blue-500 hover:bg-blue-600 rounded-md py-2 px-3 text-sm font-semibold transition"></button>
+                    <button id="info-box-export-btn" class="w-full text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-md py-2 px-3 text-sm font-semibold transition">Export Raw Data (CSV)</button>
+                </div>
+            </div>
+            <!-- Bus Detail Box -->
+            <div id="bus-detail-box" class="info-box absolute hidden p-4 bg-white/75 dark:bg-gray-800/80 backdrop-blur-md rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 w-[700px] max-w-2xl z-10">
+                <button id="close-bus-detail-btn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl leading-none">&times;</button>
+                <h3 id="detail-box-title" class="font-bold text-lg text-gray-800 mb-2"></h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-200 mb-1">Performance Radar</h4>
+                        <div id="spider-chart-container" class="w-full h-56"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-200 mb-1">Key Metrics</h4>
+                        <div id="detail-box-metrics" class="space-y-1 text-xs text-gray-600 dark:text-gray-300 font-mono"></div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <h4 class="font-semibold text-sm text-gray-700 mb-1">Recent Failure Log</h4>
+                    <ul id="detail-box-failures" class="text-xs text-gray-600 list-disc list-inside h-24 overflow-y-auto bg-gray-50/50 p-2 rounded"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tooltip" class="tooltip"></div>
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Guide</h2>
+                <button id="close-info-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <div class="prose prose-sm max-w-none text-gray-600 max-h-[70vh] overflow-y-auto pr-2">
+                <p>This dashboard provides an interactive way to analyze bus fleet performance and reliability.</p>
+                <h3 class="font-bold text-gray-700 mt-4">Chart Visualization Styles</h3>
+                <p>You can change the main chart's appearance using the toggle buttons:</p>
+                <ul>
+                    <li><strong>Expanded View:</strong> Shows every individual bus as a single point. Click a bus to see its detailed Performance Profile.</li>
+                    <li><strong>Cluster View:</strong> Groups buses into performance-based clusters using a K-Means algorithm. This helps identify high-level patterns and personas (e.g., "Reliable Workhorses", "Problematic Units"). Click a cluster to see the buses within it.</li>
+                    <li><strong>Matrix View:</strong> Divides the chart into a grid, clustering buses based on their performance quadrant. This offers a structured overview of the fleet's distribution.</li>
+                </ul>
+                <h3 class="font-bold text-gray-700 mt-4">Interacting with the Dashboard</h3>
+                <ul>
+                    <li><strong>Fleet Panel:</strong> Use the left panel to search, sort, and select fleets. The color of each card represents its performance score (MDBF vs. age), and the sparkline shows the recent MDBF trend.</li>
+                    <li><strong>Details on Demand:</strong> Click on any bus in the main scatter plot to open its Performance Profile, which includes a radar chart for multi-metric comparison and a log of recent failures.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="sparkline-gradient" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            /* App State */
+            let activeVizStyle = 'clusters';
+            let selectedFleets = new Set();
+            // variables controlling axis metrics
+            const xAxisMetric = 'incidents';
+            // for expanded view we use avgMileageDelta, for clustered/matrix we use mdbf
+            let displayedData = [];
+            let fleetMetrics = [];
+            let currentSort = { key: 'age', order: 'asc' };
+            let currentViewLevel = 'bus';
+            // Color mode state: determines how nodes are coloured. Options: performance, route, bestComponent, worstComponent, fleet
+            let currentColorMode = 'performance';
+            // Ordinal colour scales for categorical modes. Domains will be set based on data later.
+            const routeColorScale = d3.scaleOrdinal(d3.schemeSet2);
+            const componentColorScale = d3.scaleOrdinal(d3.schemeSet3);
+            const fleetColorScale = d3.scaleOrdinal(d3.schemeTableau10);
+            const tooltip = d3.select('#tooltip');
+            // Panel toggle logic: hide/show the fleet panel and shift the chart when open
+            const panel = document.getElementById('fleet-panel');
+            const chartContainerDiv = document.getElementById('chart-container');
+            document.getElementById('fleet-panel-toggle').addEventListener('click', () => {
+                panel.classList.toggle('hidden');
+                // add or remove a class on the chart container to shift it when the panel is visible
+                const isHidden = panel.classList.contains('hidden');
+                if (!isHidden) {
+                    chartContainerDiv.classList.add('panel-open');
+                } else {
+                    chartContainerDiv.classList.remove('panel-open');
+                }
+            });
+            // Info modal logic
+            const infoModal = document.getElementById('info-modal');
+            document.getElementById('info-btn').addEventListener('click', () => infoModal.classList.add('open'));
+            document.getElementById('close-info-modal-btn').addEventListener('click', () => infoModal.classList.remove('open'));
+            infoModal.addEventListener('click', (e) => { if(e.target === infoModal) infoModal.classList.remove('open'); });
+            // Seeded random for reproducibility
+            let seed = 12345;
+            function seededRandom() {
+                seed = (seed * 1664525 + 1013904223) % 4294967296;
+                return seed / 4294967296;
+            }
+            const fleets = ['New Flyer XN40', 'Gillig Low Floor', 'Proterra Catalyst', 'New Flyer DE40LF', 'Orion VII HEV', 'NABI 42-BRT', 'New Flyer XE40'];
+            const components = { 'Engine': ['Engine Block', 'Radiator', 'Exhaust'], 'Brakes': ['Brake Pads', 'Air Compressor', 'Brake Lines'], 'HVAC': ['AC Compressor', 'Heater Core', 'Blower Motor'], 'Transmission': ['Gearbox', 'Clutch', 'Driveshaft'], 'Electrical': ['Battery', 'Alternator', 'Wiring Harness'], 'Suspension': ['Air Bags', 'Shock Absorbers', 'Tie Rods'], 'Tires': ['Tires'] };
+            const mainComponents = Object.keys(components);
+            const metrics = { mdbf: { label: 'MDBF', format: d3.format(',.0f') }, incidents: { label: 'Incidents', format: d3.format('d') }, busAge: { label: 'Bus Age', format: d3.format('.1f') }, mileage: { label: 'Mileage', format: d3.format(',') }, daysSinceService: { label: 'Days Since Service', format: d3.format('.0f') } };
+            const fleetData = [];
+            const uniqueBusIds = new Set();
+            while (uniqueBusIds.size < 600) { uniqueBusIds.add(`BUS-${Math.floor(seededRandom() * 899) + 100}`); }
+            const busIdArray = Array.from(uniqueBusIds);
+            /* Generate realistic synthetic failure data. Avoid extreme outliers and create balanced distributions.
+               - Each bus starts with a base mileage between 100k and 500k miles.
+               - Each bus has between 5 and 30 failures (inclusive).
+               - For each failure we choose random component/subcomponent, assign MDBF between 1k and 10k miles.
+               - Bus age starts between 1 and 15 years and increases slightly per failure.
+               - Mileage increments by up to 5k per failure to maintain consistency.
+               - Days since service is random 10-355 days.
+            */
+            for (let i = 0; i < 600; i++) {
+                const busId = busIdArray[i];
+                const busFleet = fleets[Math.floor(seededRandom() * fleets.length)];
+                const baseAge = Math.floor(seededRandom() * 20) + 1; // 1-20 years
+                const baseMileage = 50000 + seededRandom() * 850000; // 50k-900k
+                const numFailures = Math.floor(seededRandom() * 16) + 10; // 10-25 failures
+                for (let j = 0; j < numFailures; j++) {
+                    const mainComponent = mainComponents[Math.floor(seededRandom() * mainComponents.length)];
+                    const subComponent = components[mainComponent][Math.floor(seededRandom() * components[mainComponent].length)];
+                    const mileageInc = seededRandom() * 8000; // up to 8k per failure
+                    const mdbfVal = Math.floor(seededRandom() * 7000) + 1000; // 1k-8k
+                    fleetData.push({
+                        id: `${busId}-${j}`,
+                        busId: busId,
+                        fleet: busFleet,
+                        component: mainComponent,
+                        subComponent: subComponent,
+                        mdbf: mdbfVal,
+                        busAge: baseAge + j * 0.1,
+                        // incidents per record is 1; overall incidents counted by number of failures
+                        incidents: 1,
+                        mileage: baseMileage + j * mileageInc,
+                        daysSinceService: Math.floor(seededRandom() * 345) + 10
+                    });
+                }
+            }
+            /* UI Setup & Event Handlers */
+            function setupUI() {
+                // Sort button logic
+                document.querySelectorAll('.sort-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const newSortKey = e.target.dataset.sort;
+                        if (currentSort.key === newSortKey) {
+                            currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            currentSort.key = newSortKey;
+                            currentSort.order = 'asc';
+                        }
+                        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        renderFleetCards();
+                    });
+                });
+                document.getElementById('fleet-search').addEventListener('input', () => renderFleetCards());
+                // Visualization mode toggles
+                document.querySelectorAll('.viz-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (btn.disabled) return;
+                        activeVizStyle = btn.id.split('-')[1];
+                        updateVizBtnActiveState();
+                        renderCharts();
+                    });
+                    // Hide labels by default and show on hover/active
+                    const label = btn.querySelector('span');
+                    if (label) {
+                        // initialise based on active state
+                        label.style.display = btn.classList.contains('active') ? 'inline-block' : 'none';
+                        btn.addEventListener('mouseenter', () => {
+                            label.style.display = 'inline-block';
+                        });
+                        btn.addEventListener('mouseleave', () => {
+                            if (!btn.classList.contains('active')) {
+                                label.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+
+                // Color menu: show/hide on hover over legend; apply selected mode
+                const legendContainer = document.getElementById('legend-container');
+                const colorMenu = document.getElementById('color-menu');
+                // Keep the colour menu open while the cursor is near the legend or within the menu
+                let colorMenuTimeout;
+                const showColorMenu = () => {
+                    clearTimeout(colorMenuTimeout);
+                    colorMenu.classList.remove('hidden');
+                };
+                const hideColorMenu = () => {
+                    clearTimeout(colorMenuTimeout);
+                    colorMenuTimeout = setTimeout(() => {
+                        colorMenu.classList.add('hidden');
+                    }, 200);
+                };
+                legendContainer.addEventListener('mouseenter', showColorMenu);
+                legendContainer.addEventListener('mouseleave', hideColorMenu);
+                colorMenu.addEventListener('mouseenter', showColorMenu);
+                colorMenu.addEventListener('mouseleave', hideColorMenu);
+                document.querySelectorAll('.color-option').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const mode = e.target.dataset.mode;
+                        currentColorMode = mode;
+                        document.getElementById('legend-label').textContent = btn.textContent.trim();
+                        colorMenu.classList.add('hidden');
+                        renderCharts();
+                    });
+                });
+
+                // Dark mode toggle
+                const darkModeToggle = document.getElementById('dark-mode-toggle');
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', () => {
+                        document.body.classList.toggle('dark');
+                    });
+                }
+            }
+            function updateVizBtnActiveState() {
+                document.querySelectorAll('.viz-btn').forEach(b => {
+                    const isActive = b.id.includes(activeVizStyle);
+                    b.classList.toggle('active', isActive);
+                    const label = b.querySelector('span');
+                    if (label) {
+                        label.style.display = isActive ? 'inline-block' : 'none';
+                    }
+                });
+            }
+            /* Aggregate raw data into bus-level metrics */
+            function aggregateData(data) {
+                if (!data || data.length === 0) return [];
+                const grouped = d3.group(data, d => d.busId);
+                return Array.from(grouped, ([busId, failures]) => {
+                    // sort failures by busAge or order to compute mileage deltas
+                    const sorted = failures.slice().sort((a, b) => a.busAge - b.busAge);
+                    let totalDiff = 0;
+                    for (let i = 1; i < sorted.length; i++) {
+                        const diff = sorted[i].mileage - sorted[i - 1].mileage;
+                        totalDiff += diff;
+                    }
+                    const avgMileageDelta = sorted.length > 1 ? totalDiff / (sorted.length - 1) : 0;
+                    const incidents = failures.length;
+                    const avgMileage = d3.mean(failures, d => d.mileage);
+                    const density = avgMileage > 0 ? incidents / avgMileage : 0;
+                    // Determine best and worst component by average MDBF
+                    const compMap = new Map();
+                    failures.forEach(f => {
+                        if (!compMap.has(f.component)) compMap.set(f.component, []);
+                        compMap.get(f.component).push(f.mdbf);
+                    });
+                    let bestComponent = null;
+                    let worstComponent = null;
+                    let bestAvg = -Infinity;
+                    let worstAvg = Infinity;
+                    for (const [comp, arr] of compMap) {
+                        const avg = d3.mean(arr);
+                        if (avg > bestAvg) { bestAvg = avg; bestComponent = comp; }
+                        if (avg < worstAvg) { worstAvg = avg; worstComponent = comp; }
+                    }
+                    // Assign a route based on bus ID number modulo 6
+                    let routeNum = 1;
+                    const parts = busId.split('-');
+                    if (parts.length > 1) {
+                        const num = parseInt(parts[1], 10);
+                        if (!isNaN(num)) routeNum = (num % 6) + 1;
+                    }
+                    return {
+                        busId,
+                        id: busId,
+                        fleet: failures[0].fleet,
+                        incidents: incidents,
+                        mdbf: d3.mean(failures, d => d.mdbf),
+                        mileage: avgMileage,
+                        busAge: d3.mean(failures, d => d.busAge),
+                        daysSinceService: d3.mean(failures, d => d.daysSinceService),
+                        avgMileageDelta: avgMileageDelta,
+                        density: density,
+                        failures: failures,
+                        bestComponent: bestComponent,
+                        worstComponent: worstComponent,
+                        route: `Route ${routeNum}`
+                    };
+                });
+            }
+            /* Construct fleet-level metrics for filter panel */
+            function computeFleetMetrics() {
+                fleetMetrics = Array.from(d3.group(fleetData, d => d.fleet), ([fleet, values]) => {
+                    const aggregatedBuses = aggregateData(values);
+                    const uniqueBuses = new Set(values.map(d => d.busId));
+                    const avgAge = d3.mean(aggregatedBuses, d => d.busAge);
+                    const avgMdbf = d3.mean(aggregatedBuses, d => d.mdbf);
+                    const score = avgAge > 0 ? avgMdbf / avgAge : 0;
+                    // Generate realistic 90-day MDBF trend with slight variance and trend direction
+                    const trend90Days = Array.from({ length: 90 }, (_, i) => {
+                        const dailyVariance = (seededRandom() - 0.5) * 0.3;
+                        const trendFactor = (i - 45) / 90 * 0.1;
+                        return Math.max(500, avgMdbf * (1 + dailyVariance + trendFactor));
+                    });
+                    return { fleet, avgAge, avgMdbf, score, size: uniqueBuses.size, trend: trend90Days };
+                });
+            }
+            /* Render the fleet cards in the panel */
+            function renderFleetCards() {
+                const container = d3.select('#fleet-selection-container');
+                // Compute grade scales based on scores
+                const allScores = fleetMetrics.map(d => d.score);
+                const gradeScale = d3.scaleQuantile().domain(allScores).range(['F', 'D', 'C', 'B', 'A', 'A+']);
+                const gradeColorScale = d3.scaleSequential(d3.interpolateRdYlBu).domain([5, 0]);
+                // Filter by search term
+                const searchTerm = document.getElementById('fleet-search').value.toLowerCase();
+                let dataToShow = fleetMetrics.filter(d => d.fleet.toLowerCase().includes(searchTerm));
+                // Sort using current sort key
+                dataToShow.sort((a, b) => {
+                    let compare = 0;
+                    if (currentSort.key === 'name') {
+                        compare = a.fleet.localeCompare(b.fleet);
+                    } else if (currentSort.key === 'risk') {
+                        compare = a.score - b.score;
+                    } else {
+                        compare = a[currentSort.key] - b[currentSort.key];
+                    }
+                    return currentSort.order === 'asc' ? compare : -compare;
+                });
+                // Bind data to cards
+                const cards = container.selectAll('.fleet-card')
+                    .data(dataToShow, d => d.fleet)
+                    .join('div')
+                    .attr('class', 'fleet-card p-3 rounded-lg')
+                    .classed('selected', d => selectedFleets.has(d.fleet))
+                    .on('click', function(event, d) {
+                        const fleetName = d.fleet;
+                        if (selectedFleets.has(fleetName)) selectedFleets.delete(fleetName);
+                        else selectedFleets.add(fleetName);
+                        d3.select(this).classed('selected', selectedFleets.has(fleetName));
+                        renderCharts();
+                    });
+                // Populate card HTML
+                cards.html(d => {
+                    const grade = gradeScale(d.score);
+                    const gradeColor = gradeColorScale(['F','D','C','B','A','A+'].indexOf(grade));
+                    return `
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-gray-800 text-sm leading-tight pr-2">${d.fleet}</h4>
+                            <span class="text-2xl font-bold" style="color:${gradeColor}">${grade}</span>
+                        </div>
+                        <div class="text-xs text-gray-500">${d.size} buses | Avg Age: ${d.avgAge.toFixed(1)}yrs</div>
+                        <div class="sparkline-container h-10 w-full"></div>
+                    `;
+                });
+                // Draw sparklines on each card
+                cards.each(function(d) {
+                    const el = d3.select(this).select('.sparkline-container').node();
+                    if (!el) return;
+                    const width = el.clientWidth;
+                    const height = 40;
+                    const svg = d3.select(el).append('svg').attr('width', width).attr('height', height);
+                    const x = d3.scaleLinear().domain([0, d.trend.length - 1]).range([0, width]);
+                    const y = d3.scaleLinear().domain(d3.extent(d.trend)).range([height - 2, 2]);
+                    const line = d3.line().x((_, i) => x(i)).y(v => y(v)).curve(d3.curveBasis);
+                    const area = d3.area().x((_, i) => x(i)).y0(height).y1(v => y(v)).curve(d3.curveBasis);
+                    svg.append('path').datum(d.trend).attr('class', 'sparkline-area').attr('d', area);
+                    svg.append('path').datum(d.trend).attr('class', 'sparkline-path').attr('d', line);
+                });
+            }
+            /* Visualization: scatter plot object with clustering and matrix features */
+            const scatterPlot = {
+                setup: function() {
+                    this.container = document.getElementById('chart-container');
+                    this.clusterInfoBox = document.getElementById('cluster-info-box');
+                    this.busDetailBox = document.getElementById('bus-detail-box');
+                    document.getElementById('close-cluster-info-btn').addEventListener('click', () => this.collapseCluster());
+                    document.getElementById('close-bus-detail-btn').addEventListener('click', () => this.hideBusDetailBox());
+                    this.margin = { top: 20, right: 30, bottom: 60, left: 70 };
+                    this.width = this.container.clientWidth - this.margin.left - this.margin.right;
+                    this.height = this.container.clientHeight - this.margin.top - this.margin.bottom;
+                    this.svg = d3.select(this.container).append('svg')
+                        .attr('width', '100%').attr('height', '100%')
+                        .attr('viewBox', `0 0 ${this.container.clientWidth} ${this.container.clientHeight}`)
+                        .on('click', (event) => {
+                            if (this.activeCluster && event.target.tagName === 'svg') this.collapseCluster();
+                            if (this.activeBus && event.target.tagName === 'svg') this.hideBusDetailBox();
+                        })
+                        .append('g')
+                        .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+                    this.x = d3.scaleLinear().range([0, this.width]);
+                    this.y = d3.scaleLinear().range([this.height, 0]);
+                    // Define a custom diverging colour scale matching the legend (red → orange → green → blue).
+                    const gradientStops = ['#ef4444', '#f59e0b', '#10b981', '#0ea5e9'];
+                    this.colorInterpolator = d3.piecewise(d3.interpolateRgb, gradientStops);
+                    // Define a default performance colour function; will be overridden per chart using positionalScore extents
+                    this.performanceColor = function(t) {
+                        // t is a normalized value in [0,1]
+                        return this.colorInterpolator(t);
+                    }.bind(this);
+                    this.size = d3.scaleSqrt().range([4, 25]);
+                    this.xAxisGroup = this.svg.append('g').attr('transform', `translate(0,${this.height})`);
+                    this.yAxisGroup = this.svg.append('g');
+                    this.xAxisLabel = this.svg.append('text').attr('class', 'axis-label').attr('x', this.width / 2).attr('y', this.height + this.margin.bottom - 15).attr('text-anchor', 'middle');
+                    this.yAxisLabel = this.svg.append('text').attr('class', 'axis-label').attr('transform', 'rotate(-90)').attr('y', -this.margin.left + 20).attr('x', -this.height / 2).attr('text-anchor', 'middle');
+                    this.gridLinesGroup = this.svg.append('g').attr('class', 'grid-lines').style('opacity', 0);
+                    this.nodeGroup = this.svg.append('g');
+                    this.simulation = d3.forceSimulation().force('collide', d3.forceCollide().strength(1)).stop();
+                    this.activeCluster = null;
+                    this.activeBus = null;
+                },
+                render: function(data) {
+                    if (this.activeCluster) this.collapseCluster();
+                    if (this.activeBus) this.hideBusDetailBox();
+                    this.gridLinesGroup.transition().duration(300).style('opacity', activeVizStyle === 'matrix' ? 1 : 0);
+                    // Determine metrics and axis labels for each visualization style
+                    let xMetricLocal, yMetricLocal, xLabel, yLabel;
+                    if (activeVizStyle === 'expanded') {
+                        xMetricLocal = 'incidents';
+                        yMetricLocal = 'avgMileageDelta';
+                        xLabel = 'Total Incidents';
+                        yLabel = 'Avg Mileage Δ';
+                    } else if (activeVizStyle === 'clusters') {
+                        xMetricLocal = 'incidents';
+                        yMetricLocal = 'density';
+                        xLabel = 'Total Incidents';
+                        yLabel = 'Failure Density';
+                    } else {
+                        xMetricLocal = 'likelihood';
+                        yMetricLocal = 'severity';
+                        xLabel = 'Failure Likelihood';
+                        yLabel = 'Failure Severity';
+                    }
+                    // Use the currently displayed data to compute axis domains (so that points remain in frame)
+                    const xVals = data.map(d => d[xMetricLocal]).filter(v => v >= 0);
+                    const yVals = data.map(d => d[yMetricLocal]).filter(v => v >= 0);
+                    // Compute quantile maxima to avoid extreme outliers
+                    // Use a lower quantile (0.9) for expanded and cluster views to provide more breathing space
+                    const q = activeVizStyle === 'matrix' ? 0.95 : 0.9;
+                    let xMax = d3.quantileSorted(xVals.slice().sort(d3.ascending), q) || 1;
+                    let yMax = d3.quantileSorted(yVals.slice().sort(d3.ascending), q) || 1;
+                    // Add a margin so bubbles don't hit the frame edges
+                    xMax = xMax * 1.1;
+                    yMax = yMax * 1.1;
+                    this.x.domain([0, xMax]).nice();
+                    this.y.domain([0, yMax]).nice();
+                    // update size domain based on MDBF across domain data
+                    this.size.domain(d3.extent(data, d => d.mdbf));
+                    this.xAxisGroup.transition().duration(500).call(d3.axisBottom(this.x));
+                    this.yAxisGroup.transition().duration(500).call(d3.axisLeft(this.y));
+                    this.xAxisLabel.text(xLabel);
+                    this.yAxisLabel.text(yLabel);
+                    // compute positional score using normalised axes; ensure metrics exist
+                    const xNormalizer = d3.scaleLinear().domain(this.x.domain()).range([0, 1]);
+                    const yNormalizer = d3.scaleLinear().domain(this.y.domain()).range([0, 1]);
+                    data.forEach(d => { d.positionalScore = yNormalizer(d[yMetricLocal]) - xNormalizer(d[xMetricLocal]); });
+                    // The performance legend gradient is defined via CSS (#color-gradient)
+                    if (activeVizStyle === 'clusters' && data.length > 0) {
+                        // perform k-means clustering using the current dataset as domain
+                        // Use density as the y-metric to cluster by failure density
+                        displayedData = this.clusterDataByKMeans(data, data, 'density');
+                    } else if (activeVizStyle === 'matrix' && data.length > 0) {
+                        displayedData = this.clusterDataByMatrix(data);
+                    } else {
+                        displayedData = data;
+                    }
+                    this.updateChart(displayedData);
+                },
+                updateChart: function(chartData) {
+                    const radiusScale = d3.scaleSqrt().domain([1, 150]).range([8, 60]);
+                    const nodes = this.nodeGroup.selectAll('g.node').data(chartData, d => d.id);
+                    nodes.exit().transition().duration(500).attr('transform', 'scale(0)').remove();
+                    const enterNodes = nodes.enter().append('g').attr('class', 'node')
+                        .attr('transform', d => {
+                            // Determine initial x/y metrics based on view
+                            let xMetricLocal, yMetricLocal;
+                            if (activeVizStyle === 'expanded') {
+                                xMetricLocal = 'incidents';
+                                yMetricLocal = 'avgMileageDelta';
+                            } else if (activeVizStyle === 'clusters') {
+                                xMetricLocal = 'incidents';
+                                yMetricLocal = 'density';
+                            } else {
+                                xMetricLocal = 'likelihood';
+                                yMetricLocal = 'severity';
+                            }
+                            return `translate(${this.x(d[xMetricLocal] || 0)}, ${this.y(d[yMetricLocal] || 0)})`;
+                        })
+                        .style('cursor', 'pointer')
+                        .on('click', (event, d) => {
+                            event.stopPropagation();
+                            if (d.isCluster && activeVizStyle !== 'expanded') {
+                                // Explode cluster to show contained items
+                                this.explodeCluster(d);
+                            } else {
+                                // Show detail box for any non-cluster item (bus, fleet, component)
+                                this.showBusDetailBox(d);
+                            }
+                        })
+                        .on('mouseover', () => tooltip.style('opacity', 1))
+                        .on('mousemove', (event, d) => {
+                            // Determine dynamic y metric and label
+                            let xMetricLocal, yMetricLocal, yLabel;
+                            if (activeVizStyle === 'expanded') {
+                                xMetricLocal = 'incidents';
+                                yMetricLocal = 'avgMileageDelta';
+                                yLabel = 'Avg Mileage Δ';
+                            } else if (activeVizStyle === 'clusters') {
+                                xMetricLocal = 'incidents';
+                                yMetricLocal = 'density';
+                                yLabel = 'Density';
+                            } else {
+                                xMetricLocal = 'likelihood';
+                                yMetricLocal = 'severity';
+                                yLabel = 'Severity';
+                            }
+                            let content;
+                            if (d.isCluster) {
+                                const count = d.buses ? d.buses.length : (d.children ? d.children.length : d.subFailures ? d.subFailures.length : 0);
+                                const avgY = d[yMetricLocal];
+                                const avgX = d[xMetricLocal];
+                                content = (d.persona ? `<strong>${d.persona.name} (${count} items)</strong><br>` : `<strong>Cluster (${count} items)</strong><br>`) + `Avg ${xMetricLocal.charAt(0).toUpperCase() + xMetricLocal.slice(1)}: ${d3.format('.1f')(avgX)}<br>${yLabel}: ${d3.format(',.2f')(avgY)}`;
+                            } else {
+                                const name = d.busId || d.fleet || d.component || '';
+                                content = `<strong>${name}</strong><br><strong>Incidents:</strong> ${d.incidents}<br>${yLabel}: ${d3.format(',.2f')(d[yMetricLocal])}<br><strong>MDBF:</strong> ${metrics.mdbf.format(d.mdbf)}`;
+                            }
+                            tooltip.html(content).style('left', `${event.pageX + 15}px`).style('top', `${event.pageY - 28}px`);
+                        }).on('mouseleave', () => tooltip.style('opacity', 0));
+                    enterNodes.append('circle').attr('r', 0);
+                    enterNodes.append('text').attr('class', 'cluster-text');
+                    const mergedNodes = nodes.merge(enterNodes);
+                    const isClustered = activeVizStyle === 'clusters' || activeVizStyle === 'matrix';
+                    // Compute positionalScore extents for dynamic performance colouring
+                    const posExtent = d3.extent(chartData, d => d.positionalScore || 0);
+                    // Update ordinal colour scales' domains based on available categories
+                    // This ensures new categories are assigned consistent colours on each render
+                    const uniqueRoutes = Array.from(new Set(chartData.map(d => d.route).filter(Boolean)));
+                    const uniqueBestComps = Array.from(new Set(chartData.map(d => d.bestComponent).filter(Boolean)));
+                    const uniqueWorstComps = Array.from(new Set(chartData.map(d => d.worstComponent).filter(Boolean)));
+                    const uniqueFleets = Array.from(new Set(chartData.map(d => d.fleet).filter(Boolean)));
+                    routeColorScale.domain(uniqueRoutes);
+                    componentColorScale.domain(Array.from(new Set([...uniqueBestComps, ...uniqueWorstComps])));
+                    fleetColorScale.domain(uniqueFleets);
+                    mergedNodes.select('circle').transition().duration(500)
+                        .attr('r', d => {
+                            // Determine base radius
+                            const base = isClustered ? (d.buses ? radiusScale(d.buses.length) : this.size(d.mdbf)) : this.size(d.mdbf);
+                            // Enlarge if this bus is selected
+                            if (this.activeBus && this.activeBus.id === d.id) {
+                                return base * 1.3;
+                            }
+                            return base;
+                        })
+                        .style('fill', d => {
+                            // Determine fill colour based on current colour mode
+                            if (currentColorMode === 'route') {
+                                return routeColorScale(d.route);
+                            } else if (currentColorMode === 'bestComponent') {
+                                return componentColorScale(d.bestComponent);
+                            } else if (currentColorMode === 'worstComponent') {
+                                return componentColorScale(d.worstComponent);
+                            } else if (currentColorMode === 'fleet') {
+                                return fleetColorScale(d.fleet);
+                            } else {
+                                // Default: performance (continuous scale)
+                                const span = (posExtent[1] - posExtent[0]) || 1;
+                                let t = (d.positionalScore - posExtent[0]) / span;
+                                t = Math.min(1, Math.max(0, t));
+                                return this.colorInterpolator(t);
+                            }
+                        })
+                        .style('stroke', d => ((this.activeCluster && this.activeCluster.id === d.id) || (this.activeBus && this.activeBus.id === d.id)) ? '#3b82f6' : 'none')
+                        .style('stroke-width', d => ((this.activeCluster && this.activeCluster.id === d.id) || (this.activeBus && this.activeBus.id === d.id)) ? 3 : 0);
+                    mergedNodes.select('text')
+                        .text(d => (d.buses && isClustered) ? d.buses.length : '')
+                        .style('fill', d => {
+                            let fillColor;
+                            if (currentColorMode === 'route') {
+                                fillColor = routeColorScale(d.route);
+                            } else if (currentColorMode === 'bestComponent') {
+                                fillColor = componentColorScale(d.bestComponent);
+                            } else if (currentColorMode === 'worstComponent') {
+                                fillColor = componentColorScale(d.worstComponent);
+                            } else if (currentColorMode === 'fleet') {
+                                fillColor = fleetColorScale(d.fleet);
+                            } else {
+                                const span = (posExtent[1] - posExtent[0]) || 1;
+                                let t = (d.positionalScore - posExtent[0]) / span;
+                                t = Math.min(1, Math.max(0, t));
+                                fillColor = this.colorInterpolator(t);
+                            }
+                            return getContrastingTextColor(fillColor);
+                        });
+
+                    // Fade other nodes when a bus is selected
+                    const currentActiveBus = this.activeBus ? this.activeBus.id : null;
+                    mergedNodes.style('opacity', d => {
+                        if (!currentActiveBus) return 1;
+                        return d.id === currentActiveBus ? 1 : 0.15;
+                    });
+
+                    // If a bus is selected, overlay a spider/star inside its circle to visualise component performance
+                    if (this.activeBus) {
+                        const selectedId = this.activeBus.id;
+                        const componentMetrics = (() => {
+                            // compute average MDBF per main component for this bus
+                            const compMap = new Map();
+                            const failures = this.activeBus.failures || [];
+                            failures.forEach(f => {
+                                const key = f.component;
+                                if (!compMap.has(key)) compMap.set(key, []);
+                                compMap.get(key).push(f.mdbf);
+                            });
+                            const metrics = [];
+                            const keys = Object.keys(components);
+                            keys.forEach((key) => {
+                                const arr = compMap.get(key) || [];
+                                const avg = arr.length ? d3.mean(arr) : 0;
+                                metrics.push({ component: key, value: avg });
+                            });
+                            // normalize values between 0 and 1
+                            const values = metrics.map(m => m.value);
+                            const max = d3.max(values) || 1;
+                            return metrics.map(m => ({ component: m.component, norm: max > 0 ? m.value / max : 0 }));
+                        })();
+                        // Build radial path string for spider overlay
+                        const starPathFor = (radius) => {
+                            const pointCount = componentMetrics.length;
+                            const angleSlice = 2 * Math.PI / pointCount;
+                            let path = '';
+                            componentMetrics.forEach((m, i) => {
+                                const r = m.norm * radius;
+                                const angle = angleSlice * i - Math.PI / 2;
+                                const x = r * Math.cos(angle);
+                                const y = r * Math.sin(angle);
+                                if (i === 0) path += `M${x},${y}`; else path += `L${x},${y}`;
+                            });
+                            path += 'Z';
+                            return path;
+                        };
+                        // Add overlay path to selected node
+                        mergedNodes.each(function(d) {
+                            const g = d3.select(this);
+                            g.selectAll('path.inline-spider').remove();
+                            if (d.id === selectedId) {
+                                const radius = isClustered ? (d.buses ? radiusScale(d.buses.length) : this.size(d.mdbf)) : this.size(d.mdbf);
+                                // Determine star stroke colour matching the current colour mode
+                                let starColor;
+                                if (currentColorMode === 'route') {
+                                    starColor = routeColorScale(this.activeBus.route);
+                                } else if (currentColorMode === 'bestComponent') {
+                                    starColor = componentColorScale(this.activeBus.bestComponent);
+                                } else if (currentColorMode === 'worstComponent') {
+                                    starColor = componentColorScale(this.activeBus.worstComponent);
+                                } else if (currentColorMode === 'fleet') {
+                                    starColor = fleetColorScale(this.activeBus.fleet);
+                                } else {
+                                    const spanStar = (posExtent[1] - posExtent[0]) || 1;
+                                    let tStar = (this.activeBus.positionalScore - posExtent[0]) / spanStar;
+                                    tStar = Math.min(1, Math.max(0, tStar));
+                                    starColor = this.colorInterpolator(tStar);
+                                }
+                                g.append('path')
+                                    .attr('class', 'inline-spider')
+                                    .attr('d', starPathFor(radius))
+                                    .style('fill', 'rgba(255,255,255,0.4)')
+                                    .style('stroke', starColor)
+                                    .style('stroke-width', 1.5);
+                            }
+                        }.bind(this));
+                    } else {
+                        // remove any inline spiders when nothing is selected
+                        mergedNodes.selectAll('path.inline-spider').remove();
+                    }
+                    // Determine x and y metrics for the force simulation similar to render()
+                    let simXMetric;
+                    let simYMetric;
+                    if (activeVizStyle === 'expanded') {
+                        simXMetric = 'incidents';
+                        simYMetric = 'avgMileageDelta';
+                    } else if (activeVizStyle === 'clusters') {
+                        simXMetric = 'incidents';
+                        simYMetric = 'density';
+                    } else {
+                        simXMetric = 'likelihood';
+                        simYMetric = 'severity';
+                    }
+                    this.simulation.nodes(chartData)
+                        .force('x', d3.forceX(d => this.x(d[simXMetric])).strength(0.8))
+                        .force('y', d3.forceY(d => this.y(d[simYMetric])).strength(0.8))
+                        .force('collide', d3.forceCollide(d => (isClustered ? (d.buses ? radiusScale(d.buses.length) : this.size(d.mdbf)) : this.size(d.mdbf)) + 2));
+                    this.simulation.on('tick', () => mergedNodes.attr('transform', d => `translate(${d.x}, ${d.y})`));
+                    this.simulation.alpha(1).restart();
+                },
+                explodeCluster: function(clusterData) {
+                    // If the clicked cluster is already active, ignore
+                    if (this.activeCluster && this.activeCluster.id === clusterData.id) return;
+                    // Collapse any previously active cluster
+                    if (this.activeCluster) {
+                        this.collapseCluster();
+                    }
+                    // Hide any active bus detail
+                    if (this.activeBus) this.hideBusDetailBox();
+                    // Set the new active cluster
+                    this.activeCluster = clusterData;
+                    const index = displayedData.findIndex(item => item.id === clusterData.id);
+                    if (index > -1) {
+                        const clusterNode = d3.select(this.nodeGroup.selectAll('g.node').nodes()[index]);
+                        this.activeCluster.originalX = clusterNode.datum().x;
+                        this.activeCluster.originalY = clusterNode.datum().y;
+                        displayedData.splice(index, 1, ...clusterData.buses);
+                        this.updateChart(displayedData);
+                        // Delay showing the cluster info box slightly to allow the layout to settle
+                        setTimeout(() => {
+                            this.showClusterInfoBox(clusterData);
+                        }, 30);
+                    }
+                },
+                collapseCluster: function() {
+                    if (!this.activeCluster) return;
+                    this.hideClusterInfoBox();
+                    const busIds = new Set(this.activeCluster.buses.map(b => b.id));
+                    displayedData = displayedData.filter(d => !busIds.has(d.id));
+                    displayedData.push(this.activeCluster);
+                    this.activeCluster = null;
+                    this.updateChart(displayedData);
+                },
+                showClusterInfoBox: function(clusterData) {
+                    const { persona, originalX, originalY } = clusterData;
+                    document.getElementById('info-box-name').textContent = persona.name;
+                    // Build interpretation with optional predicted change info
+                    let interpretation = persona.interpretation;
+                    // If avgChange exists (matrix or k-means), append directional cue
+                    if (clusterData.avgChange !== undefined) {
+                        const change = clusterData.avgChange;
+                        const direction = change > 0 ? 'improving' : (change < 0 ? 'worsening' : 'stable');
+                        const pct = Math.abs(change * 100).toFixed(1);
+                        interpretation += `\nPredicted trend: ${pct}% ${direction}`;
+                    }
+                    document.getElementById('info-box-interpretation').textContent = interpretation;
+                    document.getElementById('info-box-action-btn').textContent = persona.action;
+                    document.getElementById('info-box-export-btn').onclick = () => this.exportClusterData(clusterData);
+                    this.positionAndShowBox(this.clusterInfoBox, originalX, originalY);
+                },
+                hideClusterInfoBox: function() {
+                    this.clusterInfoBox.style.opacity = 0;
+                    this.clusterInfoBox.style.transform = 'translateY(10px)';
+                    setTimeout(() => { this.clusterInfoBox.classList.add('hidden'); }, 300);
+                },
+                showBusDetailBox: function(busData) {
+                    if (this.activeCluster) this.collapseCluster();
+                    if (this.activeBus) this.hideBusDetailBox();
+                    this.activeBus = busData;
+                    const index = displayedData.findIndex(item => item.id === busData.id);
+                    const busNode = d3.select(this.nodeGroup.selectAll('g.node').nodes()[index]);
+                    const { x, y } = busNode.datum();
+                    // Determine entity label and name for the detail box title
+                    let prefix = currentViewLevel.charAt(0).toUpperCase() + currentViewLevel.slice(1);
+                    let name = busData.busId || busData.fleet || busData.component || '';
+                    document.getElementById('detail-box-title').textContent = `Performance Profile: ${prefix} ${name}`;
+                    const metricsContainer = document.getElementById('detail-box-metrics');
+                    if (currentViewLevel === 'bus') {
+                        metricsContainer.innerHTML = `
+                            <p><strong>Fleet:</strong> ${busData.fleet}</p>
+                            <p><strong>Incidents:</strong> ${metrics.incidents.format(busData.incidents)}</p>
+                            <p><strong>MDBF:</strong> ${metrics.mdbf.format(busData.mdbf)}</p>
+                            <p><strong>Mileage Δ:</strong> ${d3.format(',.0f')(busData.avgMileageDelta)}</p>
+                            <p><strong>Mileage:</strong> ${metrics.mileage.format(busData.mileage)}</p>
+                            <p><strong>Age:</strong> ${metrics.busAge.format(busData.busAge)} yrs</p>
+                            <p><strong>Days Since Service:</strong> ${metrics.daysSinceService.format(busData.daysSinceService)}</p>
+                        `;
+                    } else if (currentViewLevel === 'fleet') {
+                        metricsContainer.innerHTML = `
+                            <p><strong>Buses:</strong> ${busData.children ? busData.children.length : 0}</p>
+                            <p><strong>Total Incidents:</strong> ${metrics.incidents.format(busData.incidents)}</p>
+                            <p><strong>Avg MDBF:</strong> ${metrics.mdbf.format(busData.mdbf)}</p>
+                            <p><strong>Avg Mileage Δ:</strong> ${d3.format(',.0f')(busData.avgMileageDelta)}</p>
+                            <p><strong>Avg Mileage:</strong> ${metrics.mileage.format(busData.mileage)}</p>
+                            <p><strong>Avg Age:</strong> ${metrics.busAge.format(busData.busAge)} yrs</p>
+                            <p><strong>Avg Days Since Service:</strong> ${metrics.daysSinceService.format(busData.daysSinceService)}</p>
+                        `;
+                    } else if (currentViewLevel === 'component') {
+                        metricsContainer.innerHTML = `
+                            <p><strong>Total Incidents:</strong> ${metrics.incidents.format(busData.incidents)}</p>
+                            <p><strong>Avg MDBF:</strong> ${metrics.mdbf.format(busData.mdbf)}</p>
+                            <p><strong>Avg Mileage Δ:</strong> ${d3.format(',.0f')(busData.avgMileageDelta)}</p>
+                            <p><strong>Avg Mileage:</strong> ${metrics.mileage.format(busData.mileage)}</p>
+                            <p><strong>Avg Age:</strong> ${metrics.busAge.format(busData.busAge)} yrs</p>
+                            <p><strong>Avg Days Since Service:</strong> ${metrics.daysSinceService.format(busData.daysSinceService)}</p>
+                        `;
+                    }
+                    const failuresContainer = document.getElementById('detail-box-failures');
+                    if (currentViewLevel === 'bus') {
+                        failuresContainer.innerHTML = busData.failures.slice(0, 5).map(f => `<li>${f.component} - ${f.subComponent}</li>`).join('');
+                    } else if (currentViewLevel === 'fleet') {
+                        // show list of top 5 buses by incidents
+                        const topBuses = busData.children ? busData.children.slice().sort((a,b) => b.incidents - a.incidents).slice(0,5) : [];
+                        failuresContainer.innerHTML = topBuses.map(b => `<li>${b.busId} - ${b.incidents} incidents</li>`).join('');
+                    } else if (currentViewLevel === 'component') {
+                        // show list of top 5 subcomponents by average MDBF
+                        const groupedSub = d3.group(busData.subFailures || [], d => d.subComponent);
+                        const arr = Array.from(groupedSub, ([sub, fails]) => ({ sub, avg: d3.mean(fails, f => f.mdbf) }));
+                        const topSubs = arr.sort((a,b) => b.avg - a.avg).slice(0,5);
+                        failuresContainer.innerHTML = topSubs.map(s => `<li>${s.sub} - ${metrics.mdbf.format(s.avg)}</li>`).join('');
+                    }
+                    this.drawSpiderChart(busData);
+                    this.positionAndShowBox(this.busDetailBox, x, y);
+                    this.updateChart(displayedData);
+                },
+                hideBusDetailBox: function() {
+                    if (!this.activeBus) return;
+                    this.busDetailBox.style.opacity = 0;
+                    this.busDetailBox.style.transform = 'translateY(10px)';
+                    setTimeout(() => { this.busDetailBox.classList.add('hidden'); }, 300);
+                    this.activeBus = null;
+                    this.updateChart(displayedData);
+                },
+                positionAndShowBox: function(box, chartX, chartY) {
+                    const boxWidth = box.offsetWidth;
+                    const boxHeight = box.offsetHeight;
+                    let left = chartX + this.margin.left - boxWidth / 2;
+                    let top = chartY + this.margin.top - boxHeight - 20;
+                    if (left < 0) left = 10;
+                    if (left + boxWidth > this.container.clientWidth) left = this.container.clientWidth - boxWidth - 10;
+                    if (top < 0) top = chartY + this.margin.top + 20;
+                    // Ensure the box doesn't overflow the bottom of the container
+                    if (top + boxHeight > this.container.clientHeight) {
+                        top = this.container.clientHeight - boxHeight - 10;
+                    }
+                    box.style.left = `${left}px`;
+                    box.style.top = `${top}px`;
+                    box.classList.remove('hidden');
+                    setTimeout(() => { box.style.opacity = 1; box.style.transform = 'translateY(0)'; }, 10);
+                },
+                drawSpiderChart: function(entity) {
+                    const container = d3.select('#spider-chart-container');
+                    container.select('svg').remove();
+                    // Determine the type of breakdown based on view level
+                    let axesData = [];
+                    let labels = [];
+                    if (currentViewLevel === 'bus') {
+                        // component breakdown: average MDBF per component for this bus
+                        const values = mainComponents.map(comp => {
+                            const compFails = entity.failures.filter(f => f.component === comp);
+                            const avg = compFails.length > 0 ? d3.mean(compFails, f => f.mdbf) : 0;
+                            return { axis: comp, raw: avg };
+                        });
+                        const maxVal = d3.max(values, d => d.raw) || 1;
+                        axesData = [{ axes: values.map(v => ({ axis: v.axis, value: v.raw / maxVal })) }];
+                        labels = values.map(v => v.axis);
+                    } else if (currentViewLevel === 'fleet') {
+                        // use standard performance metrics breakdown for fleet
+                        const spiderMetrics = ['mileage','busAge','incidents','daysSinceService','mdbf'];
+                        const fullAggData = prepareDataByView(fleetData);
+                        const scales = {};
+                        spiderMetrics.forEach(metric => {
+                            const extent = d3.extent(fullAggData, d => d[metric]);
+                            const range = metric === 'mdbf' ? [1, 0] : [0, 1];
+                            scales[metric] = d3.scaleLinear().domain(extent).range(range).nice();
+                        });
+                        axesData = [{ axes: spiderMetrics.map(metric => ({ axis: metrics[metric].label, value: scales[metric](entity[metric]) })) }];
+                        labels = spiderMetrics.map(m => metrics[m].label);
+                    } else if (currentViewLevel === 'component') {
+                        // subcomponent breakdown: average MDBF per subComponent for this component entity
+                        const groupedSub = d3.group(entity.subFailures || [], d => d.subComponent);
+                        const values = Array.from(groupedSub, ([sub, fails]) => {
+                            return { axis: sub, raw: d3.mean(fails, f => f.mdbf) };
+                        });
+                        const maxVal = d3.max(values, d => d.raw) || 1;
+                        axesData = [{ axes: values.map(v => ({ axis: v.axis, value: v.raw / maxVal })) }];
+                        labels = values.map(v => v.axis);
+                    }
+                    // Determine number of axes and set chart dimensions
+                    const numAxes = axesData[0].axes.length;
+                    const width = 180;
+                    const height = 180;
+                    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+                    const radius = Math.min(width - margin.left - margin.right, height - margin.top - margin.bottom) / 2;
+                    const angleSlice = Math.PI * 2 / numAxes;
+                    const svg = container.append('svg')
+                        .attr('viewBox', `0 0 ${width} ${height}`)
+                        .append('g')
+                        .attr('transform', `translate(${width/2}, ${height/2})`);
+                    const rScale = d3.scaleLinear().domain([0, 1]).range([0, radius]);
+                    // Draw concentric circles
+                    svg.selectAll('.grid-level')
+                        .data(d3.range(1, 5).reverse())
+                        .enter().append('circle')
+                        .attr('class', 'spider-web')
+                        .attr('r', d => radius / 4 * d)
+                        .style('fill', 'none');
+                    // Draw axes lines and labels
+                    const axes = svg.selectAll('.axis')
+                        .data(axesData[0].axes)
+                        .enter().append('g')
+                        .attr('class', 'axis');
+                    axes.append('line')
+                        .attr('x1', 0).attr('y1', 0)
+                        .attr('x2', (d, i) => rScale(1.05) * Math.cos(angleSlice * i - Math.PI / 2))
+                        .attr('y2', (d, i) => rScale(1.05) * Math.sin(angleSlice * i - Math.PI / 2))
+                        .attr('class', 'spider-web');
+                    axes.append('text')
+                        .attr('class', 'spider-axis')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .attr('x', (d, i) => rScale(1.25) * Math.cos(angleSlice * i - Math.PI / 2))
+                        .attr('y', (d, i) => rScale(1.25) * Math.sin(angleSlice * i - Math.PI / 2))
+                        .text(d => d.axis);
+                    const radarLine = d3.lineRadial()
+                        .curve(d3.curveLinearClosed)
+                        .radius(d => rScale(d.value))
+                        .angle((d, i) => i * angleSlice);
+                    const blob = svg.selectAll('.radarArea')
+                        .data(axesData)
+                        .enter().append('g');
+                    // Determine spider chart colour based on current colour mode
+                    let spiderColor;
+                    if (currentColorMode === 'route') {
+                        spiderColor = entity.route ? routeColorScale(entity.route) : '#3b82f6';
+                    } else if (currentColorMode === 'bestComponent') {
+                        spiderColor = entity.bestComponent ? componentColorScale(entity.bestComponent) : '#3b82f6';
+                    } else if (currentColorMode === 'worstComponent') {
+                        spiderColor = entity.worstComponent ? componentColorScale(entity.worstComponent) : '#3b82f6';
+                    } else if (currentColorMode === 'fleet') {
+                        spiderColor = entity.fleet ? fleetColorScale(entity.fleet) : '#3b82f6';
+                    } else {
+                        const posExtentSp = d3.extent(displayedData, d => d.positionalScore || 0);
+                        const spanSp = (posExtentSp[1] - posExtentSp[0]) || 1;
+                        let tSp = (entity.positionalScore - posExtentSp[0]) / spanSp;
+                        tSp = Math.min(1, Math.max(0, tSp));
+                        spiderColor = this.colorInterpolator(tSp);
+                    }
+                    blob.append('path')
+                        .attr('class', 'spider-area')
+                        .attr('d', d => radarLine(d.axes))
+                        .style('fill', spiderColor);
+                    blob.append('path')
+                        .attr('class', 'spider-stroke')
+                        .attr('d', d => radarLine(d.axes))
+                        .style('stroke', spiderColor);
+                },
+                exportClusterData: function(clusterData) {
+                    const headers = ['busId', 'fleet', 'incidents', 'mdbf', 'mileage', 'busAge', 'daysSinceService'];
+                    const csvRows = [headers.join(',')];
+                    clusterData.buses.forEach(bus => {
+                        const row = headers.map(header => bus[header]);
+                        csvRows.push(row.join(','));
+                    });
+                    const csvString = csvRows.join('\n');
+                    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `cluster_${clusterData.persona.name.replace(/\s+/g, '_')}.csv`);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                },
+                /* K-Means clustering for cluster view */
+                clusterDataByKMeans: function(data, fullDomainData, yMetricKey) {
+                    // Accept a dynamic y-axis key; default to MDBF if none provided
+                    const yKey = yMetricKey || 'mdbf';
+                    if (data.length < 5) return data;
+                    // Define personas based on incidents and density (failures per mile).
+                    const personas = [
+                        { incidents: 'low', density: 'low', name: 'Reliable Workhorses', interpretation: 'Low incidents and low failure density – trustworthy assets.', action: 'Benchmark best practices' },
+                        { incidents: 'low', density: 'moderate', name: 'Underutilized Risk', interpretation: 'Low incidents but moderate failure density – monitor early issues.', action: 'Investigate underlying causes' },
+                        { incidents: 'low', density: 'high', name: 'Hidden Problems', interpretation: 'Few incidents but high failure rate per mile – possible undetected issues.', action: 'Prioritize inspection' },
+                        { incidents: 'moderate', density: 'low', name: 'Efficient Performers', interpretation: 'Moderate incidents with low density – healthy mid‑life assets.', action: 'Maintain current schedule' },
+                        { incidents: 'moderate', density: 'moderate', name: 'Mid‑Life Challenges', interpretation: 'Moderate incidents and density – watch for trends.', action: 'Schedule preventive maintenance' },
+                        { incidents: 'moderate', density: 'high', name: 'Emerging Risks', interpretation: 'Moderate incidents but high density – reliability beginning to dip.', action: 'Investigate root causes' },
+                        { incidents: 'high', density: 'low', name: 'Heavy Duty', interpretation: 'High incidents yet low failure density – well‑used but still efficient.', action: 'Plan for future overhaul' },
+                        { incidents: 'high', density: 'moderate', name: 'Stressed Units', interpretation: 'High incidents and moderate density – signs of wear.', action: 'Prioritize repair or replacement' },
+                        { incidents: 'high', density: 'high', name: 'Problematic Units', interpretation: 'High incidents and high failure density – urgent attention needed.', action: 'Immediate overhaul' }
+                    ];
+                    // Determine extents for categorization
+                    const incidentExtent = d3.extent(fullDomainData, d => d.incidents);
+                    const densityExtent = d3.extent(fullDomainData, d => d.density);
+                    const getPersona = (avgIncidents, avgDensity) => {
+                        const iCat = avgIncidents < incidentExtent[0] + (incidentExtent[1] - incidentExtent[0]) * 0.33 ? 'low' : avgIncidents < incidentExtent[0] + (incidentExtent[1] - incidentExtent[0]) * 0.66 ? 'moderate' : 'high';
+                        const dCat = avgDensity < densityExtent[0] + (densityExtent[1] - densityExtent[0]) * 0.33 ? 'low' : avgDensity < densityExtent[0] + (densityExtent[1] - densityExtent[0]) * 0.66 ? 'moderate' : 'high';
+                        return personas.find(p => p.incidents === iCat && p.density === dCat) || { name: 'General Cluster', interpretation: 'Group of similar items.', action: 'Review individually' };
+                    };
+                    // Normalise x and y metrics for k-means algorithm
+                    const xVal = d => d.incidents;
+                    const yVal = d => d[yKey];
+                    const xScale = d3.scaleLinear().domain(d3.extent(data, xVal)).range([0, 1]);
+                    const yScale = d3.scaleLinear().domain(d3.extent(data, yVal)).range([0, 1]);
+                    data.forEach(d => {
+                        d.normX = xScale(xVal(d));
+                        d.normY = yScale(yVal(d));
+                    });
+                    // Simple k-means implementation
+                    const kmeans = (points, k) => {
+                        let centroids = points.slice(0, k).map(p => ({ normX: p.normX, normY: p.normY }));
+                        let assignments = [];
+                        for (let iter = 0; iter < 20; iter++) {
+                            assignments = points.map(p => {
+                                let minDist = Infinity, best = 0;
+                                centroids.forEach((c, i) => {
+                                    const dist = Math.hypot(p.normX - c.normX, p.normY - c.normY);
+                                    if (dist < minDist) { minDist = dist; best = i; }
+                                });
+                                return best;
+                            });
+                            const newCentroids = [];
+                            for (let i = 0; i < k; i++) {
+                                const group = points.filter((_, j) => assignments[j] === i);
+                                if (group.length) {
+                                    newCentroids.push({ normX: d3.mean(group, p => p.normX), normY: d3.mean(group, p => p.normY) });
+                                } else {
+                                    newCentroids.push(centroids[i]);
+                                }
+                            }
+                            centroids = newCentroids;
+                        }
+                        const clusters = Array.from({ length: k }, () => []);
+                        points.forEach((p, idx) => clusters[assignments[idx]].push(p));
+                        return clusters.filter(c => c.length);
+                    };
+                    const K = Math.min(6, data.length);
+                    const clusters = kmeans(data, K);
+                    return clusters.map((busCluster, i) => {
+                        const avgIncidents = d3.mean(busCluster, d => d.incidents);
+                        const avgDensity = d3.mean(busCluster, d => d.density);
+                        const avgMdbf = d3.mean(busCluster, d => d.mdbf);
+                        const avgMileageDelta = d3.mean(busCluster, d => d.avgMileageDelta);
+                        return {
+                            id: `k-cluster-${i}`,
+                            isCluster: true,
+                            buses: busCluster,
+                            // aggregated metrics for display and simulation
+                            incidents: avgIncidents,
+                            density: avgDensity,
+                            mdbf: avgMdbf,
+                            avgMileageDelta: avgMileageDelta,
+                            severity: d3.mean(busCluster, d => d.severity || 0),
+                            likelihood: d3.mean(busCluster, d => d.likelihood || 0),
+                            positionalScore: d3.mean(busCluster, d => d.positionalScore),
+                            persona: getPersona(avgIncidents, avgDensity)
+                            ,
+                            avgChange: d3.mean(busCluster, d => d.change || 0)
+                        };
+                    });
+                },
+                /* Matrix clustering for matrix view */
+                clusterDataByMatrix: function(data) {
+                    // Clear previous grid lines
+                    this.gridLinesGroup.selectAll('*').remove();
+                    if (!data || data.length === 0) return [];
+                    // Determine quantiles for severity and likelihood
+                    const severityVals = data.map(d => d.severity);
+                    const likelihoodVals = data.map(d => d.likelihood);
+                    const sortedX = likelihoodVals.slice().sort(d3.ascending);
+                    const sortedY = severityVals.slice().sort(d3.ascending);
+                    const xQuantiles = [d3.quantileSorted(sortedX, 1 / 3), d3.quantileSorted(sortedX, 2 / 3)];
+                    const yQuantiles = [d3.quantileSorted(sortedY, 1 / 3), d3.quantileSorted(sortedY, 2 / 3)];
+                    // Draw guidelines
+                    xQuantiles.forEach(val => this.gridLinesGroup.append('line').attr('x1', this.x(val)).attr('x2', this.x(val)).attr('y1', 0).attr('y2', this.height).attr('stroke', '#d1d5db').attr('stroke-dasharray', '4'));
+                    yQuantiles.forEach(val => this.gridLinesGroup.append('line').attr('x1', 0).attr('x2', this.width).attr('y1', this.y(val)).attr('y2', this.y(val)).attr('stroke', '#d1d5db').attr('stroke-dasharray', '4'));
+                    // Assign to grid cells
+                    const grid = new Map();
+                    data.forEach(d => {
+                        let col;
+                        if (d.likelihood >= xQuantiles[1]) col = 2;
+                        else if (d.likelihood >= xQuantiles[0]) col = 1;
+                        else col = 0;
+                        let row;
+                        if (d.severity >= yQuantiles[1]) row = 0;
+                        else if (d.severity >= yQuantiles[0]) row = 1;
+                        else row = 2;
+                        const key = `${row}-${col}`;
+                        if (!grid.has(key)) grid.set(key, []);
+                        grid.get(key).push(d);
+                    });
+                    const clusters = [];
+                    for (const [key, items] of grid) {
+                        if (items.length > 0) {
+                            const [row, col] = key.split('-').map(Number);
+                            const avgSeverity = d3.mean(items, d => d.severity);
+                            const avgLikelihood = d3.mean(items, d => d.likelihood);
+                            clusters.push({
+                                id: `matrix-${key}`,
+                                isCluster: true,
+                                buses: items,
+                                severity: avgSeverity,
+                                likelihood: avgLikelihood,
+                                incidents: d3.mean(items, d => d.incidents),
+                                density: d3.mean(items, d => d.density),
+                                mdbf: d3.mean(items, d => d.mdbf),
+                                avgMileageDelta: d3.mean(items, d => d.avgMileageDelta),
+                                positionalScore: d3.mean(items, d => d.positionalScore),
+                                avgChange: d3.mean(items, d => d.change || 0),
+                                persona: { name: `Quadrant ${row + 1}-${col + 1}`, interpretation: `Group of ${items.length} items in severity/likelihood quadrant.`, action: 'Review suggested actions' }
+                            });
+                        }
+                    }
+                    return clusters;
+                }
+            };
+            function getContrastingTextColor(rgbColor) {
+                const c = d3.color(rgbColor);
+                if (!c || !c.r) return '#6b7280';
+                const luminance = (0.299 * c.r + 0.587 * c.g + 0.114 * c.b) / 255;
+                return luminance > 0.5 ? '#6b7280' : '#f9fafb';
+            }
+            function renderCharts() {
+                // filter raw data by selected fleets
+                const filtered = fleetData.filter(d => {
+                    return selectedFleets.size === 0 || selectedFleets.has(d.fleet);
+                });
+                const dataset = prepareDataByView(filtered);
+                scatterPlot.render(dataset);
+            }
+
+            // prepare data aggregated depending on current view level
+            function prepareDataByView(filteredRaw) {
+                let dataset;
+                if (currentViewLevel === 'bus') {
+                    dataset = aggregateData(filteredRaw);
+                } else if (currentViewLevel === 'fleet') {
+                    // aggregate bus-level first
+                    const busAgg = aggregateData(filteredRaw);
+                    const grouped = d3.group(busAgg, d => d.fleet);
+                    dataset = Array.from(grouped, ([fleet, buses]) => {
+                        const totalIncidents = d3.sum(buses, b => b.incidents);
+                        const avgMileage = d3.mean(buses, b => b.mileage);
+                        const density = avgMileage > 0 ? totalIncidents / avgMileage : 0;
+                        return {
+                            id: `fleet-${fleet}`,
+                            fleet: fleet,
+                            busId: undefined,
+                            incidents: totalIncidents,
+                            mdbf: d3.mean(buses, b => b.mdbf),
+                            mileage: avgMileage,
+                            busAge: d3.mean(buses, b => b.busAge),
+                            daysSinceService: d3.mean(buses, b => b.daysSinceService),
+                            avgMileageDelta: d3.mean(buses, b => b.avgMileageDelta),
+                            density: density,
+                            children: buses
+                        };
+                    });
+                } else if (currentViewLevel === 'component') {
+                    // aggregate raw data by component
+                    const grouped = d3.group(filteredRaw, d => d.component);
+                    dataset = Array.from(grouped, ([component, failures]) => {
+                        // group by bus to compute bus-level aggregated for this component
+                        const busAgg = aggregateData(failures);
+                        const totalIncidents = d3.sum(busAgg, b => b.incidents);
+                        const avgMileage = d3.mean(busAgg, b => b.mileage);
+                        const density = avgMileage > 0 ? totalIncidents / avgMileage : 0;
+                        return {
+                            id: `component-${component}`,
+                            component: component,
+                            busId: undefined,
+                            fleet: undefined,
+                            incidents: totalIncidents,
+                            mdbf: d3.mean(busAgg, b => b.mdbf),
+                            mileage: avgMileage,
+                            busAge: d3.mean(busAgg, b => b.busAge),
+                            daysSinceService: d3.mean(busAgg, b => b.daysSinceService),
+                            avgMileageDelta: d3.mean(busAgg, b => b.avgMileageDelta),
+                            density: density,
+                            children: busAgg,
+                            subFailures: failures
+                        };
+                    });
+                } else {
+                    dataset = [];
+                }
+                // Compute severity and likelihood for all objects in dataset
+                return computeSeverityLikelihood(dataset);
+            }
+            computeFleetMetrics();
+            setupUI();
+            renderFleetCards();
+            scatterPlot.setup();
+            renderCharts();
+
+            // Legend expansion is handled via CSS hover.  No JS needed here.
+
+        // Compute severity and likelihood for each aggregated object.
+        // Severity combines age, incidents and days-since-service, penalising low MDBF.
+        // Likelihood combines density, incidents and age as proxies for failure probability.
+        function computeSeverityLikelihood(dataset) {
+            if (!Array.isArray(dataset) || dataset.length === 0) return dataset;
+            const ages = dataset.map(d => d.busAge || 0);
+            const incs = dataset.map(d => d.incidents || 0);
+            const days = dataset.map(d => d.daysSinceService || 0);
+            const mdbfs = dataset.map(d => d.mdbf || 0);
+            const densities = dataset.map(d => d.density || 0);
+            const minAge = d3.min(ages), maxAge = d3.max(ages);
+            const minInc = d3.min(incs), maxInc = d3.max(incs);
+            const minDays = d3.min(days), maxDays = d3.max(days);
+            const minMdbf = d3.min(mdbfs), maxMdbf = d3.max(mdbfs);
+            const minDensity = d3.min(densities), maxDensity = d3.max(densities);
+            return dataset.map(d => {
+                // Normalize each metric between 0 and 1; safeguard zero division
+                const ageNorm = maxAge - minAge > 0 ? (d.busAge - minAge) / (maxAge - minAge) : 0;
+                const incNorm = maxInc - minInc > 0 ? (d.incidents - minInc) / (maxInc - minInc) : 0;
+                const daysNorm = maxDays - minDays > 0 ? (d.daysSinceService - minDays) / (maxDays - minDays) : 0;
+                const mdbfNorm = maxMdbf - minMdbf > 0 ? (d.mdbf - minMdbf) / (maxMdbf - minMdbf) : 0;
+                const densityNorm = maxDensity - minDensity > 0 ? (d.density - minDensity) / (maxDensity - minDensity) : 0;
+                // Severity: higher when buses are older, have more incidents, are overdue for service, and have low MDBF
+                const severity = (ageNorm + incNorm + daysNorm + (1 - mdbfNorm)) / 4;
+                // Likelihood: higher when density of failures is high, incidents are many and age is greater
+                const likelihood = (densityNorm + incNorm + ageNorm) / 3;
+                // Predicted change: positive if severity is below midline (suggesting improvement potential)
+                const change = 0.5 - severity;
+                return Object.assign(d, { severity, likelihood, change });
+            });
+        }
+
+            // View-level selector: cycle between Bus, Fleet, Component
+            const viewSelector = document.getElementById('view-level-selector');
+            viewSelector.addEventListener('click', () => {
+                const options = ['Bus','Fleet','Component'];
+                let idx = options.indexOf(viewSelector.textContent.trim());
+                idx = (idx + 1) % options.length;
+                viewSelector.textContent = options[idx];
+                currentViewLevel = options[idx].toLowerCase();
+                // update chart label depending on view
+                renderCharts();
+            });
+
+            // reset button to return to Bus view
+            document.getElementById('view-reset-btn').addEventListener('click', () => {
+                currentViewLevel = 'bus';
+                viewSelector.textContent = 'Bus';
+                renderCharts();
+            });
+
+            // Utility button handlers
+            const exportBtn = document.getElementById('export-data-btn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    // Export aggregated dataset based on current view level
+                    const filtered = fleetData.filter(d => selectedFleets.size === 0 || selectedFleets.has(d.fleet));
+                    const dataset = prepareDataByView(filtered);
+                    const headers = Object.keys(dataset[0] || {});
+                    const rows = [headers.join(',')];
+                    dataset.forEach(item => {
+                        rows.push(headers.map(h => item[h]).join(','));
+                    });
+                    const csvString = rows.join('\n');
+                    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `overhaul_reliability_${currentViewLevel}.csv`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            }
+            const saveBtn = document.getElementById('save-progress-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', () => {
+                    alert('Save progress functionality is not yet implemented.');
+                });
+            }
+            const accountBtn = document.getElementById('account-btn');
+            if (accountBtn) {
+                accountBtn.addEventListener('click', () => {
+                    alert('Login/account functionality is not yet implemented.');
+                });
+            }
+
+            // Dark mode toggle button handler
+            const darkToggleButton = document.getElementById('dark-mode-toggle');
+            if (darkToggleButton) {
+                darkToggleButton.addEventListener('click', () => {
+                    document.body.classList.toggle('dark');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
