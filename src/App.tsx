@@ -395,37 +395,30 @@ function ResumePage() {
       </div>
 
       <section className="panel">
-        <p className="micro-label">Education</p>
-        <div className="resume-grid">
-          {profile.resume.education.map((entry) => (
-            <div key={entry} className="resume-block">
-              <p className="micro-copy">{entry}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <p className="micro-label">Experience</p>
+        <p className="micro-label">{profile.resume.pivotsTitle}</p>
         <div className="stack-list">
-          {profile.resume.experience.map((item) => (
-            <article key={`${item.company}-${item.title}`} className="resume-block">
+          {profile.resume.pivotEntries.map((item) => (
+            <article key={`${item.type}-${item.organization}-${item.title}`} className="resume-block">
               <div className="repo-topline">
                 <div>
-                  <p className="summary-title">{item.title}</p>
-                  <p className="summary-detail">{item.company}</p>
+                  <p className="summary-title">
+                    {'href' in item && item.href ? (
+                      <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                        {item.title}
+                      </a>
+                    ) : (
+                      item.title
+                    )}
+                  </p>
+                  <p className="summary-detail">{item.organization}</p>
                 </div>
                 <div className="resume-meta">
+                  <span>{item.type}</span>
                   <span>{item.period}</span>
-                  {'location' in item && item.location ? <span>{item.location}</span> : null}
                 </div>
               </div>
-              {item.bullets.length ? (
-                <ul className="bullet-list">
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet} className="micro-copy">{bullet}</li>
-                  ))}
-                </ul>
+              {'detail' in item && item.detail ? (
+                <p className="micro-copy">{item.detail}</p>
               ) : null}
             </article>
           ))}

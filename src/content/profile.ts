@@ -43,6 +43,7 @@ export const profile = {
   resume: {
     summary:
       'Building the future of AI systems for architecture, construction, and engineering by developing agents that work off price-build models.',
+    pivotsTitle: 'my many pivots',
     contactMethods: [
       {
         label: 'Email',
@@ -128,6 +129,73 @@ export const profile = {
           'Presented software functionality within a $4M software development effort directly to CEO Carl Bass.',
           'Tested design environments for a 15% UX optimization through robotics, 3D-print generation, and FEA animation.',
         ],
+      },
+    ],
+    pivotEntries: [
+      {
+        type: 'Academic',
+        title: 'Master of Architecture (M.Arch)',
+        organization: 'Columbia University',
+        period: '2023',
+        detail: 'Graduate School of Architecture, Planning and Preservation',
+      },
+      {
+        type: 'Academic',
+        title: 'Bachelor of Science (BS), Mechanical Engineering',
+        organization: 'The George Washington University',
+        period: '2018',
+      },
+      {
+        type: 'Publication',
+        title: 'Urban Magazine - Fall 2020',
+        organization: 'Columbia GSAPP',
+        period: '2020',
+        href: 'https://www.arch.columbia.edu/books/reader/597-urban-magazine-fall-2020',
+        detail: 'Columbia University publication featuring Ali Ahmed.',
+      },
+      {
+        type: 'Article',
+        title: 'Islam + Design',
+        organization: 'Medium',
+        period: '2017',
+        href: 'https://medium.com/@aliahmed/islam-design-f2135fc345d7',
+        detail: 'Medium essay by Ali Ahmed.',
+      },
+      {
+        type: 'Past Work',
+        title: 'Space Suit Engineer',
+        organization: 'NASA',
+        period: '2018 - 2019',
+      },
+      {
+        type: 'Past Work',
+        title: 'AR Exhibits Engineer',
+        organization: 'Autodesk',
+        period: '2017',
+      },
+      {
+        type: 'Past Work',
+        title: 'Architectural Designer',
+        organization: 'Norman Foster Foundation',
+        period: '2019 - 2020',
+      },
+      {
+        type: 'Past Work',
+        title: 'Applied Innovation Engineer',
+        organization: 'Autodesk',
+        period: '2016',
+      },
+      {
+        type: 'Past Work',
+        title: 'Head of Design',
+        organization: 'huupe',
+        period: '2019 - 2022',
+      },
+      {
+        type: 'Past Work',
+        title: 'Design Manager',
+        organization: 'LaunchGood',
+        period: '2021 - 2022',
       },
     ],
     skills: [
