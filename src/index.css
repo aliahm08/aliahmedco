@@ -85,9 +85,13 @@ textarea {
   font-family: var(--font-serif);
   font-size: 1.2rem;
   display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: wordmark-fade-in 700ms ease 120ms forwards;
+  color: var(--charcoal);
+  text-decoration: none;
+  animation: wordmark-float 4.8s ease-in-out infinite;
+}
+
+.wordmark:hover {
+  color: var(--charcoal);
 }
 
 .topnav {
@@ -280,7 +284,7 @@ textarea {
 }
 
 .entity-link {
-  color: var(--charcoal);
+  color: var(--link);
   text-decoration-thickness: 1px;
 }
 
@@ -438,17 +442,16 @@ textarea {
   }
 }
 
-@keyframes wordmark-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-    letter-spacing: 0.06em;
-  }
-
-  to {
-    opacity: 1;
+@keyframes wordmark-float {
+  0%,
+  100% {
     transform: translateY(0);
     letter-spacing: 0;
+  }
+
+  50% {
+    transform: translateY(-2px);
+    letter-spacing: 0.02em;
   }
 }
 
@@ -505,7 +508,6 @@ textarea {
 
 @media (prefers-reduced-motion: reduce) {
   .wordmark {
-    opacity: 1;
     transform: none;
     animation: none;
   }
