@@ -189,7 +189,7 @@ function HomePage() {
               <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
                 B2W-ai
               </a>
-              , Founder and CEO, building AI systems for architecture, construction, and engineering.
+              , Founder & CEO, AI Consultancy specializing in SMBs.
             </p>
           </div>
           <div className="stack-item">
@@ -197,7 +197,7 @@ function HomePage() {
               <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
                 WSP
               </a>
-              {' '}Senior Data Analyst, architected transit data systems and improved data freshness by 80%.
+              {' '}Senior Data Analyst, building AI systems for architecture, construction, and engineering.
             </p>
           </div>
           <div className="stack-item">
