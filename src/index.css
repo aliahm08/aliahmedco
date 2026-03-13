@@ -7,6 +7,7 @@
   --cream: #f6f0e6;
   --charcoal: #26231f;
   --muted: #666057;
+  --link: #7a4f2a;
   --line: rgba(38, 35, 31, 0.18);
 }
 
@@ -24,7 +25,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: var(--link);
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
 }
@@ -72,6 +73,7 @@ textarea {
 .wordmark,
 .topnav a {
   text-decoration: none;
+  color: var(--charcoal);
 }
 
 .topnav a.is-active {
