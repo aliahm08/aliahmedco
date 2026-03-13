@@ -334,18 +334,30 @@ function HomePage() {
                   style={{animationDelay: `${80 + index * 70}ms`}}
                 >
                   <p className="micro-copy">
-                    <strong>{item.organization}</strong>
-                  </p>
-                  <p className="micro-copy pivot-title-line">
-                    {'href' in item && item.href ? (
-                      <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                    {item.type === 'Academic' ? (
+                      <>
+                        <strong>{item.organization}</strong>
+                        {', '}
                         {item.title}
-                      </a>
+                      </>
+                    ) : item.type === 'Article' || item.type === 'Publication' ? (
+                      <>
+                        {'href' in item && item.href ? (
+                          <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                            {item.title}
+                          </a>
+                        ) : (
+                          item.title
+                        )}
+                      </>
                     ) : (
-                      item.title
+                      <>
+                        <strong>{item.organization}</strong>
+                        {', '}
+                        {item.title}
+                      </>
                     )}
                   </p>
-                  {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
                 </div>
               ))}
               {pivotPastWork.slice(0, visiblePastWorkCount).map((item, index) => (
@@ -354,9 +366,11 @@ function HomePage() {
                   className="stack-item home-fade-item past-work-item"
                   style={{animationDelay: `${180 + index * 70}ms`}}
                 >
-                  <p className="micro-copy"><strong>{item.organization}</strong></p>
-                  <p className="micro-copy pivot-title-line">{item.title}</p>
-                  {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
+                  <p className="micro-copy">
+                    <strong>{item.organization}</strong>
+                    {', '}
+                    {item.title}
+                  </p>
                 </div>
               ))}
             </div>
@@ -365,7 +379,6 @@ function HomePage() {
                 <p className="micro-copy">Scroll to reveal more.</p>
               </div>
             ) : null}
-            <SmartLink href="/resume" className="inline-link">View full resume</SmartLink>
           </div>
         ) : null}
       </section>
