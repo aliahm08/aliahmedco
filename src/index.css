@@ -494,6 +494,13 @@ textarea {
   color: var(--muted);
 }
 
+.pivot-title-line {
+  margin-top: 2px;
+  color: var(--charcoal);
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+}
+
 .footer-panel {
   margin-bottom: 12px;
 }

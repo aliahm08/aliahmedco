@@ -335,7 +335,8 @@ function HomePage() {
                 >
                   <p className="micro-copy">
                     <strong>{item.organization}</strong>
-                    {' '}·{' '}
+                  </p>
+                  <p className="micro-copy pivot-title-line">
                     {'href' in item && item.href ? (
                       <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
                         {item.title}
@@ -343,8 +344,8 @@ function HomePage() {
                     ) : (
                       item.title
                     )}
-                    {' '}· {item.period}
                   </p>
+                  {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
                 </div>
               ))}
               {pivotPastWork.slice(0, visiblePastWorkCount).map((item, index) => (
@@ -353,10 +354,9 @@ function HomePage() {
                   className="stack-item home-fade-item past-work-item"
                   style={{animationDelay: `${180 + index * 70}ms`}}
                 >
-                  <p className="micro-copy">
-                    <strong>{item.organization}</strong>
-                    {' '}· {item.title} · {item.period}
-                  </p>
+                  <p className="micro-copy"><strong>{item.organization}</strong></p>
+                  <p className="micro-copy pivot-title-line">{item.title}</p>
+                  {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
                 </div>
               ))}
             </div>
