@@ -162,35 +162,6 @@ export const profile = {
       'High School Diploma, American School of Doha',
       'High School, American Community School of Abu Dhabi',
     ],
-    pivots: {
-      title: 'My Many Pivots',
-      pastWork: [
-        'NASA',
-        'Autodesk',
-        'Norman Foster Foundation',
-        'Autodesk',
-        'huupe',
-        'LaunchGood',
-      ],
-      writing: [
-        {
-          label: 'Medium article',
-          title: 'Strategizing the Future of Computer Aided Design by (re)moving the Computer',
-          href: 'https://medium.com/%40aliahmed/strategizing-the-future-of-computer-aided-design-by-re-moving-the-computer-e295accfe460',
-          detail: 'Medium, Sep 22, 2024',
-        },
-        {
-          label: 'Columbia publication',
-          title: 'Bilal’s Adhan in Urban Magazine: Dialogues',
-          href: 'https://www.arch.columbia.edu/books/reader/597-urban-magazine-fall-2020',
-          detail: 'Columbia GSAPP, Fall 2020',
-        },
-      ],
-      academicBackground: [
-        'Columbia University, M.Arch',
-        'The George Washington University, BS Mechanical Engineering',
-      ],
-    },
   },
 } as const;
 

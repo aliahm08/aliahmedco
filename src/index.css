@@ -22,9 +22,6 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background 260ms ease,
-    color 260ms ease;
 }
 
 a {
@@ -64,84 +61,6 @@ textarea {
   width: min(720px, calc(100% - 32px));
   margin: 0 auto;
   padding: 24px 0 56px;
-  transition: color 260ms ease;
-}
-
-.body-pivot {
-  background:
-    radial-gradient(circle at top, rgba(188, 124, 79, 0.2), transparent 35%),
-    linear-gradient(180deg, #111315 0%, #171b20 40%, #0f1012 100%);
-  color: #f5efe6;
-}
-
-.site-shell-pivot {
-  color: #f5efe6;
-}
-
-.site-shell-pivot .wordmark,
-.site-shell-pivot a:hover,
-.site-shell-pivot .summary-title,
-.site-shell-pivot .native-social-title {
-  color: #f5efe6;
-}
-
-.site-shell-pivot .topnav a,
-.site-shell-pivot .meta-row,
-.site-shell-pivot .micro-copy,
-.site-shell-pivot .repo-copy,
-.site-shell-pivot .repo-meta,
-.site-shell-pivot .status-line,
-.site-shell-pivot .footer-panel p,
-.site-shell-pivot .field input::placeholder,
-.site-shell-pivot .field textarea::placeholder,
-.site-shell-pivot .native-social-label,
-.site-shell-pivot .native-social-detail,
-.site-shell-pivot .summary-detail,
-.site-shell-pivot .chat-note,
-.site-shell-pivot .resume-meta {
-  color: rgba(245, 239, 230, 0.72);
-}
-
-.site-shell-pivot a,
-.site-shell-pivot .entity-link {
-  color: #f3c89a;
-}
-
-.site-shell-pivot .panel,
-.site-shell-pivot .footer-panel,
-.site-shell-pivot .resume-block,
-.site-shell-pivot .contact-form,
-.site-shell-pivot .field input,
-.site-shell-pivot .field textarea,
-.site-shell-pivot .repo-row,
-.site-shell-pivot .embed-card,
-.site-shell-pivot .native-social-button,
-.site-shell-pivot .secondary-cta,
-.site-shell-pivot .tag,
-.site-shell-pivot .send-button,
-.site-shell-pivot .resume-hero {
-  border-color: rgba(245, 239, 230, 0.14);
-}
-
-.site-shell-pivot .resume-block,
-.site-shell-pivot .repo-row,
-.site-shell-pivot .contact-form,
-.site-shell-pivot .embed-card,
-.site-shell-pivot .native-social-button,
-.site-shell-pivot .secondary-cta {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.site-shell-pivot .resume-hero {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(188, 124, 79, 0.08));
-}
-
-.site-shell-pivot .field input,
-.site-shell-pivot .field textarea,
-.site-shell-pivot .send-button {
-  background: rgba(8, 9, 11, 0.35);
-  color: #f5efe6;
 }
 
 .topbar {
@@ -154,12 +73,6 @@ textarea {
 .wordmark,
 .topnav a {
   text-decoration: none;
-}
-
-.topnav a.is-active {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  background-size: 0 0;
 }
 
 .wordmark {
@@ -175,13 +88,6 @@ textarea {
   color: var(--charcoal);
 }
 
-.topnav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-.topnav a,
 .meta-row,
 .micro-copy,
 .repo-copy,
@@ -335,24 +241,6 @@ textarea {
 
 .page-grid {
   margin-top: 18px;
-}
-
-.topnav-toggle {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.topnav-toggle.is-active {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-}
-
-.site-shell-pivot .topnav-toggle {
-  color: rgba(245, 239, 230, 0.72);
 }
 
 .inline-link {
