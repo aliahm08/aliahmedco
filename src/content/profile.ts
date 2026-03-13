@@ -45,7 +45,7 @@ export const profile = {
       'Building the future of AI systems for architecture, construction, and engineering by developing agents that work off price-build models.',
     pivotsTitle: 'my many pivots',
     profileSummary:
-      '8 years of experience across infrastructure, product, design, and AI systems, with work spanning federal programs, venture-backed startups, and enterprise software.',
+      'Operator working across AI, infrastructure, design, and product, with experience spanning federal programs, venture-backed startups, and enterprise software.',
     focusAreas: [
       'Sales',
       'Revenue engine',
@@ -201,7 +201,7 @@ export const profile = {
         title: 'Master of Architecture (M.Arch)',
         organization: 'Columbia University',
         period: '2023',
-        detail: 'Studied architecture at GSAPP, adding design culture and systems thinking to an engineering base.',
+        detail: 'Studied architecture at GSAPP, layering design culture and systems thinking onto an engineering foundation.',
       },
       {
         type: 'Past Work',
@@ -245,7 +245,7 @@ export const profile = {
         title: 'Bachelor of Science (BS), Mechanical Engineering',
         organization: 'The George Washington University',
         period: '2018',
-        detail: 'Mechanical engineering training that anchored the technical side of the career before later pivots.',
+        detail: 'Mechanical engineering training that grounded the technical side of the career before the later pivots into product and design.',
       },
       {
         type: 'Past Work',

@@ -443,6 +443,9 @@ function ResumePage() {
       </section>
 
       <section className="panel">
+        <p className="statement">
+          Ali works across revenue, product, partnerships, and technical execution, with a toolkit that spans frontend software, analytics, automation, and AI systems.
+        </p>
         <div className="stack-list">
           <div className="stack-item">
             <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
@@ -457,6 +460,9 @@ function ResumePage() {
       </section>
 
       <section className="panel">
+        <p className="statement">
+          Selected experience across transit infrastructure, startup hardware, design systems, and applied R&D.
+        </p>
         <div className="stack-list">
           {profile.resume.experience.map((item) => (
             <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
@@ -483,12 +489,14 @@ function ResumePage() {
       </section>
 
       <section className="panel">
+        <p className="statement">
+          The throughline is range: architecture, hardware, software, publishing, and a willingness to move toward unfamiliar but high-leverage problems.
+        </p>
         <div className="stack-list">
           {profile.resume.pivotEntries.map((item) => (
             <div key={`${item.type}-${item.organization}-${item.title}`} className="stack-item">
               <p className="micro-copy">
-                <strong>{item.type}</strong>
-                {' '}· <strong>{item.organization}</strong>
+                <strong>{item.organization}</strong>
                 {' '}·{' '}
                 {'href' in item && item.href ? (
                   <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
@@ -497,7 +505,6 @@ function ResumePage() {
                 ) : (
                   item.title
                 )}
-                {' '}· {item.period}
               </p>
               {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
             </div>
@@ -506,6 +513,9 @@ function ResumePage() {
       </section>
 
       <section className="panel">
+        <p className="statement">
+          Formal training began in engineering and expanded into architecture.
+        </p>
         <div className="stack-list">
           {profile.resume.education.map((entry) => (
             <div key={entry} className="stack-item">
@@ -516,6 +526,9 @@ function ResumePage() {
       </section>
 
       <section className="panel">
+        <p className="statement">
+          Additional signals include hands-on fabrication credentials and academic and professional recognition.
+        </p>
         <div className="stack-list">
           <div className="stack-item">
             <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}</p>
