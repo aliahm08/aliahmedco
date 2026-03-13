@@ -197,7 +197,7 @@ function HomePage() {
               <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
                 WSP
               </a>
-              {' '}Senior Data Analyst, building AI systems for architecture, construction, and engineering.
+              {' '}Senior Data Analyst, ML Internal Tools for AEC.
             </p>
           </div>
           <div className="stack-item">
