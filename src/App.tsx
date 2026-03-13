@@ -178,25 +178,14 @@ function NativeSocialButton(props: {
 
 function HomePage(props: {
   isPivotMode: boolean;
-  onTogglePivotMode: () => void;
 }) {
-  const {isPivotMode, onTogglePivotMode} = props;
+  const {isPivotMode} = props;
   const latestPublication = substackPosts[0];
 
   return (
     <>
       <section className="panel panel-first">
         <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
-        <div className="hero-toggle-row">
-          <button type="button" className="script-flip-button" onClick={onTogglePivotMode}>
-            {isPivotMode ? 'Return to current chapter' : 'Flip the script'}
-          </button>
-          <p className="micro-copy">
-            {isPivotMode
-              ? 'Dark mode is on. Earlier work, publications, and academic background are now in view.'
-              : 'Open a second homepage version focused on earlier chapters, pivots, and formation.'}
-          </p>
-        </div>
         <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
@@ -230,47 +219,53 @@ function HomePage(props: {
       </section>
 
       {isPivotMode ? (
-        <section className="panel pivot-home-panel">
+        <>
+        <section className="panel">
           <p className="eyebrow">{profile.resume.pivots.title}</p>
-          <div className="pivot-home-grid">
-            <article className="resume-block">
-              <p className="summary-title">Past work</p>
-              <div className="tag-row">
-                {profile.resume.pivots.pastWork.map((company, index) => (
-                  <span key={`${company}-${index}`} className="tag">{company}</span>
-                ))}
-              </div>
-            </article>
-
-            <article className="resume-block">
-              <p className="summary-title">Writing and publications</p>
-              <div className="stack-list">
-                {profile.resume.pivots.writing.map((entry) => (
-                  <div key={entry.href} className="stack-item">
-                    <p className="micro-label">{entry.label}</p>
-                    <p className="micro-copy">
-                      <a href={entry.href} target="_blank" rel="noreferrer" className="entity-link">
-                        {entry.title}
-                      </a>
-                    </p>
-                    <p className="repo-meta">{entry.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </article>
-
-            <article className="resume-block">
-              <p className="summary-title">Academic background</p>
-              <div className="stack-list">
-                {profile.resume.pivots.academicBackground.map((entry) => (
-                  <div key={entry} className="stack-item">
-                    <p className="micro-copy">{entry}</p>
-                  </div>
-                ))}
-              </div>
-            </article>
+          <p className="statement">
+            A second read of the homepage: earlier roles, published work, and the academic track
+            behind the current chapter.
+          </p>
+        </section>
+        <section className="panel">
+          <p className="micro-label">Past work</p>
+          <div className="stack-list">
+            {profile.resume.pivots.pastWork.map((company, index) => (
+              <article key={`${company}-${index}`} className="resume-block">
+                <p className="micro-copy">{company}</p>
+              </article>
+            ))}
           </div>
         </section>
+        <section className="panel">
+          <p className="micro-label">Writing and publications</p>
+          <div className="stack-list">
+            {profile.resume.pivots.writing.map((entry) => (
+              <article key={entry.href} className="resume-block">
+                <div className="repo-topline">
+                  <a href={entry.href} target="_blank" rel="noreferrer" className="summary-title">
+                    {entry.title}
+                  </a>
+                  <div className="resume-meta">
+                    <span>{entry.detail}</span>
+                  </div>
+                </div>
+                <p className="micro-label">{entry.label}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section className="panel">
+          <p className="micro-label">Academic background</p>
+          <div className="stack-list">
+            {profile.resume.pivots.academicBackground.map((entry) => (
+              <article key={entry} className="resume-block">
+                <p className="micro-copy">{entry}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+        </>
       ) : null}
 
       <section className="panel">
@@ -677,7 +672,6 @@ export default function App() {
     page = (
       <HomePage
         isPivotMode={isPivotMode}
-        onTogglePivotMode={() => setIsPivotMode((current) => !current)}
       />
     );
   } else if (route === '/projects') {
@@ -692,6 +686,25 @@ export default function App() {
     <div className={`site-shell${isPivotMode ? ' site-shell-pivot' : ''}`}>
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
+        <nav className="topnav" aria-label="Primary">
+          <SmartLink href="/" className={route === '/' ? 'is-active' : undefined}>Home</SmartLink>
+          <SmartLink href="/projects" className={route === '/projects' ? 'is-active' : undefined}>
+            Projects
+          </SmartLink>
+          <SmartLink href="/resume" className={route === '/resume' ? 'is-active' : undefined}>
+            Resume
+          </SmartLink>
+          <SmartLink href="/writing" className={route === '/writing' ? 'is-active' : undefined}>
+            Writing
+          </SmartLink>
+          <button
+            type="button"
+            className={`topnav-toggle${isPivotMode ? ' is-active' : ''}`}
+            onClick={() => setIsPivotMode((current) => !current)}
+          >
+            {isPivotMode ? 'Current chapter' : 'My many pivots'}
+          </button>
+        </nav>
       </header>
 
       <main className="page">{page}</main>
