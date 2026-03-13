@@ -176,13 +176,27 @@ function NativeSocialButton(props: {
   );
 }
 
-function HomePage() {
+function HomePage(props: {
+  isPivotMode: boolean;
+  onTogglePivotMode: () => void;
+}) {
+  const {isPivotMode, onTogglePivotMode} = props;
   const latestPublication = substackPosts[0];
 
   return (
     <>
       <section className="panel panel-first">
         <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
+        <div className="hero-toggle-row">
+          <button type="button" className="script-flip-button" onClick={onTogglePivotMode}>
+            {isPivotMode ? 'Return to current chapter' : 'Flip the script'}
+          </button>
+          <p className="micro-copy">
+            {isPivotMode
+              ? 'Dark mode is on. Earlier work, publications, and academic background are now in view.'
+              : 'Open a second homepage version focused on earlier chapters, pivots, and formation.'}
+          </p>
+        </div>
         <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
@@ -214,6 +228,50 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {isPivotMode ? (
+        <section className="panel pivot-home-panel">
+          <p className="eyebrow">{profile.resume.pivots.title}</p>
+          <div className="pivot-home-grid">
+            <article className="resume-block">
+              <p className="summary-title">Past work</p>
+              <div className="tag-row">
+                {profile.resume.pivots.pastWork.map((company, index) => (
+                  <span key={`${company}-${index}`} className="tag">{company}</span>
+                ))}
+              </div>
+            </article>
+
+            <article className="resume-block">
+              <p className="summary-title">Writing and publications</p>
+              <div className="stack-list">
+                {profile.resume.pivots.writing.map((entry) => (
+                  <div key={entry.href} className="stack-item">
+                    <p className="micro-label">{entry.label}</p>
+                    <p className="micro-copy">
+                      <a href={entry.href} target="_blank" rel="noreferrer" className="entity-link">
+                        {entry.title}
+                      </a>
+                    </p>
+                    <p className="repo-meta">{entry.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="resume-block">
+              <p className="summary-title">Academic background</p>
+              <div className="stack-list">
+                {profile.resume.pivots.academicBackground.map((entry) => (
+                  <div key={entry} className="stack-item">
+                    <p className="micro-copy">{entry}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </section>
+      ) : null}
 
       <section className="panel">
         <p className="eyebrow">Connect With Ali</p>
@@ -395,6 +453,48 @@ function ResumePage() {
       </div>
 
       <section className="panel">
+        <p className="micro-label">{profile.resume.pivots.title}</p>
+        <div className="resume-grid">
+          <section className="resume-block">
+            <p className="summary-title">Past work</p>
+            <div className="tag-row">
+              {profile.resume.pivots.pastWork.map((company, index) => (
+                <span key={`${company}-${index}`} className="tag">{company}</span>
+              ))}
+            </div>
+          </section>
+
+          <section className="resume-block">
+            <p className="summary-title">Writing and publications</p>
+            <div className="stack-list">
+              {profile.resume.pivots.writing.map((entry) => (
+                <div key={entry.href} className="stack-item">
+                  <p className="micro-label">{entry.label}</p>
+                  <p className="micro-copy">
+                    <a href={entry.href} target="_blank" rel="noreferrer" className="entity-link">
+                      {entry.title}
+                    </a>
+                  </p>
+                  <p className="repo-meta">{entry.detail}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="resume-block">
+            <p className="summary-title">Academic background</p>
+            <div className="stack-list">
+              {profile.resume.pivots.academicBackground.map((entry) => (
+                <div key={entry} className="stack-item">
+                  <p className="micro-copy">{entry}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section className="panel">
         <p className="micro-label">Education</p>
         <div className="resume-grid">
           {profile.resume.education.map((entry) => (
@@ -511,6 +611,7 @@ export default function App() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isPivotMode, setIsPivotMode] = useState(false);
 
   useEffect(() => {
     function handlePopState() {
@@ -520,6 +621,11 @@ export default function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('body-pivot', isPivotMode);
+    return () => document.body.classList.remove('body-pivot');
+  }, [isPivotMode]);
 
   useEffect(() => {
     let active = true;
@@ -568,7 +674,12 @@ export default function App() {
 
   let page = <NotFoundPage />;
   if (route === '/') {
-    page = <HomePage />;
+    page = (
+      <HomePage
+        isPivotMode={isPivotMode}
+        onTogglePivotMode={() => setIsPivotMode((current) => !current)}
+      />
+    );
   } else if (route === '/projects') {
     page = <ProjectsPage repos={repos} error={error} loading={loading} />;
   } else if (route === '/resume') {
@@ -578,7 +689,7 @@ export default function App() {
   }
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell${isPivotMode ? ' site-shell-pivot' : ''}`}>
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
       </header>
