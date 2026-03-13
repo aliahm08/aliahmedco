@@ -73,7 +73,6 @@ textarea {
 .wordmark,
 .topnav a {
   text-decoration: none;
-  color: var(--charcoal);
 }
 
 .topnav a.is-active {
