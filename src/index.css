@@ -84,6 +84,10 @@ textarea {
 .wordmark {
   font-family: var(--font-serif);
   font-size: 1.2rem;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: wordmark-fade-in 700ms ease 120ms forwards;
 }
 
 .topnav {
@@ -434,6 +438,20 @@ textarea {
   }
 }
 
+@keyframes wordmark-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    letter-spacing: 0.06em;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0;
+  }
+}
+
 .chat-actions {
   display: flex;
   justify-content: space-between;
@@ -486,6 +504,12 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .wordmark {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
   .home-fade-list .stack-item {
     opacity: 1;
     transform: none;
