@@ -2,6 +2,7 @@ export const profile = {
   name: 'Ali Ahmed',
   githubUsername: 'aliahm08',
   githubUrl: 'https://github.com/aliahm08',
+  b2wUrl: 'https://b2w-ai-com.vercel.app/',
   headline: 'Founder and CEO at B2W-ai | Senior Data Analyst at WSP | Columbia M.Arch 2023',
   intro:
     'Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.',

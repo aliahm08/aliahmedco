@@ -256,7 +256,7 @@ function HomePage() {
         <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
-              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
+              <a href={profile.b2wUrl} target="_blank" rel="noreferrer" className="entity-link">
                 B2W-ai
               </a>
               , Founder & CEO, AI Consultancy specializing in SMBs.
