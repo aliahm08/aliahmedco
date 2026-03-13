@@ -178,6 +178,7 @@ function NativeSocialButton(props: {
 
 function HomePage() {
   const latestPublication = substackPosts[0];
+  const pivotPreview = profile.resume.pivotEntries.slice(4);
 
   return (
     <>
@@ -243,6 +244,21 @@ function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">{profile.resume.pivotsTitle}</p>
+        <div className="stack-list now-list home-fade-list">
+          {pivotPreview.map((item) => (
+            <div key={`${item.organization}-${item.title}`} className="stack-item">
+              <p className="micro-copy">
+                <strong>{item.organization}</strong>
+                {' '}· {item.title}
+              </p>
+            </div>
+          ))}
+        </div>
+        <SmartLink href="/resume" className="inline-link">View full resume</SmartLink>
       </section>
     </>
   );
