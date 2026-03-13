@@ -1,8 +1,6 @@
 import {FormEvent, ReactNode, useEffect, useState} from 'react';
 import {
-  buildHeuristicSummary,
   GitHubRepo,
-  GitHubUser,
   profile,
 } from './content/profile';
 import {substackPosts} from './content/substackPosts';
@@ -167,76 +165,60 @@ function SmartLink(props: {
   );
 }
 
-function HomePage(props: {
-  repoSummary: string;
-  githubUser: GitHubUser | null;
-  loading: boolean;
-  error: string;
+function NativeSocialButton(props: {
+  href: string;
+  label: string;
+  title: string;
+  detail: string;
 }) {
-  const {loading, error} = props;
+  const {href, label, title, detail} = props;
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className="native-social-button">
+      <span className="native-social-label">{label}</span>
+      <strong className="native-social-title">{title}</strong>
+      <span className="native-social-detail">{detail}</span>
+    </a>
+  );
+}
+
+function HomePage() {
   const latestPublication = substackPosts[0];
 
   return (
-    <>
-      <section className="hero">
-        <p className="eyebrow">Ali Ahmed</p>
-        <h1>{profile.headline}</h1>
-        <p className="lede">{profile.intro}</p>
-        <div className="meta-row">
-          <span>{profile.location}</span>
-          <a href={`https://github.com/${profile.githubUsername}`} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>
-          <a href={`mailto:${profile.email}`}>Email</a>
+    <section className="panel panel-first">
+      <p className="eyebrow">NOW</p>
+      <div className="stack-list now-list">
+        <div className="stack-item">
+          <p className="micro-copy">
+            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
+              B2W-ai
+            </a>
+            , building AI systems for architecture, construction, and engineering.
+          </p>
         </div>
-      </section>
-
-      <section className="panel">
-        <p className="eyebrow">Now</p>
-        <div className="stack-list now-list">
-          <div className="stack-item">
-            <p className="micro-copy">Current project: B2W-ai, building AI systems for architecture, construction, and engineering.</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">Work highlight: WSP - architected transit data systems and improved data freshness by 80%.</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              Latest publication: <a href={latestPublication.url} target="_blank" rel="noreferrer">{latestPublication.title}</a>
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">Email: <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
-          </div>
+        <div className="stack-item">
+          <p className="micro-copy">
+            <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
+              WSP
+            </a>
+            {' '}architected transit data systems and improved data freshness by 80%.
+          </p>
         </div>
-        {loading ? <p className="status-line">Refreshing current activity…</p> : null}
-        {error ? <p className="status-line">{error}</p> : null}
-      </section>
-
-      <section className="panel">
-        <p className="eyebrow">Pages</p>
-        <div className="micro-grid page-grid">
-          <article className="page-card">
-            <p className="micro-label">Projects</p>
-            <p className="micro-copy">Recent shipped work, public code, and update dates.</p>
-            <SmartLink href="/projects" className="inline-link">Open page</SmartLink>
-          </article>
-          <article className="page-card">
-            <p className="micro-label">Resume</p>
-            <p className="micro-copy">Experience, education, and profile links.</p>
-            <SmartLink href="/resume" className="inline-link">Open page</SmartLink>
-          </article>
-          <article className="page-card">
-            <p className="micro-label">Writing</p>
-            <p className="micro-copy">Substack posts, case studies, and published notes.</p>
-            <SmartLink href="/writing" className="inline-link">Open page</SmartLink>
-          </article>
+        <div className="stack-item">
+          <p className="micro-copy">
+            <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
+              Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
+            </a>
+          </p>
         </div>
-      </section>
-    </>
+        <div className="stack-item">
+          <p className="micro-copy">
+            Email: <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -247,6 +229,15 @@ function ProjectsPage(props: {repos: GitHubRepo[]; error: string; loading: boole
   return (
     <section className="panel panel-first">
       <p className="eyebrow">Projects</p>
+      <div className="embed-card">
+        <p className="micro-label">Follow</p>
+        <NativeSocialButton
+          href={profile.githubUrl}
+          label="GitHub"
+          title={`Follow @${profile.githubUsername}`}
+          detail="Open public code, activity, and repositories."
+        />
+      </div>
       {loading ? <p className="statement">Loading project activity…</p> : null}
       <div className="repo-list">
         {activeRepos.map((repo) => (
@@ -291,13 +282,56 @@ function ResumePage() {
   return (
     <section className="panel panel-first">
       <p className="eyebrow">Resume</p>
-      <div className="section-heading">
-        <h2>{profile.resume.summary}</h2>
+      <div className="resume-hero">
+        <div className="section-heading">
+          <h2>{profile.resume.summary}</h2>
+        </div>
+        <p className="statement">{profile.summary}</p>
+        <div className="resume-hero-actions">
+          <NativeSocialButton
+            href={profile.linkedinUrl}
+            label="LinkedIn"
+            title="Connect on LinkedIn"
+            detail="Professional history, recommendations, and network."
+          />
+          <a href={`mailto:${profile.email}`} className="secondary-cta">
+            Email {profile.email}
+          </a>
+        </div>
       </div>
 
-      <div className="resume-grid">
+      <div className="resume-grid resume-grid-intro">
         <section className="resume-block">
-          <p className="micro-label">Contact</p>
+          <p className="micro-label">Profile</p>
+          <div className="stack-list">
+            <div className="stack-item">
+              <strong>Location</strong>
+              <p className="micro-copy">{profile.location}</p>
+            </div>
+            {profile.resume.contactMethods.map((method) => (
+              <div key={method.label} className="stack-item">
+                <strong>{method.label}</strong>
+                <p className="micro-copy">
+                  <a href={method.href} target="_blank" rel="noreferrer" className="entity-link">
+                    {method.value}
+                  </a>
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="resume-block">
+          <p className="micro-label">Capabilities</p>
+          <div className="tag-row">
+            {profile.resume.skills.map((skill) => (
+              <span key={skill} className="tag">{skill}</span>
+            ))}
+          </div>
+        </section>
+
+        <section className="resume-block resume-block-form">
+          <p className="micro-label">Start a Conversation</p>
           <form className="contact-form" onSubmit={handleContactSubmit}>
             <label className="field">
               <span className="micro-label">Name</span>
@@ -331,24 +365,6 @@ function ResumePage() {
               <button className="send-button" type="submit">Send email</button>
             </div>
           </form>
-        </section>
-
-        <section className="resume-block">
-          <p className="micro-label">Profile</p>
-          <div className="stack-list">
-            {profile.resume.contactMethods.map((method) => (
-              <div key={method.label} className="stack-item">
-                <strong>{method.label}</strong>
-                <p className="micro-copy">
-                  <a href={method.href} target="_blank" rel="noreferrer">{method.value}</a>
-                </p>
-              </div>
-            ))}
-            <div className="stack-item">
-              <strong>Location</strong>
-              <p className="micro-copy">{profile.location}</p>
-            </div>
-          </div>
         </section>
       </div>
 
@@ -392,15 +408,6 @@ function ResumePage() {
 
       <div className="resume-grid">
         <section className="resume-block">
-          <p className="micro-label">Skills</p>
-          <div className="tag-row">
-            {profile.resume.skills.map((skill) => (
-              <span key={skill} className="tag">{skill}</span>
-            ))}
-          </div>
-        </section>
-
-        <section className="resume-block">
           <p className="micro-label">Certifications</p>
           <div className="tag-row">
             {profile.resume.certifications.map((item) => (
@@ -428,6 +435,15 @@ function WritingPage() {
       <p className="eyebrow">Writing</p>
       <div className="section-heading">
         <h2>Published writing and case-study notes from Substack.</h2>
+      </div>
+      <div className="embed-card">
+        <p className="micro-label">Follow</p>
+        <NativeSocialButton
+          href={profile.substackUrl}
+          label="Substack"
+          title="Follow on Substack"
+          detail="Essays, case studies, and field notes."
+        />
       </div>
       <div className="repo-topline">
         <p className="micro-copy">Pulled from the public feed for `@aliahmed312`.</p>
@@ -466,7 +482,6 @@ function NotFoundPage() {
 
 export default function App() {
   const [route, setRoute] = useState<Route>(normalizeRoute(window.location.pathname));
-  const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -488,25 +503,20 @@ export default function App() {
         setLoading(true);
         setError('');
 
-        const [userResponse, reposResponse] = await Promise.all([
-          fetch(`https://api.github.com/users/${profile.githubUsername}`),
-          fetch(`https://api.github.com/users/${profile.githubUsername}/repos?sort=updated&per_page=6`),
-        ]);
+        const reposResponse = await fetch(
+          `https://api.github.com/users/${profile.githubUsername}/repos?sort=updated&per_page=6`,
+        );
 
-        if (!userResponse.ok || !reposResponse.ok) {
+        if (!reposResponse.ok) {
           throw new Error('GitHub request failed.');
         }
 
-        const [userData, repoData] = await Promise.all([
-          userResponse.json() as Promise<GitHubUser>,
-          reposResponse.json() as Promise<GitHubRepo[]>,
-        ]);
+        const repoData = (await reposResponse.json()) as GitHubRepo[];
 
         if (!active) {
           return;
         }
 
-        setGithubUser(userData);
         setRepos(repoData);
       } catch (loadError) {
         console.error(loadError);
@@ -528,12 +538,11 @@ export default function App() {
     };
   }, []);
 
-  const repoSummary = buildHeuristicSummary(repos);
   useSeo(route);
 
   let page = <NotFoundPage />;
   if (route === '/') {
-    page = <HomePage repoSummary={repoSummary} githubUser={githubUser} loading={loading} error={error} />;
+    page = <HomePage />;
   } else if (route === '/projects') {
     page = <ProjectsPage repos={repos} error={error} loading={loading} />;
   } else if (route === '/resume') {

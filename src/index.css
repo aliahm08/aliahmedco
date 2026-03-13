@@ -28,6 +28,10 @@ a {
   text-underline-offset: 0.18em;
 }
 
+a:hover {
+  color: var(--charcoal);
+}
+
 button,
 textarea {
   font: inherit;
@@ -161,6 +165,55 @@ textarea {
   border-top: 1px solid var(--line);
 }
 
+.embed-card {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.native-social-button,
+.secondary-cta {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.native-social-button:hover,
+.secondary-cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(38, 35, 31, 0.38);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.native-social-label {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.native-social-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.native-social-detail {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .panel-first {
   padding-top: 0;
   border-top: 0;
@@ -205,6 +258,11 @@ textarea {
   background: rgba(255, 255, 255, 0.22);
 }
 
+.entity-link {
+  color: var(--charcoal);
+  text-decoration-thickness: 1px;
+}
+
 .repo-topline {
   display: flex;
   justify-content: space-between;
@@ -221,6 +279,31 @@ textarea {
   gap: 4px;
   text-align: right;
   color: var(--muted);
+}
+
+.resume-hero {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.32));
+}
+
+.resume-hero-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.resume-grid-intro {
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: start;
+}
+
+.resume-block-form {
+  grid-column: 1 / -1;
 }
 
 .send-button {
@@ -336,12 +419,17 @@ textarea {
   .topbar,
   .repo-topline,
   .micro-grid,
-  .resume-grid {
+  .resume-grid,
+  .resume-hero-actions {
     display: grid;
     grid-template-columns: 1fr;
   }
 
   .resume-meta {
     text-align: left;
+  }
+
+  .resume-hero {
+    padding: 20px;
   }
 }

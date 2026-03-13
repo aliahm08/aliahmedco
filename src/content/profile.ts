@@ -1,6 +1,7 @@
 export const profile = {
   name: 'Ali Ahmed',
   githubUsername: 'aliahm08',
+  githubUrl: 'https://github.com/aliahm08',
   headline: 'Founder at B2W-ai | Engineer at WSP | Columbia M.Arch 2023',
   intro:
     'Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.',
@@ -9,7 +10,9 @@ export const profile = {
   location: 'Washington, District of Columbia',
   email: 'aliahm1208@gmail.com',
   linkedinUrl: 'https://www.linkedin.com/in/aliahmed-co',
+  linkedInVanity: 'aliahmed-co',
   substackUrl: 'https://aliahmed312.substack.com',
+  wspUrl: 'https://www.wsp.com/en-us',
   linkedInFallback:
     'Resume details and profile links are available on the resume page.',
   siteUrl: '',
