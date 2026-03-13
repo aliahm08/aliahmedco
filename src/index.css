@@ -8,7 +8,6 @@
   --charcoal: #26231f;
   --muted: #666057;
   --line: rgba(38, 35, 31, 0.18);
-  --link-wash: rgba(211, 182, 128, 0.34);
 }
 
 html {
@@ -35,23 +34,17 @@ a:hover {
 }
 
 a:not(.wordmark):not(.native-social-button):not(.secondary-cta) {
-  position: relative;
   transition:
     color 160ms ease,
     text-decoration-color 160ms ease,
-    background-size 180ms ease,
-    background-position 180ms ease;
+    font-weight 160ms ease;
   text-decoration-color: rgba(38, 35, 31, 0.38);
-  background-image: linear-gradient(var(--link-wash), var(--link-wash));
-  background-repeat: no-repeat;
-  background-size: 0 55%;
-  background-position: 0 92%;
 }
 
 a:not(.wordmark):not(.native-social-button):not(.secondary-cta):hover {
   text-decoration-thickness: 2px;
   text-decoration-color: rgba(38, 35, 31, 0.82);
-  background-size: 100% 55%;
+  font-weight: 500;
 }
 
 button,
@@ -161,12 +154,6 @@ textarea {
 .stack-list,
 .resume-grid {
   display: grid;
-  gap: 16px;
-}
-
-.home-links-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -449,8 +436,7 @@ textarea {
   .repo-topline,
   .micro-grid,
   .resume-grid,
-  .resume-hero-actions,
-  .home-links-grid {
+  .resume-hero-actions {
     display: grid;
     grid-template-columns: 1fr;
   }

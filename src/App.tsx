@@ -182,7 +182,7 @@ function HomePage() {
   return (
     <>
       <section className="panel panel-first">
-        <p className="eyebrow">NOW</p>
+        <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
         <div className="stack-list now-list">
           <div className="stack-item">
             <p className="micro-copy">
@@ -216,26 +216,32 @@ function HomePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Links</p>
-        <div className="home-links-grid">
-          <NativeSocialButton
-            href={profile.githubUrl}
-            label="GitHub"
-            title={`@${profile.githubUsername}`}
-            detail="Code, repositories, and current activity."
-          />
-          <NativeSocialButton
-            href={profile.linkedinUrl}
-            label="LinkedIn"
-            title="Ali Ahmed"
-            detail="Professional history, network, and updates."
-          />
-          <NativeSocialButton
-            href={profile.substackUrl}
-            label="Substack"
-            title="@aliahmed312"
-            detail="Essays, case studies, and field notes."
-          />
+        <p className="eyebrow">Connect With Ali</p>
+        <div className="stack-list now-list">
+          <div className="stack-item">
+            <p className="micro-copy">
+              GitHub:{' '}
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
+                @{profile.githubUsername}
+              </a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              LinkedIn:{' '}
+              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" className="entity-link">
+                Ali Ahmed
+              </a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              Substack:{' '}
+              <a href={profile.substackUrl} target="_blank" rel="noreferrer" className="entity-link">
+                @aliahmed312
+              </a>
+            </p>
+          </div>
         </div>
       </section>
     </>
