@@ -212,11 +212,11 @@ export const profile = {
       },
       {
         type: 'Article',
-        title: 'Islam + Design',
+        title: 'Strategizing the Future of Computer Aided Design by (re)moving the Computer',
         organization: 'Medium',
-        period: '2017',
-        href: 'https://medium.com/@aliahmed/islam-design-f2135fc345d7',
-        detail: 'Medium essay by Ali Ahmed.',
+        period: '2024',
+        href: 'https://medium.com/@aliahmed/strategizing-the-future-of-computer-aided-design-by-re-moving-the-computer-56f5ee878b32',
+        detail: 'Latest public Medium article on the @aliahmed profile.',
       },
       {
         type: 'Past Work',

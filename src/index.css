@@ -482,6 +482,18 @@ textarea {
   color: var(--charcoal);
 }
 
+.disclosure-panel {
+  margin-top: 18px;
+}
+
+.scroll-reveal-cue {
+  padding-top: 14px;
+}
+
+.scroll-reveal-cue p {
+  color: var(--muted);
+}
+
 .footer-panel {
   margin-bottom: 12px;
 }

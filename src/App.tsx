@@ -176,9 +176,78 @@ function NativeSocialButton(props: {
   );
 }
 
+function getPastWorkBatchSize() {
+  if (typeof window === 'undefined') {
+    return 4;
+  }
+
+  if (window.innerWidth < 640) {
+    return 2;
+  }
+
+  if (window.innerWidth < 960) {
+    return 3;
+  }
+
+  return 4;
+}
+
 function HomePage() {
   const latestPublication = substackPosts[0];
   const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
+  const [visiblePastWorkCount, setVisiblePastWorkCount] = useState(0);
+  const pivotPrelude = profile.resume.pivotEntries.filter((item) => item.type !== 'Past Work');
+  const pivotPastWork = profile.resume.pivotEntries.filter((item) => item.type === 'Past Work');
+
+  useEffect(() => {
+    if (!isPastWorkExpanded) {
+      setVisiblePastWorkCount(0);
+      return;
+    }
+
+    setVisiblePastWorkCount(getPastWorkBatchSize());
+  }, [isPastWorkExpanded]);
+
+  useEffect(() => {
+    if (!isPastWorkExpanded) {
+      return;
+    }
+
+    function handleResize() {
+      setVisiblePastWorkCount((current) => Math.max(current, getPastWorkBatchSize()));
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isPastWorkExpanded]);
+
+  useEffect(() => {
+    if (!isPastWorkExpanded || visiblePastWorkCount >= pivotPastWork.length) {
+      return;
+    }
+
+    const sentinel = document.getElementById('past-work-sentinel');
+    if (!sentinel) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        setVisiblePastWorkCount((current) =>
+          Math.min(current + getPastWorkBatchSize(), pivotPastWork.length),
+        );
+      },
+      {rootMargin: '0px 0px 18% 0px'},
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [isPastWorkExpanded, pivotPastWork.length, visiblePastWorkCount]);
 
   return (
     <>
@@ -247,42 +316,6 @@ function HomePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">{profile.resume.pivotsTitle}</p>
-        <div className="stack-list now-list">
-          {profile.resume.pivotEntries.map((item, index) => {
-            const isPastWork = item.type === 'Past Work';
-            if (isPastWork && !isPastWorkExpanded) {
-              return null;
-            }
-
-            const rowClassName = [
-              'stack-item',
-              'home-fade-item',
-              isPastWork ? 'past-work-item' : '',
-            ].filter(Boolean).join(' ');
-
-            return (
-              <div
-                key={`${item.type}-${item.organization}-${item.title}`}
-                className={rowClassName}
-                style={{animationDelay: `${80 + index * 70}ms`}}
-              >
-                <p className="micro-copy">
-                  <strong>{item.organization}</strong>
-                  {' '}·{' '}
-                  {'href' in item && item.href ? (
-                    <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
-                      {item.title}
-                    </a>
-                  ) : (
-                    item.title
-                  )}
-                  {' '}· {item.period}
-                </p>
-              </div>
-            );
-          })}
-        </div>
         <button
           type="button"
           className="inline-link-button"
@@ -291,7 +324,50 @@ function HomePage() {
         >
           {isPastWorkExpanded ? 'Hide Past Work' : 'Expand Past Work'}
         </button>
-        <SmartLink href="/resume" className="inline-link">View full resume</SmartLink>
+        {isPastWorkExpanded ? (
+          <div className="disclosure-panel">
+            <div className="stack-list now-list">
+              {pivotPrelude.map((item, index) => (
+                <div
+                  key={`${item.type}-${item.organization}-${item.title}`}
+                  className="stack-item home-fade-item"
+                  style={{animationDelay: `${80 + index * 70}ms`}}
+                >
+                  <p className="micro-copy">
+                    <strong>{item.organization}</strong>
+                    {' '}·{' '}
+                    {'href' in item && item.href ? (
+                      <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                        {item.title}
+                      </a>
+                    ) : (
+                      item.title
+                    )}
+                    {' '}· {item.period}
+                  </p>
+                </div>
+              ))}
+              {pivotPastWork.slice(0, visiblePastWorkCount).map((item, index) => (
+                <div
+                  key={`${item.type}-${item.organization}-${item.title}`}
+                  className="stack-item home-fade-item past-work-item"
+                  style={{animationDelay: `${180 + index * 70}ms`}}
+                >
+                  <p className="micro-copy">
+                    <strong>{item.organization}</strong>
+                    {' '}· {item.title} · {item.period}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {visiblePastWorkCount < pivotPastWork.length ? (
+              <div id="past-work-sentinel" className="scroll-reveal-cue">
+                <p className="micro-copy">Scroll to reveal more.</p>
+              </div>
+            ) : null}
+            <SmartLink href="/resume" className="inline-link">View full resume</SmartLink>
+          </div>
+        ) : null}
       </section>
     </>
   );
@@ -344,7 +420,6 @@ function ResumePage() {
   return (
     <>
       <section className="panel panel-first">
-        <p className="eyebrow">Resume</p>
         <div className="section-heading">
           <h2>{profile.resume.summary}</h2>
         </div>
@@ -368,26 +443,20 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Focus Areas</p>
-        <p className="statement">{profile.resume.focusAreas.join(', ')}.</p>
-      </section>
-
-      <section className="panel">
-        <p className="eyebrow">Skills</p>
         <div className="stack-list">
-          {profile.resume.technicalSkills.map((group) => (
-            <div key={group.label} className="stack-item">
-              <p className="micro-copy">
-                <strong>{group.label}</strong>
-                {' '}· {group.items.join(', ')}
-              </p>
-            </div>
-          ))}
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              <strong>Tools</strong>
+              {' '}· {profile.resume.technicalSkills.map((group) => `${group.label}: ${group.items.join(', ')}`).join(' · ')}
+            </p>
+          </div>
         </div>
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Experience</p>
         <div className="stack-list">
           {profile.resume.experience.map((item) => (
             <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
@@ -414,7 +483,6 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">{profile.resume.pivotsTitle}</p>
         <div className="stack-list">
           {profile.resume.pivotEntries.map((item) => (
             <div key={`${item.type}-${item.organization}-${item.title}`} className="stack-item">
@@ -438,7 +506,6 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Education</p>
         <div className="stack-list">
           {profile.resume.education.map((entry) => (
             <div key={entry} className="stack-item">
@@ -449,7 +516,6 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Certifications and Honors</p>
         <div className="stack-list">
           <div className="stack-item">
             <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}</p>
