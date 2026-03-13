@@ -2,7 +2,7 @@ export const profile = {
   name: 'Ali Ahmed',
   githubUsername: 'aliahm08',
   githubUrl: 'https://github.com/aliahm08',
-  headline: 'Founder at B2W-ai | Engineer at WSP | Columbia M.Arch 2023',
+  headline: 'Founder and CEO at B2W-ai | Senior Data Analyst at WSP | Columbia M.Arch 2023',
   intro:
     'Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.',
   summary:
