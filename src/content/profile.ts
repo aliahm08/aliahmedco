@@ -44,6 +44,40 @@ export const profile = {
     summary:
       'Building the future of AI systems for architecture, construction, and engineering by developing agents that work off price-build models.',
     pivotsTitle: 'my many pivots',
+    profileSummary:
+      '8 years of experience across infrastructure, product, design, and AI systems, with work spanning federal programs, venture-backed startups, and enterprise software.',
+    focusAreas: [
+      'Sales',
+      'Revenue engine',
+      'Product management',
+      'M&A',
+      'Financial modeling',
+      'Business development',
+      'Partnerships',
+      'Negotiations',
+      'AI SaaS',
+      'LLM optimization',
+      'Marketing',
+      'Design',
+    ],
+    technicalSkills: [
+      {
+        label: 'Programming',
+        items: ['JavaScript', 'TypeScript', 'Node.js', 'React'],
+      },
+      {
+        label: 'Data analytics',
+        items: ['Python', 'NumPy', 'Pandas', 'TensorFlow', 'Tableau'],
+      },
+      {
+        label: 'AI tools',
+        items: ['Cursor', 'Codex', 'Antigravity', 'MCP', 'CLIs'],
+      },
+      {
+        label: 'Infrastructure',
+        items: ['AWS', 'Vercel', 'Next.js', 'Supabase'],
+      },
+    ],
     contactMethods: [
       {
         label: 'Email',
@@ -58,14 +92,33 @@ export const profile = {
     ],
     experience: [
       {
-        title: 'Senior Data Analyst',
+        title: 'Senior Analyst',
         company: 'WSP',
-        period: 'August 2022 - Present',
-        location: 'Washington DC-Baltimore Area',
+        period: 'September 2024 - December 2025',
+        location: 'Washington, D.C.',
         bullets: [
-          'Architected high-throughput data infrastructure and real-time systems to modernize transit intelligence.',
-          'Led the technical roadmap for a Go and Kinesis ingestion pipeline processing 50k+ events per second.',
-          'Improved data freshness by 80% through an event-driven architecture and tighter cross-functional delivery.',
+          'Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.',
+          'Developed a machine learning workflow in Python that identified potential recalls with 79% success and supported $600k in renewals.',
+        ],
+      },
+      {
+        title: 'Analyst',
+        company: 'WSP',
+        period: 'September 2023 - September 2024',
+        location: 'Washington, D.C.',
+        bullets: [
+          'Tracked 14 resources through agile delivery to support safety risk training and improve project delivery speed by 80%.',
+          'Researched system data models and taxonomy cleanup patterns to support a SharePoint AI agent workflow.',
+        ],
+      },
+      {
+        title: 'Junior Analyst',
+        company: 'WSP',
+        period: 'September 2022 - September 2023',
+        location: 'Washington, D.C.',
+        bullets: [
+          'Automated 12 reporting workflows using clustering and operational checkpoint analysis.',
+          'Expanded report completeness by 25% to support more proactive operational measures.',
         ],
       },
       {
@@ -79,11 +132,15 @@ export const profile = {
         ],
       },
       {
-        title: 'Head of Design',
+        title: 'Hardware Engineer',
         company: 'huupe',
         period: '2019 - 2022',
         location: 'New York, New York, United States',
-        bullets: [],
+        bullets: [
+          'Designed computer vision workflows to assess vision black zones and improve 3D scope by 15% for LiDAR integration.',
+          'Rendered 3D elements in a real-time engine to interpret athlete movement for AI-powered sporting goods.',
+          'Supported founders with technical briefs and design renderings that helped close $11M in seed funding.',
+        ],
       },
       {
         title: 'Architectural Designer',
@@ -187,7 +244,7 @@ export const profile = {
       },
       {
         type: 'Past Work',
-        title: 'Head of Design',
+        title: 'Hardware Engineer',
         organization: 'huupe',
         period: '2019 - 2022',
       },
@@ -225,8 +282,8 @@ export const profile = {
       "Dean's List",
     ],
     education: [
-      "Master's degree, Columbia University in the City of New York",
-      'Bachelor of Science - BS, Mechanical Engineering, The George Washington University',
+      "Master of Architecture (leave of absence), Columbia University",
+      'Bachelor of Science, Mechanical Engineering, The George Washington University',
       'High School Diploma, American School of Doha',
       'High School, American Community School of Abu Dhabi',
     ],

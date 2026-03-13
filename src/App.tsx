@@ -1,4 +1,4 @@
-import {FormEvent, ReactNode, useEffect, useState} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 import {
   GitHubRepo,
   profile,
@@ -178,7 +178,7 @@ function NativeSocialButton(props: {
 
 function HomePage() {
   const latestPublication = substackPosts[0];
-  const pivotPreview = profile.resume.pivotEntries.slice(4);
+  const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
 
   return (
     <>
@@ -248,16 +248,49 @@ function HomePage() {
 
       <section className="panel">
         <p className="eyebrow">{profile.resume.pivotsTitle}</p>
-        <div className="stack-list now-list home-fade-list">
-          {pivotPreview.map((item) => (
-            <div key={`${item.organization}-${item.title}`} className="stack-item">
-              <p className="micro-copy">
-                <strong>{item.organization}</strong>
-                {' '}· {item.title}
-              </p>
-            </div>
-          ))}
+        <div className="stack-list now-list">
+          {profile.resume.pivotEntries.map((item, index) => {
+            const isPastWork = item.type === 'Past Work';
+            if (isPastWork && !isPastWorkExpanded) {
+              return null;
+            }
+
+            const rowClassName = [
+              'stack-item',
+              'home-fade-item',
+              isPastWork ? 'past-work-item' : '',
+            ].filter(Boolean).join(' ');
+
+            return (
+              <div
+                key={`${item.type}-${item.organization}-${item.title}`}
+                className={rowClassName}
+                style={{animationDelay: `${80 + index * 70}ms`}}
+              >
+                <p className="micro-copy">
+                  <strong>{item.organization}</strong>
+                  {' '}·{' '}
+                  {'href' in item && item.href ? (
+                    <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                      {item.title}
+                    </a>
+                  ) : (
+                    item.title
+                  )}
+                  {' '}· {item.period}
+                </p>
+              </div>
+            );
+          })}
         </div>
+        <button
+          type="button"
+          className="inline-link-button"
+          aria-expanded={isPastWorkExpanded}
+          onClick={() => setIsPastWorkExpanded((current) => !current)}
+        >
+          {isPastWorkExpanded ? 'Hide Past Work' : 'Expand Past Work'}
+        </button>
         <SmartLink href="/resume" className="inline-link">View full resume</SmartLink>
       </section>
     </>
@@ -308,159 +341,125 @@ function ProjectsPage(props: {repos: GitHubRepo[]; error: string; loading: boole
 }
 
 function ResumePage() {
-  const [name, setName] = useState('');
-  const [subject, setSubject] = useState('');
-  const [body, setBody] = useState('');
-
-  function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const emailSubject = encodeURIComponent(subject.trim() || `Hello ${profile.name}`);
-    const emailBody = encodeURIComponent(
-      [`Name: ${name.trim() || 'Not provided'}`, '', body.trim()].join('\n'),
-    );
-    window.location.href = `mailto:${profile.email}?subject=${emailSubject}&body=${emailBody}`;
-  }
-
   return (
-    <section className="panel panel-first">
-      <p className="eyebrow">Resume</p>
-      <div className="resume-hero">
+    <>
+      <section className="panel panel-first">
+        <p className="eyebrow">Resume</p>
         <div className="section-heading">
           <h2>{profile.resume.summary}</h2>
         </div>
-        <p className="statement">{profile.summary}</p>
-        <div className="resume-hero-actions">
-          <NativeSocialButton
-            href={profile.linkedinUrl}
-            label="LinkedIn"
-            title="Connect on LinkedIn"
-            detail="Professional history, recommendations, and network."
-          />
-          <a href={`mailto:${profile.email}`} className="secondary-cta">
-            Email {profile.email}
-          </a>
-        </div>
-      </div>
-
-      <div className="resume-grid resume-grid-intro">
-        <section className="resume-block">
-          <p className="micro-label">Profile</p>
-          <div className="stack-list">
-            <div className="stack-item">
-              <strong>Location</strong>
-              <p className="micro-copy">{profile.location}</p>
-            </div>
-            {profile.resume.contactMethods.map((method) => (
-              <div key={method.label} className="stack-item">
+        <p className="statement">{profile.resume.profileSummary}</p>
+        <div className="stack-list now-list">
+          {profile.resume.contactMethods.map((method) => (
+            <div key={method.label} className="stack-item">
+              <p className="micro-copy">
                 <strong>{method.label}</strong>
-                <p className="micro-copy">
-                  <a href={method.href} target="_blank" rel="noreferrer" className="entity-link">
-                    {method.value}
-                  </a>
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="resume-block">
-          <p className="micro-label">Capabilities</p>
-          <div className="tag-row">
-            {profile.resume.skills.map((skill) => (
-              <span key={skill} className="tag">{skill}</span>
-            ))}
-          </div>
-        </section>
-
-        <section className="resume-block resume-block-form">
-          <p className="micro-label">Start a Conversation</p>
-          <form className="contact-form" onSubmit={handleContactSubmit}>
-            <label className="field">
-              <span className="micro-label">Name</span>
-              <input
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Your name"
-              />
-            </label>
-            <label className="field">
-              <span className="micro-label">Subject</span>
-              <input
-                type="text"
-                value={subject}
-                onChange={(event) => setSubject(event.target.value)}
-                placeholder="What is this about?"
-              />
-            </label>
-            <label className="field">
-              <span className="micro-label">Body</span>
-              <textarea
-                rows={6}
-                value={body}
-                onChange={(event) => setBody(event.target.value)}
-                placeholder="Write your message"
-              />
-            </label>
-            <div className="chat-actions">
-              <p className="chat-note">This opens your email client with the message prefilled.</p>
-              <button className="send-button" type="submit">Send email</button>
+                {' '}·{' '}
+                <a href={method.href} target="_blank" rel="noreferrer" className="entity-link">
+                  {method.value}
+                </a>
+              </p>
             </div>
-          </form>
-        </section>
-      </div>
+          ))}
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Location</strong> · {profile.location}</p>
+          </div>
+        </div>
+      </section>
 
       <section className="panel">
-        <p className="micro-label">{profile.resume.pivotsTitle}</p>
+        <p className="eyebrow">Focus Areas</p>
+        <p className="statement">{profile.resume.focusAreas.join(', ')}.</p>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">Skills</p>
         <div className="stack-list">
-          {profile.resume.pivotEntries.map((item) => (
-            <article key={`${item.type}-${item.organization}-${item.title}`} className="resume-block">
+          {profile.resume.technicalSkills.map((group) => (
+            <div key={group.label} className="stack-item">
+              <p className="micro-copy">
+                <strong>{group.label}</strong>
+                {' '}· {group.items.join(', ')}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">Experience</p>
+        <div className="stack-list">
+          {profile.resume.experience.map((item) => (
+            <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
               <div className="repo-topline">
                 <div>
-                  <p className="summary-title">
-                    {'href' in item && item.href ? (
-                      <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
-                        {item.title}
-                      </a>
-                    ) : (
-                      item.title
-                    )}
-                  </p>
-                  <p className="summary-detail">{item.organization}</p>
+                  <p className="summary-title">{item.company}</p>
+                  <p className="summary-detail">{item.title}</p>
                 </div>
                 <div className="resume-meta">
-                  <span>{item.type}</span>
                   <span>{item.period}</span>
+                  {'location' in item && item.location ? <span>{item.location}</span> : null}
                 </div>
               </div>
-              {'detail' in item && item.detail ? (
-                <p className="micro-copy">{item.detail}</p>
+              {item.bullets.length ? (
+                <ul className="bullet-list">
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet} className="micro-copy">{bullet}</li>
+                  ))}
+                </ul>
               ) : null}
             </article>
           ))}
         </div>
       </section>
 
-      <div className="resume-grid">
-        <section className="resume-block">
-          <p className="micro-label">Certifications</p>
-          <div className="tag-row">
-            {profile.resume.certifications.map((item) => (
-              <span key={item} className="tag">{item}</span>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      <section className="resume-block">
-        <p className="micro-label">Honors</p>
-        <div className="tag-row">
-          {profile.resume.honors.map((honor) => (
-            <span key={honor} className="tag">{honor}</span>
+      <section className="panel">
+        <p className="eyebrow">{profile.resume.pivotsTitle}</p>
+        <div className="stack-list">
+          {profile.resume.pivotEntries.map((item) => (
+            <div key={`${item.type}-${item.organization}-${item.title}`} className="stack-item">
+              <p className="micro-copy">
+                <strong>{item.type}</strong>
+                {' '}· <strong>{item.organization}</strong>
+                {' '}·{' '}
+                {'href' in item && item.href ? (
+                  <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                    {item.title}
+                  </a>
+                ) : (
+                  item.title
+                )}
+                {' '}· {item.period}
+              </p>
+              {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
+            </div>
           ))}
         </div>
       </section>
-    </section>
+
+      <section className="panel">
+        <p className="eyebrow">Education</p>
+        <div className="stack-list">
+          {profile.resume.education.map((entry) => (
+            <div key={entry} className="stack-item">
+              <p className="micro-copy">{entry}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">Certifications and Honors</p>
+        <div className="stack-list">
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Honors</strong> · {profile.resume.honors.join(', ')}</p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 

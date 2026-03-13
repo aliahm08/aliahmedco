@@ -401,6 +401,16 @@ textarea {
   animation: home-fade-in 560ms ease forwards;
 }
 
+.home-fade-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: home-fade-in 560ms ease forwards;
+}
+
+.past-work-item {
+  overflow: hidden;
+}
+
 .home-fade-list .stack-item:nth-child(1) {
   animation-delay: 80ms;
 }
@@ -452,6 +462,24 @@ textarea {
 .chat-note {
   margin: 0;
   color: var(--muted);
+}
+
+.inline-link-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin-top: 14px;
+  color: var(--link);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+.inline-link-button:hover {
+  color: var(--charcoal);
 }
 
 .footer-panel {
