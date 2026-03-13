@@ -7,12 +7,6 @@ import {substackPosts} from './content/substackPosts';
 
 type Route = '/' | '/projects' | '/resume' | '/writing';
 
-const navLinks: Array<{href: Route; label: string}> = [
-  {href: '/projects', label: 'Projects'},
-  {href: '/resume', label: 'Resume'},
-  {href: '/writing', label: 'Writing'},
-];
-
 function normalizeRoute(pathname: string): Route {
   const normalizedPathname =
     pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
@@ -186,39 +180,65 @@ function HomePage() {
   const latestPublication = substackPosts[0];
 
   return (
-    <section className="panel panel-first">
-      <p className="eyebrow">NOW</p>
-      <div className="stack-list now-list">
-        <div className="stack-item">
-          <p className="micro-copy">
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
-              B2W-ai
-            </a>
-            , Founder and CEO, building AI systems for architecture, construction, and engineering.
-          </p>
+    <>
+      <section className="panel panel-first">
+        <p className="eyebrow">NOW</p>
+        <div className="stack-list now-list">
+          <div className="stack-item">
+            <p className="micro-copy">
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
+                B2W-ai
+              </a>
+              , Founder and CEO, building AI systems for architecture, construction, and engineering.
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
+                WSP
+              </a>
+              {' '}Senior Data Analyst, architected transit data systems and improved data freshness by 80%.
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
+                Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
+              </a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              Email: <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            </p>
+          </div>
         </div>
-        <div className="stack-item">
-          <p className="micro-copy">
-            <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
-              WSP
-            </a>
-            {' '}Senior Data Analyst, architected transit data systems and improved data freshness by 80%.
-          </p>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">Links</p>
+        <div className="home-links-grid">
+          <NativeSocialButton
+            href={profile.githubUrl}
+            label="GitHub"
+            title={`@${profile.githubUsername}`}
+            detail="Code, repositories, and current activity."
+          />
+          <NativeSocialButton
+            href={profile.linkedinUrl}
+            label="LinkedIn"
+            title="Ali Ahmed"
+            detail="Professional history, network, and updates."
+          />
+          <NativeSocialButton
+            href={profile.substackUrl}
+            label="Substack"
+            title="@aliahmed312"
+            detail="Essays, case studies, and field notes."
+          />
         </div>
-        <div className="stack-item">
-          <p className="micro-copy">
-            <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
-              Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
-            </a>
-          </p>
-        </div>
-        <div className="stack-item">
-          <p className="micro-copy">
-            Email: <a href={`mailto:${profile.email}`}>{profile.email}</a>
-          </p>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -556,14 +576,9 @@ export default function App() {
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
         <nav className="topnav" aria-label="Primary">
-          {navLinks.map((link) => (
-            <span key={link.href}>
-              <SmartLink href={link.href} className={route === link.href ? 'is-active' : undefined}>
-                {link.label}
-              </SmartLink>
-            </span>
-          ))}
-          <a href={`mailto:${profile.email}`}>Contact</a>
+          <SmartLink href="/" className={route === '/' ? 'is-active' : undefined}>
+            Home
+          </SmartLink>
         </nav>
       </header>
 
