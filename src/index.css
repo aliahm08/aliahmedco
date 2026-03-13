@@ -183,9 +183,26 @@ textarea {
   margin-top: 12px;
 }
 
+.summary-title,
+.summary-detail {
+  margin: 0;
+}
+
+.summary-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.summary-detail {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
 .repo-row {
-  padding: 0 0 16px;
-  border-bottom: 1px solid var(--line);
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .repo-topline {
@@ -197,6 +214,13 @@ textarea {
 
 .repo-topline a {
   text-decoration-thickness: 1px;
+}
+
+.resume-meta {
+  display: grid;
+  gap: 4px;
+  text-align: right;
+  color: var(--muted);
 }
 
 .send-button {
@@ -217,17 +241,20 @@ textarea {
 }
 
 .resume-block,
-.stack-item,
 .contact-form,
 .field input,
 .field textarea {
-  border-top: 1px solid var(--line);
+  border: 1px solid var(--line);
 }
 
 .resume-block,
-.stack-item,
 .contact-form {
-  padding-top: 16px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.stack-item + .stack-item {
+  padding-top: 12px;
 }
 
 .stack-item strong {
@@ -262,14 +289,27 @@ textarea {
 .field input,
 .field textarea {
   width: 100%;
-  padding: 12px 0 0;
+  padding: 12px;
   color: var(--charcoal);
-  background: transparent;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
+  background: rgba(255, 255, 255, 0.78);
   outline: 0;
   resize: vertical;
+}
+
+.now-list {
+  gap: 0;
+}
+
+.chat-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.chat-note {
+  margin: 0;
+  color: var(--muted);
 }
 
 .footer-panel {
@@ -299,5 +339,9 @@ textarea {
   .resume-grid {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .resume-meta {
+    text-align: left;
   }
 }

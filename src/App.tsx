@@ -1,24 +1,38 @@
-import {ReactNode, useEffect, useState} from 'react';
-import InterviewAli from './components/InterviewAli';
+import {FormEvent, ReactNode, useEffect, useState} from 'react';
 import {
   buildHeuristicSummary,
   GitHubRepo,
   GitHubUser,
   profile,
 } from './content/profile';
+import {substackPosts} from './content/substackPosts';
 
-type Route = '/' | '/now' | '/repos' | '/linkedin' | '/interview';
+type Route = '/' | '/projects' | '/resume' | '/writing';
 
 const navLinks: Array<{href: Route; label: string}> = [
-  {href: '/now', label: 'Now'},
-  {href: '/repos', label: 'Repos'},
-  {href: '/linkedin', label: 'LinkedIn'},
-  {href: '/interview', label: 'Interview Ali'},
+  {href: '/projects', label: 'Projects'},
+  {href: '/resume', label: 'Resume'},
+  {href: '/writing', label: 'Writing'},
 ];
 
 function normalizeRoute(pathname: string): Route {
-  if (pathname === '/now' || pathname === '/repos' || pathname === '/linkedin' || pathname === '/interview') {
-    return pathname;
+  const normalizedPathname =
+    pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
+
+  if (normalizedPathname === '/now') {
+    return '/';
+  }
+
+  if (normalizedPathname === '/repos' || normalizedPathname === '/projects') {
+    return '/projects';
+  }
+
+  if (normalizedPathname === '/linkedin' || normalizedPathname === '/resume') {
+    return '/resume';
+  }
+
+  if (normalizedPathname === '/writing') {
+    return normalizedPathname;
   }
 
   return '/';
@@ -30,6 +44,14 @@ function formatUpdatedDate(value?: string) {
   }
 
   return new Date(value).toLocaleDateString();
+}
+
+function formatLongDate(value: string) {
+  return new Date(value).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 }
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
@@ -70,18 +92,16 @@ function useSeo(route: Route) {
   useEffect(() => {
     const pageTitleByRoute: Record<Route, string> = {
       '/': `${profile.name} | Software Engineer and Product Manager`,
-      '/now': `Now | ${profile.name}`,
-      '/repos': `Repositories | ${profile.name}`,
-      '/linkedin': `Profile Links | ${profile.name}`,
-      '/interview': `Interview Ali | ${profile.name}`,
+      '/projects': `Projects | ${profile.name}`,
+      '/resume': `Resume | ${profile.name}`,
+      '/writing': `Writing | ${profile.name}`,
     };
 
     const pageDescriptionByRoute: Record<Route, string> = {
       '/': `${profile.name} is a software engineer and product manager in ${profile.location} building AI products, full-stack applications, and operational tools.`,
-      '/now': `Current work and recent engineering focus for ${profile.name}, including GitHub activity and product priorities.`,
-      '/repos': `Recent repositories, technical focus areas, and public code from ${profile.name}.`,
-      '/linkedin': `Professional profile links and contact context for ${profile.name}.`,
-      '/interview': `Interview context and AI-assisted Q&A about ${profile.name}'s software engineering and product management work.`,
+      '/projects': `Recent projects, technical focus areas, and public code from ${profile.name}.`,
+      '/resume': `Resume, experience, education, and profile links for ${profile.name}.`,
+      '/writing': `Substack articles and published notes from ${profile.name}.`,
     };
 
     const title = pageTitleByRoute[route];
@@ -111,33 +131,6 @@ function useSeo(route: Route) {
       content: description,
     });
     upsertLink('link[rel="canonical"]', {rel: 'canonical', href: absoluteUrl});
-
-    let script = document.getElementById('person-jsonld') as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.id = 'person-jsonld';
-      script.type = 'application/ld+json';
-      document.head.appendChild(script);
-    }
-
-    script.textContent = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Person',
-      name: profile.name,
-      jobTitle: 'Software Engineer and Product Manager',
-      description: profile.intro,
-      email: `mailto:${profile.email}`,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: profile.location,
-      },
-      knowsAbout: profile.specialties,
-      sameAs: [
-        `https://github.com/${profile.githubUsername}`,
-        profile.linkedinUrl || null,
-      ].filter(Boolean),
-      url: absoluteUrl,
-    });
   }, [route]);
 }
 
@@ -145,9 +138,8 @@ function SmartLink(props: {
   href: Route;
   children: ReactNode;
   className?: string;
-  onNavigate?: () => void;
 }) {
-  const {href, children, className, onNavigate} = props;
+  const {href, children, className} = props;
 
   return (
     <a
@@ -168,7 +160,6 @@ function SmartLink(props: {
         event.preventDefault();
         window.history.pushState({}, '', href);
         window.dispatchEvent(new PopStateEvent('popstate'));
-        onNavigate?.();
       }}
     >
       {children}
@@ -176,8 +167,14 @@ function SmartLink(props: {
   );
 }
 
-function HomePage(props: {repoSummary: string; githubUser: GitHubUser | null; loading: boolean}) {
-  const {repoSummary, githubUser, loading} = props;
+function HomePage(props: {
+  repoSummary: string;
+  githubUser: GitHubUser | null;
+  loading: boolean;
+  error: string;
+}) {
+  const {loading, error} = props;
+  const latestPublication = substackPosts[0];
 
   return (
     <>
@@ -190,116 +187,67 @@ function HomePage(props: {repoSummary: string; githubUser: GitHubUser | null; lo
           <a href={`https://github.com/${profile.githubUsername}`} target="_blank" rel="noreferrer">
             GitHub
           </a>
-          {profile.linkedinUrl ? (
-            <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-          ) : null}
+          <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
+            LinkedIn
+          </a>
           <a href={`mailto:${profile.email}`}>Email</a>
         </div>
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Overview</p>
-        <div className="section-heading">
-          <h2>Software engineering, product thinking, and execution</h2>
+        <p className="eyebrow">Now</p>
+        <div className="stack-list now-list">
+          <div className="stack-item">
+            <p className="micro-copy">Current project: B2W-ai, building AI systems for architecture, construction, and engineering.</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">Work highlight: WSP - architected transit data systems and improved data freshness by 80%.</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              Latest publication: <a href={latestPublication.url} target="_blank" rel="noreferrer">{latestPublication.title}</a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">Email: <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+          </div>
         </div>
-        <p className="lede">{profile.summary}</p>
-        <p className="statement">
-          {loading ? 'Loading current GitHub activity…' : repoSummary}
-        </p>
-        <div className="micro-grid page-grid">
-          <article className="page-card">
-            <p className="micro-label">Now</p>
-            <p className="micro-copy">
-              Live GitHub summary and a quick status snapshot.
-            </p>
-            <SmartLink href="/now" className="inline-link">Open page</SmartLink>
-          </article>
-          <article className="page-card">
-            <p className="micro-label">Repos</p>
-            <p className="micro-copy">
-              Recent non-fork repositories and update dates.
-            </p>
-            <SmartLink href="/repos" className="inline-link">Open page</SmartLink>
-          </article>
-          <article className="page-card">
-            <p className="micro-label">Professional Profile</p>
-            <p className="micro-copy">
-              Contact details and profile context.
-            </p>
-            <SmartLink href="/linkedin" className="inline-link">Open page</SmartLink>
-          </article>
-          <article className="page-card">
-            <p className="micro-label">Interview Ali</p>
-            <p className="micro-copy">
-              AI Q&A grounded in the profile template and repo activity.
-            </p>
-            <SmartLink href="/interview" className="inline-link">Open page</SmartLink>
-          </article>
-        </div>
-        <p className="status-line">
-          {githubUser
-            ? `${githubUser.public_repos} public repos, ${githubUser.followers} followers on GitHub.`
-            : 'GitHub profile not loaded yet.'}
-        </p>
+        {loading ? <p className="status-line">Refreshing current activity…</p> : null}
+        {error ? <p className="status-line">{error}</p> : null}
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Focus Areas</p>
-        <div className="micro-grid">
-          {profile.specialties.map((specialty) => (
-            <div key={specialty}>
-              <p className="micro-copy">{specialty}</p>
-            </div>
-          ))}
+        <p className="eyebrow">Pages</p>
+        <div className="micro-grid page-grid">
+          <article className="page-card">
+            <p className="micro-label">Projects</p>
+            <p className="micro-copy">Recent shipped work, public code, and update dates.</p>
+            <SmartLink href="/projects" className="inline-link">Open page</SmartLink>
+          </article>
+          <article className="page-card">
+            <p className="micro-label">Resume</p>
+            <p className="micro-copy">Experience, education, and profile links.</p>
+            <SmartLink href="/resume" className="inline-link">Open page</SmartLink>
+          </article>
+          <article className="page-card">
+            <p className="micro-label">Writing</p>
+            <p className="micro-copy">Substack posts, case studies, and published notes.</p>
+            <SmartLink href="/writing" className="inline-link">Open page</SmartLink>
+          </article>
         </div>
       </section>
     </>
   );
 }
 
-function NowPage(props: {
-  loading: boolean;
-  repoSummary: string;
-  githubUser: GitHubUser | null;
-  error: string;
-}) {
-  const {loading, repoSummary, githubUser, error} = props;
-
-  return (
-    <section className="panel panel-first">
-      <p className="eyebrow">Now</p>
-      <p className="statement">{loading ? 'Loading current GitHub activity…' : repoSummary}</p>
-      <div className="micro-grid">
-        <div>
-          <p className="micro-label">GitHub</p>
-          <p className="micro-copy">
-            {githubUser
-              ? `${githubUser.public_repos} public repos, ${githubUser.followers} followers, updated ${formatUpdatedDate(githubUser.updated_at)}.`
-              : 'GitHub profile not loaded yet.'}
-          </p>
-        </div>
-        <div>
-          <p className="micro-label">Product Direction</p>
-          <p className="micro-copy">
-            Current focus is on turning technical work into clear product outcomes, fast prototypes, and operational leverage.
-          </p>
-        </div>
-      </div>
-      {error ? <p className="status-line">{error}</p> : null}
-    </section>
-  );
-}
-
-function ReposPage(props: {repos: GitHubRepo[]; error: string; loading: boolean}) {
+function ProjectsPage(props: {repos: GitHubRepo[]; error: string; loading: boolean}) {
   const {repos, error, loading} = props;
   const activeRepos = repos.filter((repo) => !repo.fork).slice(0, 4);
 
   return (
     <section className="panel panel-first">
-      <p className="eyebrow">Recent Repos</p>
-      {loading ? <p className="statement">Loading repository activity…</p> : null}
+      <p className="eyebrow">Projects</p>
+      {loading ? <p className="statement">Loading project activity…</p> : null}
       <div className="repo-list">
         {activeRepos.map((repo) => (
           <article key={repo.id} className="repo-row">
@@ -309,9 +257,7 @@ function ReposPage(props: {repos: GitHubRepo[]; error: string; loading: boolean}
               </a>
               <span>{formatUpdatedDate(repo.updated_at)}</span>
             </div>
-            <p className="repo-copy">
-              {repo.description || 'No description provided.'}
-            </p>
+            <p className="repo-copy">{repo.description || 'No description provided.'}</p>
             <p className="repo-meta">
               {repo.language || 'No language listed'}
               {repo.homepage ? ' · has live link' : ''}
@@ -321,27 +267,189 @@ function ReposPage(props: {repos: GitHubRepo[]; error: string; loading: boolean}
         ))}
       </div>
       {!loading && !activeRepos.length ? (
-        <p className="status-line">No public non-fork repositories were found.</p>
+        <p className="status-line">No public non-fork projects were found.</p>
       ) : null}
       {error ? <p className="status-line">{error}</p> : null}
     </section>
   );
 }
 
-function LinkedInPage() {
+function ResumePage() {
+  const [name, setName] = useState('');
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
+
+  function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const emailSubject = encodeURIComponent(subject.trim() || `Hello ${profile.name}`);
+    const emailBody = encodeURIComponent(
+      [`Name: ${name.trim() || 'Not provided'}`, '', body.trim()].join('\n'),
+    );
+    window.location.href = `mailto:${profile.email}?subject=${emailSubject}&body=${emailBody}`;
+  }
+
   return (
     <section className="panel panel-first">
-      <p className="eyebrow">Professional Profile</p>
-      <p className="statement">{profile.linkedInFallback}</p>
-      {profile.linkedinUrl ? (
-        <p className="micro-copy">
-          Profile: <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">{profile.linkedinUrl}</a>
-        </p>
-      ) : (
-        <p className="micro-copy">
-          Contact: <a href={`mailto:${profile.email}`}>{profile.email}</a>
-        </p>
-      )}
+      <p className="eyebrow">Resume</p>
+      <div className="section-heading">
+        <h2>{profile.resume.summary}</h2>
+      </div>
+
+      <div className="resume-grid">
+        <section className="resume-block">
+          <p className="micro-label">Contact</p>
+          <form className="contact-form" onSubmit={handleContactSubmit}>
+            <label className="field">
+              <span className="micro-label">Name</span>
+              <input
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Your name"
+              />
+            </label>
+            <label className="field">
+              <span className="micro-label">Subject</span>
+              <input
+                type="text"
+                value={subject}
+                onChange={(event) => setSubject(event.target.value)}
+                placeholder="What is this about?"
+              />
+            </label>
+            <label className="field">
+              <span className="micro-label">Body</span>
+              <textarea
+                rows={6}
+                value={body}
+                onChange={(event) => setBody(event.target.value)}
+                placeholder="Write your message"
+              />
+            </label>
+            <div className="chat-actions">
+              <p className="chat-note">This opens your email client with the message prefilled.</p>
+              <button className="send-button" type="submit">Send email</button>
+            </div>
+          </form>
+        </section>
+
+        <section className="resume-block">
+          <p className="micro-label">Profile</p>
+          <div className="stack-list">
+            {profile.resume.contactMethods.map((method) => (
+              <div key={method.label} className="stack-item">
+                <strong>{method.label}</strong>
+                <p className="micro-copy">
+                  <a href={method.href} target="_blank" rel="noreferrer">{method.value}</a>
+                </p>
+              </div>
+            ))}
+            <div className="stack-item">
+              <strong>Location</strong>
+              <p className="micro-copy">{profile.location}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section className="panel">
+        <p className="micro-label">Education</p>
+        <div className="resume-grid">
+          {profile.resume.education.map((entry) => (
+            <div key={entry} className="resume-block">
+              <p className="micro-copy">{entry}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <p className="micro-label">Experience</p>
+        <div className="stack-list">
+          {profile.resume.experience.map((item) => (
+            <article key={`${item.company}-${item.title}`} className="resume-block">
+              <div className="repo-topline">
+                <div>
+                  <p className="summary-title">{item.title}</p>
+                  <p className="summary-detail">{item.company}</p>
+                </div>
+                <div className="resume-meta">
+                  <span>{item.period}</span>
+                  {'location' in item && item.location ? <span>{item.location}</span> : null}
+                </div>
+              </div>
+              {item.bullets.length ? (
+                <ul className="bullet-list">
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet} className="micro-copy">{bullet}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div className="resume-grid">
+        <section className="resume-block">
+          <p className="micro-label">Skills</p>
+          <div className="tag-row">
+            {profile.resume.skills.map((skill) => (
+              <span key={skill} className="tag">{skill}</span>
+            ))}
+          </div>
+        </section>
+
+        <section className="resume-block">
+          <p className="micro-label">Certifications</p>
+          <div className="tag-row">
+            {profile.resume.certifications.map((item) => (
+              <span key={item} className="tag">{item}</span>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section className="resume-block">
+        <p className="micro-label">Honors</p>
+        <div className="tag-row">
+          {profile.resume.honors.map((honor) => (
+            <span key={honor} className="tag">{honor}</span>
+          ))}
+        </div>
+      </section>
+    </section>
+  );
+}
+
+function WritingPage() {
+  return (
+    <section className="panel panel-first">
+      <p className="eyebrow">Writing</p>
+      <div className="section-heading">
+        <h2>Published writing and case-study notes from Substack.</h2>
+      </div>
+      <div className="repo-topline">
+        <p className="micro-copy">Pulled from the public feed for `@aliahmed312`.</p>
+        <a href={profile.substackUrl} target="_blank" rel="noreferrer">
+          Visit Substack
+        </a>
+      </div>
+      <div className="stack-list">
+        {substackPosts.map((post) => (
+          <article key={post.url} className="resume-block">
+            <div className="repo-topline">
+              <a href={post.url} target="_blank" rel="noreferrer" className="summary-title">
+                {post.title}
+              </a>
+              <div className="resume-meta">
+                <span>{formatLongDate(post.publishedAt)}</span>
+              </div>
+            </div>
+            <p className="repo-copy">{post.description}</p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -382,9 +490,7 @@ export default function App() {
 
         const [userResponse, reposResponse] = await Promise.all([
           fetch(`https://api.github.com/users/${profile.githubUsername}`),
-          fetch(
-            `https://api.github.com/users/${profile.githubUsername}/repos?sort=updated&per_page=6`,
-          ),
+          fetch(`https://api.github.com/users/${profile.githubUsername}/repos?sort=updated&per_page=6`),
         ]);
 
         if (!userResponse.ok || !reposResponse.ok) {
@@ -427,17 +533,13 @@ export default function App() {
 
   let page = <NotFoundPage />;
   if (route === '/') {
-    page = <HomePage repoSummary={repoSummary} githubUser={githubUser} loading={loading} />;
-  } else if (route === '/now') {
-    page = <NowPage loading={loading} repoSummary={repoSummary} githubUser={githubUser} error={error} />;
-  } else if (route === '/repos') {
-    page = <ReposPage repos={repos} error={error} loading={loading} />;
-  } else if (route === '/linkedin') {
-    page = <LinkedInPage />;
-  } else if (route === '/interview') {
-    page = (
-      <InterviewAli githubUser={githubUser} repos={repos} repoSummary={repoSummary} standalone />
-    );
+    page = <HomePage repoSummary={repoSummary} githubUser={githubUser} loading={loading} error={error} />;
+  } else if (route === '/projects') {
+    page = <ProjectsPage repos={repos} error={error} loading={loading} />;
+  } else if (route === '/resume') {
+    page = <ResumePage />;
+  } else if (route === '/writing') {
+    page = <WritingPage />;
   }
 
   return (
@@ -447,10 +549,7 @@ export default function App() {
         <nav className="topnav" aria-label="Primary">
           {navLinks.map((link) => (
             <span key={link.href}>
-              <SmartLink
-                href={link.href}
-                className={route === link.href ? 'is-active' : undefined}
-              >
+              <SmartLink href={link.href} className={route === link.href ? 'is-active' : undefined}>
                 {link.label}
               </SmartLink>
             </span>

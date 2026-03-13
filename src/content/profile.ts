@@ -1,16 +1,17 @@
 export const profile = {
   name: 'Ali Ahmed',
   githubUsername: 'aliahm08',
-  headline: 'Software engineer and product manager building practical AI products.',
+  headline: 'Founder at B2W-ai | Engineer at WSP | Columbia M.Arch 2023',
   intro:
-    'Ali Ahmed is a New York-based software engineer and product manager focused on AI products, workflow automation, data systems, and shipping useful software quickly.',
+    'Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.',
   summary:
-    'This site is a fast overview of Ali Ahmed’s work across software engineering, product strategy, prototyping, and AI-enabled operations tools.',
-  location: 'New York, NY',
+    'Ali has managed AI, machine learning, and data analytics projects adding nearly $100M in value across VC-backed startups, federal contracts, and enterprise software.',
+  location: 'Washington, District of Columbia',
   email: 'aliahm1208@gmail.com',
-  linkedinUrl: '',
+  linkedinUrl: 'https://www.linkedin.com/in/aliahmed-co',
+  substackUrl: 'https://aliahmed312.substack.com',
   linkedInFallback:
-    'LinkedIn is not published on this build yet. Use email or GitHub for direct contact and current work history.',
+    'Resume details and profile links are available on the resume page.',
   siteUrl: '',
   keywords: [
     'Ali Ahmed',
@@ -21,8 +22,8 @@ export const profile = {
     'React developer',
     'TypeScript engineer',
     'startup product lead',
-    'New York software engineer',
-    'New York product manager',
+    'Washington DC software engineer',
+    'Washington DC product manager',
   ],
   specialties: [
     'Full-stack product development',
@@ -38,62 +39,127 @@ export const profile = {
   ],
   resume: {
     summary:
-      'Product-minded software engineer and operator focused on AI-enabled products, internal tools, and workflow systems that reduce manual work and clarify decisions.',
+      'Building the future of AI systems for architecture, construction, and engineering by developing agents that work off price-build models.',
+    contactMethods: [
+      {
+        label: 'Email',
+        href: 'mailto:aliahm1208@gmail.com',
+        value: 'aliahm1208@gmail.com',
+      },
+      {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/aliahmed-co',
+        value: 'linkedin.com/in/aliahmed-co',
+      },
+    ],
     experience: [
       {
-        title: 'Product Manager and Software Engineer',
-        company: 'Independent and startup product work',
-        period: 'Recent',
+        title: 'Senior Data Analyst',
+        company: 'WSP',
+        period: 'August 2022 - Present',
+        location: 'Washington DC-Baltimore Area',
         bullets: [
-          'Built AI-assisted workflows, internal tools, and full-stack product prototypes.',
-          'Owned product direction, rapid iteration, and hands-on implementation across frontend, backend, and automation layers.',
-          'Worked across ambiguous early-stage problems where speed, clarity, and operating leverage mattered.',
+          'Architected high-throughput data infrastructure and real-time systems to modernize transit intelligence.',
+          'Led the technical roadmap for a Go and Kinesis ingestion pipeline processing 50k+ events per second.',
+          'Improved data freshness by 80% through an event-driven architecture and tighter cross-functional delivery.',
         ],
       },
       {
-        title: 'Product and Operations Systems Builder',
-        company: 'Cross-functional roles',
-        period: 'Prior',
+        title: 'Design Manager',
+        company: 'LaunchGood',
+        period: '2021 - 2022',
         bullets: [
-          'Designed processes and tooling to improve execution quality, visibility, and reporting.',
-          'Translated operational pain points into software that teams could actually adopt.',
+          'Managed design systems to create unity between UX and customer engagement design processes.',
+          'Met with design teams weekly to ensure consistency in Notion documentation with Figma embeds.',
+          'Oversaw KPI development for brand performance using 1,500 copywriting A/B tests with Notion AI and Python.',
+        ],
+      },
+      {
+        title: 'Head of Design',
+        company: 'huupe',
+        period: '2019 - 2022',
+        location: 'New York, New York, United States',
+        bullets: [],
+      },
+      {
+        title: 'Architectural Designer',
+        company: 'Norman Foster Foundation',
+        period: '2019 - 2020',
+        location: 'Madrid, Community of Madrid, Spain',
+        bullets: [
+          'Collaborated with Lord Norman Foster and MIT Media Lab on diagnosing slum dwelling worldwide for a sustainable alternative.',
+          'Selected as one of ten global designers for the initiative.',
+        ],
+      },
+      {
+        title: 'Space Suit Engineer',
+        company: 'NASA',
+        period: '2018 - 2019',
+        location: 'Houston, Texas, United States',
+        bullets: [
+          'Focused on materials testing.',
+          'Trained computer vision models for object recognition integrated into space suit helmet heads-up displays.',
+          'Prototyped soft goods hardware for self-egress implemented in a Mars suit cockpit.',
+        ],
+      },
+      {
+        title: 'AR Exhibits Engineer',
+        company: 'Autodesk',
+        period: '2017',
+        location: 'San Francisco, California, United States',
+        bullets: [],
+      },
+      {
+        title: 'Design Engineer',
+        company: 'Bragi',
+        period: '2016 - 2017',
+        location: 'Munich, Bavaria, Germany',
+        bullets: [],
+      },
+      {
+        title: 'Applied Innovation Engineer',
+        company: 'Autodesk',
+        period: '2016',
+        location: 'San Francisco, California, United States',
+        bullets: [
+          'Presented software functionality within a $4M software development effort directly to CEO Carl Bass.',
+          'Tested design environments for a 15% UX optimization through robotics, 3D-print generation, and FEA animation.',
         ],
       },
     ],
     skills: [
-      'Product strategy',
-      'React',
-      'TypeScript',
-      'Node.js',
-      'AI integrations',
-      'Workflow automation',
-      'Prototyping',
-      'Systems thinking',
+      'Go-to-market strategy',
+      'User experience (UX)',
+      'Design direction',
+      'Frontend development',
+      'Full-stack engineering',
+      'AI and ML systems',
+      'Data analytics',
+      'Product design',
+      'Business development',
+    ],
+    certifications: [
+      'Sketchbook Pro',
+      'Fortus FDM, Objet 3D Printing',
+      'Fusion 360',
+      'CNC, Laser Cutter, Metal & Wood',
+      'Shop Trained',
+      'AutoCAD',
+    ],
+    honors: [
+      'Featured on Engineering.com',
+      'GW University & Alumni Scholarship Award',
+      'Booz Allen Hamilton University Scholar',
+      'GW New Venture Competition Semi-Finalist',
+      "Dean's List",
     ],
     education: [
-      'Background available on request; resume page is intentionally concise and focused on current capability.',
+      "Master's degree, Columbia University in the City of New York",
+      'Bachelor of Science - BS, Mechanical Engineering, The George Washington University',
+      'High School Diploma, American School of Doha',
+      'High School, American Community School of Abu Dhabi',
     ],
   },
-  writings: [
-    {
-      title: 'Building software that reduces coordination overhead',
-      description:
-        'A short note on why the best internal tools remove follow-up work instead of adding more dashboards.',
-      status: 'Draft',
-    },
-    {
-      title: 'Using AI as an execution layer, not a feature checklist',
-      description:
-        'Thoughts on where AI tools create real leverage in product and operations workflows.',
-      status: 'Outline',
-    },
-    {
-      title: 'Fast prototypes as a decision-making tool',
-      description:
-        'Why shipping a narrow working prototype often beats weeks of abstract planning.',
-      status: 'In progress',
-    },
-  ],
 } as const;
 
 export type GitHubRepo = {
@@ -162,7 +228,6 @@ export function buildProfileContext(args: {
     `Location: ${profile.location}`,
     `Email: ${profile.email}`,
     `LinkedIn URL: ${profile.linkedinUrl}`,
-    `LinkedIn fallback note: ${profile.linkedInFallback}`,
     `Specialties: ${profile.specialties.join(', ')}`,
     `Keywords: ${profile.keywords.join(', ')}`,
     `GitHub user: ${args.githubUser?.login ?? profile.githubUsername}`,
