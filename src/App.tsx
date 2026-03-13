@@ -183,7 +183,7 @@ function HomePage() {
     <>
       <section className="panel panel-first">
         <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
-        <div className="stack-list now-list">
+        <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
               <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
@@ -217,7 +217,7 @@ function HomePage() {
 
       <section className="panel">
         <p className="eyebrow">Connect With Ali</p>
-        <div className="stack-list now-list">
+        <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
               GitHub:{' '}
@@ -581,11 +581,6 @@ export default function App() {
     <div className="site-shell">
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
-        <nav className="topnav" aria-label="Primary">
-          <SmartLink href="/" className={route === '/' ? 'is-active' : undefined}>
-            Home
-          </SmartLink>
-        </nav>
       </header>
 
       <main className="page">{page}</main>
