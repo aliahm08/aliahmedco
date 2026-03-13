@@ -25,6 +25,7 @@ body {
 
 a {
   color: inherit;
+  text-underline-offset: 0.18em;
 }
 
 button,
@@ -37,21 +38,26 @@ textarea {
 }
 
 .site-shell {
-  width: min(760px, calc(100% - 32px));
+  width: min(720px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 20px 0 48px;
+  padding: 24px 0 56px;
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 10px 0 26px;
+  padding: 4px 0 40px;
 }
 
 .wordmark,
 .topnav a {
   text-decoration: none;
+}
+
+.topnav a.is-active {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 .wordmark {
@@ -70,38 +76,20 @@ textarea {
 .micro-copy,
 .repo-copy,
 .repo-meta,
-.chat-note,
-.bubble-role,
 .status-line,
-.footer-panel p {
+.footer-panel p,
+.field input::placeholder,
+.field textarea::placeholder {
   color: var(--muted);
 }
 
 .page {
   display: grid;
-  gap: 20px;
-}
-
-.hero,
-.panel,
-.footer-panel,
-.chat-shell,
-.repo-row,
-.bubble,
-.chat-input {
-  border: 1px solid var(--line);
-}
-
-.hero,
-.panel,
-.footer-panel {
-  padding: 22px;
-  background: rgba(255, 255, 255, 0.24);
+  gap: 32px;
 }
 
 .eyebrow,
-.micro-label,
-.bubble-role {
+.micro-label {
   margin: 0 0 10px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -111,91 +99,106 @@ textarea {
 .hero h1 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.6rem, 8vw, 4.8rem);
-  line-height: 0.95;
+  font-size: clamp(3.1rem, 10vw, 6.2rem);
+  line-height: 0.9;
   font-weight: 500;
-  max-width: 10ch;
+  max-width: 8ch;
 }
 
 .lede,
 .statement,
-.bubble p,
 .repo-copy,
-.footer-panel p {
+.footer-panel p,
+.bullet-list li,
+.field input,
+.field textarea {
   line-height: 1.7;
 }
 
 .lede,
 .statement {
-  max-width: 38rem;
-  font-size: 1.02rem;
+  max-width: 40rem;
+  font-size: 1.08rem;
 }
 
 .meta-row {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 .micro-grid,
 .repo-list,
-.chat-log,
-.chat-form {
+.contact-form,
+.stack-list,
+.resume-grid {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .micro-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .micro-label,
 .repo-meta,
-.status-line,
-.chat-note,
-.bubble-role {
+.status-line {
   color: var(--muted);
 }
 
 .micro-copy,
 .repo-copy,
 .repo-meta,
-.footer-panel p,
-.bubble p {
+.footer-panel p {
   margin: 0;
 }
 
-.repo-row,
-.chat-shell {
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.18);
+.panel,
+.footer-panel {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.panel-first {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.section-heading h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.page-grid {
+  margin-top: 18px;
+}
+
+.inline-link {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.repo-row {
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--line);
 }
 
 .repo-topline {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .repo-topline a {
   text-decoration-thickness: 1px;
 }
 
-.chat-shell {
-  margin-top: 14px;
-}
-
-.prompt-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.prompt-chip,
 .send-button {
   padding: 8px 12px;
   border: 1px solid var(--line);
@@ -203,33 +206,9 @@ textarea {
   color: var(--charcoal);
 }
 
-.prompt-chip {
-  cursor: pointer;
-}
-
-.bubble {
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.24);
-}
-
-.chat-input {
-  width: 100%;
-  min-height: 80px;
-  padding: 12px;
-  resize: vertical;
-  color: var(--charcoal);
-  background: rgba(255, 255, 255, 0.44);
-}
-
-.chat-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: center;
-}
-
 .send-button {
   cursor: pointer;
+  width: fit-content;
 }
 
 .send-button:disabled {
@@ -237,8 +216,64 @@ textarea {
   cursor: wait;
 }
 
+.resume-block,
+.stack-item,
+.contact-form,
+.field input,
+.field textarea {
+  border-top: 1px solid var(--line);
+}
+
+.resume-block,
+.stack-item,
+.contact-form {
+  padding-top: 16px;
+}
+
+.stack-item strong {
+  font-weight: 500;
+}
+
+.resume-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+}
+
+.bullet-list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 12px 0 0;
+  color: var(--charcoal);
+  background: transparent;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  outline: 0;
+  resize: vertical;
+}
+
 .footer-panel {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .sr-only {
@@ -255,13 +290,13 @@ textarea {
 
 @media (max-width: 640px) {
   .site-shell {
-    width: min(760px, calc(100% - 20px));
+    width: min(720px, calc(100% - 20px));
   }
 
   .topbar,
-  .chat-actions,
   .repo-topline,
-  .micro-grid {
+  .micro-grid,
+  .resume-grid {
     display: grid;
     grid-template-columns: 1fr;
   }

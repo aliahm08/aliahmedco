@@ -1,29 +1,34 @@
-# Website Strategy: Minimal AI Solutions
+# Ali Ahmed Portfolio
 
-## Core Philosophy
-- **Minimalism**: Remove non-essential elements. Focus on content and clarity.
-- **Monochrome**: Use only black, white, and shades of gray to convey professionalism and focus.
-- **Motion**: Use subtle, smooth scroll-based animations to guide the user's attention without overwhelming them.
-- **Clarity**: Avoid jargon. Speak plainly about problems and solutions.
+Personal website for Ali Ahmed, positioned for discovery as a software engineer and product manager.
 
-## Structure
-1. **Hero**: Immediate value proposition. No large distracting imagery.
-2. **Work**: Case studies presented as clean cards. Focus on results.
-3. **Industries**: Where we operate. Simple list or grid.
-4. **Team**: The humans behind the AI. Minimal portraits/avatars.
-5. **CTA**: Clear path to contact.
+## What Changed
 
-## Design System
-- **Font**: Inter (Sans-serif).
-- **Colors**:
-  - Background: White (#ffffff) or very light gray (#f9fafb).
-  - Text: Black (#000000) or dark gray (#111827).
-  - Borders: Light gray (#e5e7eb).
-- **Components**:
-  - Cards: Bordered, no shadow (or very subtle), clear hierarchy.
-  - Buttons: Solid black with white text, or outlined.
+- Updated the on-site copy to emphasize software engineering, product management, AI products, and full-stack delivery.
+- Replaced placeholder metadata with search-focused title, description, keywords, Open Graph, and Twitter tags.
+- Added structured data through the React app so search engines can associate the site with a person profile.
+- Kept GitHub activity visible so the site reflects current engineering work instead of static resume copy.
 
-## Tech Stack
-- React
-- Tailwind CSS
-- Framer Motion (for animations)
+## Key Files
+
+- `src/content/profile.ts`: primary professional positioning, keywords, contact info, and specialties.
+- `src/App.tsx`: route content plus dynamic SEO metadata and JSON-LD.
+- `index.html`: default metadata for the initial document response.
+- `metadata.json`: app-level project description.
+
+## Local Development
+
+```bash
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Notes
+
+- Set `profile.siteUrl` in `src/content/profile.ts` when the final production domain is known. That will make canonical URLs and structured data point to the public domain instead of the local origin.
+- Add a real LinkedIn URL in `src/content/profile.ts` if you want that profile indexed and linked from the site.

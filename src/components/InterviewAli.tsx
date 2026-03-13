@@ -21,9 +21,10 @@ type Props = {
   githubUser?: GitHubUser | null;
   repos: GitHubRepo[];
   repoSummary: string;
+  standalone?: boolean;
 };
 
-export default function InterviewAli({githubUser, repos, repoSummary}: Props) {
+export default function InterviewAli({githubUser, repos, repoSummary, standalone = false}: Props) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -107,7 +108,7 @@ export default function InterviewAli({githubUser, repos, repoSummary}: Props) {
   }
 
   return (
-    <section id="interview" className="panel">
+    <section id="interview" className={standalone ? 'panel panel-first' : 'panel'}>
       <div className="section-heading">
         <p className="eyebrow">Interview Ali</p>
         <h2>Ask what Ali seems to be working on right now.</h2>
