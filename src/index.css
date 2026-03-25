@@ -67,7 +67,7 @@ textarea {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 4px 0 40px;
+  padding: 20px 0 40px;
 }
 
 .wordmark,
