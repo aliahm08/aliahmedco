@@ -114,11 +114,11 @@ function buildProjection(args: {
 
     if (!paybackYear && cumulativeTakeHome >= args.initialInvestment) {
       paybackYear = year;
-      const neededAtStart = args.initialInvestment - cumulativeBefore;
-      const monthlyTakeHomeInYear = takeHome / 12;
+      const amountNeededAtStart = args.initialInvestment - cumulativeBefore;
+      const monthlyTakeHomeInPaybackYear = takeHome / 12;
       const monthsIntoYear =
-        monthlyTakeHomeInYear > 0
-          ? Math.min(Math.ceil(neededAtStart / monthlyTakeHomeInYear), 12)
+        monthlyTakeHomeInPaybackYear > 0
+          ? Math.min(Math.ceil(amountNeededAtStart / monthlyTakeHomeInPaybackYear), 12)
           : null;
       paybackMonth = monthsIntoYear ? `Year ${year}, month ${monthsIntoYear}` : `Year ${year}`;
       paybackMonthsExact = monthsIntoYear ? (year - 1) * 12 + monthsIntoYear : year * 12;
@@ -196,16 +196,16 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
 
+function parseNumericInput(value: string, fallback: number) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 function rangeLabel(color: MilestoneColor) {
   if (color === 'red') return 'milestone milestone-red';
   if (color === 'amber') return 'milestone milestone-amber';
   if (color === 'green') return 'milestone milestone-green';
   return 'milestone milestone-violet';
-}
-
-function parseNumericInput(value: string, fallback: number) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function MetricCard(props: {
@@ -222,10 +222,10 @@ function MetricCard(props: {
         <span className="model-card-icon">
           <Icon size={15} />
         </span>
-        <p className="micro-label">{props.label}</p>
+        <p className="model-label">{props.label}</p>
       </div>
       <p className="model-metric-value">{props.value}</p>
-      <p className="summary-detail">{props.detail}</p>
+      <p className="model-copy model-copy-muted">{props.detail}</p>
     </article>
   );
 }
@@ -318,7 +318,6 @@ function LineChart(props: {
   const x = (year: number) =>
     padding.left + ((year - 1) / Math.max(props.data.length - 1, 1)) * innerWidth;
   const y = (value: number) => padding.top + (1 - (value - minValue) / span) * innerHeight;
-
   const pathFor = (selector: (row: Row) => number) =>
     props.data
       .map((row, index) => `${index === 0 ? 'M' : 'L'} ${x(row.year)} ${y(selector(row))}`)
@@ -461,7 +460,6 @@ export default function CoffeeShopFinancingModelPage() {
 
     return {
       paybackMonth: projection.paybackMonth,
-      paybackMonthsExact: projection.paybackMonthsExact,
       cumulativeTakeHome: finalYear?.cumulativeTakeHome ?? 0,
       totalROI: initialInvestment > 0 ? (finalYear?.cumulativeTakeHome ?? 0) / initialInvestment : 0,
       avgAnnualTakeHome,
@@ -588,259 +586,271 @@ export default function CoffeeShopFinancingModelPage() {
   }
 
   return (
-    <>
-      <section className="panel panel-first model-hero">
-        <div className="model-hero-copy">
-          <p className="eyebrow">Coffee Shop Financing Model</p>
-          <h1>Interactive investor dashboard for a 10-year coffee shop financing case.</h1>
-          <p className="lede">
-            This page translates the attached underwriting assumptions into an editable operating
-            model, scenario dashboard, and downloadable investor report at
-            <strong> aliahmed.co/work/coffeeshop-financing/model</strong>.
-          </p>
-        </div>
-        <div className="model-hero-actions">
-          <button type="button" className="model-action" onClick={resetChanges}>
-            <RotateCcw size={16} />
-            Reset assumptions
-          </button>
-          <button type="button" className="model-action model-action-primary" onClick={downloadReport}>
-            <Download size={16} />
-            Download report
-          </button>
-        </div>
-      </section>
+    <div className="model-app">
+      <div className="model-shell">
+        <section className="model-hero">
+          <div className="model-hero-copy">
+            <p className="model-kicker">Coffee Shop Financing Model</p>
+            <h1 className="model-title">10-year investor income projection dashboard</h1>
+            <p className="model-copy model-copy-lead">
+              An interactive underwriting model built from the attached assumptions, optimized for
+              scenario review, payback calibration, and downloadable reporting.
+            </p>
+          </div>
+          <div className="model-hero-actions">
+            <button type="button" className="model-action" onClick={resetChanges}>
+              <RotateCcw size={16} />
+              Reset assumptions
+            </button>
+            <button type="button" className="model-action model-action-primary" onClick={downloadReport}>
+              <Download size={16} />
+              Download report
+            </button>
+          </div>
+        </section>
 
-      <section className="panel model-metric-grid">
-        <MetricCard
-          icon={DollarSign}
-          label="Initial investment"
-          value={currency.format(initialInvestment)}
-          detail="Buyout, retrofit, and franchise fee combined."
-        />
-        <MetricCard
-          icon={TrendingUp}
-          label="Monthly net profit"
-          value={currency.format(monthlyPnl.netProfit)}
-          detail="Derived directly from the attached P&L assumptions."
-        />
-        <MetricCard
-          icon={Calendar}
-          label="Estimated payback"
-          value={summary.paybackMonth ?? 'Beyond 10 years'}
-          detail={`${targetPaybackMonths} month target currently driving revenue calibration.`}
-        />
-        <MetricCard
-          icon={Target}
-          label="10-year ROI"
-          value={percent.format(summary.totalROI)}
-          detail={`${currency.format(summary.cumulativeTakeHome)} cumulative investor take-home.`}
-        />
-      </section>
+        <section className="model-metric-grid">
+          <MetricCard
+            icon={DollarSign}
+            label="Initial investment"
+            value={currency.format(initialInvestment)}
+            detail="Buyout, retrofit, and franchise fee combined."
+          />
+          <MetricCard
+            icon={TrendingUp}
+            label="Monthly net profit"
+            value={currency.format(monthlyPnl.netProfit)}
+            detail="Derived directly from the operating assumptions."
+          />
+          <MetricCard
+            icon={Calendar}
+            label="Estimated payback"
+            value={summary.paybackMonth ?? 'Beyond 10 years'}
+            detail={`${targetPaybackMonths} month target currently driving revenue calibration.`}
+          />
+          <MetricCard
+            icon={Target}
+            label="10-year ROI"
+            value={percent.format(summary.totalROI)}
+            detail={`${currency.format(summary.cumulativeTakeHome)} cumulative investor take-home.`}
+          />
+        </section>
 
-      <section className="panel">
-        <div className="section-heading">
-          <h2>Assumptions and filters</h2>
-        </div>
-        <div className="model-layout">
-          <article className="model-card">
-            <div className="model-card-topline">
-              <span className="model-card-icon">
-                <Receipt size={15} />
-              </span>
-              <p className="micro-label">Capital stack</p>
-            </div>
-            <div className="model-number-grid">
-              <NumberField label="Buyout price" value={buyoutPrice} prefix="$" onChange={setBuyoutPrice} />
-              <NumberField label="Retrofit + FF&E" value={retrofitCost} prefix="$" onChange={setRetrofitCost} />
-              <NumberField label="Franchise fee" value={franchiseFee} prefix="$" onChange={setFranchiseFee} />
-            </div>
-            <div className="model-stat-list">
-              <StatLine label="Total initial investment" value={currency.format(initialInvestment)} emphatic />
-            </div>
-          </article>
-
-          <article className="model-card">
-            <div className="model-card-topline">
-              <span className="model-card-icon">
-                <TrendingUp size={15} />
-              </span>
-              <p className="micro-label">Monthly P&L</p>
-            </div>
-            <div className="model-number-grid">
-              <NumberField label="Monthly revenue" value={monthlyRevenue} prefix="$" onChange={setMonthlyRevenue} />
-              <NumberField
-                label="COGS"
-                value={Math.round(cogsPct * 100)}
-                suffix="%"
-                min={0}
-                max={100}
-                onChange={(value) => setCogsPct(clamp(value / 100, 0, 1))}
-              />
-              <NumberField label="Labor" value={labor} prefix="$" onChange={setLabor} />
-              <NumberField label="Rent" value={rent} prefix="$" onChange={setRent} />
-              <NumberField label="Utilities" value={utilities} prefix="$" onChange={setUtilities} />
-              <NumberField label="Insurance + misc" value={insuranceMisc} prefix="$" onChange={setInsuranceMisc} />
-              <NumberField
-                label="Tax rate"
-                value={Math.round(taxRate * 100)}
-                suffix="%"
-                min={0}
-                max={100}
-                onChange={(value) => setTaxRate(clamp(value / 100, 0, 1))}
-              />
-            </div>
-            <div className="model-stat-list">
-              <StatLine label="Pre-tax profit" value={currency.format(monthlyPnl.pretaxProfit)} />
-              <StatLine label="Taxes" value={currency.format(monthlyPnl.taxes)} />
-              <StatLine label="Monthly net profit" value={currency.format(monthlyPnl.netProfit)} emphatic />
-            </div>
-          </article>
-
-          <article className="model-card">
-            <div className="model-card-topline">
-              <span className="model-card-icon">
-                <Target size={15} />
-              </span>
-              <p className="micro-label">Scenario controls</p>
-            </div>
-            <div className="model-slider-stack">
-              <SliderField
-                label="Annual growth"
-                valueLabel={`${annualGrowthRate}%`}
-                min={-5}
-                max={15}
-                step={0.5}
-                value={annualGrowthRate}
-                onChange={setAnnualGrowthRate}
-              />
-              <SliderField
-                label="Owner distribution"
-                valueLabel={`${ownerDistribution}%`}
-                min={10}
-                max={100}
-                step={5}
-                value={ownerDistribution}
-                onChange={setOwnerDistribution}
-              />
-              <SliderField
-                label="Reinvestment rate"
-                valueLabel={`${reinvestmentRate}%`}
-                min={0}
-                max={60}
-                step={5}
-                value={reinvestmentRate}
-                onChange={setReinvestmentRate}
-              />
-              <SliderField
-                label="Down year"
-                valueLabel={`Year ${downYear}`}
-                min={1}
-                max={10}
-                step={1}
-                value={downYear}
-                onChange={setDownYear}
-              />
-              <SliderField
-                label="Downturn impact"
-                valueLabel={`${downturnImpact}%`}
-                min={0}
-                max={80}
-                step={5}
-                value={downturnImpact}
-                onChange={setDownturnImpact}
-              />
-              <label className="model-field">
-                <span className="model-field-topline">
-                  <span>Target payback</span>
-                  <strong>{targetPaybackMonths} months</strong>
+        <section className="model-section">
+          <div className="model-section-head">
+            <h2 className="model-section-title">Assumptions and controls</h2>
+            <p className="model-copy model-copy-muted">
+              Adjust capital costs, monthly economics, or investor filters and the model updates
+              immediately.
+            </p>
+          </div>
+          <div className="model-layout">
+            <article className="model-card">
+              <div className="model-card-topline">
+                <span className="model-card-icon">
+                  <Receipt size={15} />
                 </span>
-                <input
-                  type="range"
-                  min="6"
-                  max="120"
-                  step="1"
-                  value={targetPaybackMonths}
-                  onChange={(event) => setDesiredPayback(Number(event.target.value))}
+                <p className="model-label">Capital stack</p>
+              </div>
+              <div className="model-number-grid">
+                <NumberField label="Buyout price" value={buyoutPrice} prefix="$" onChange={setBuyoutPrice} />
+                <NumberField label="Retrofit + FF&E" value={retrofitCost} prefix="$" onChange={setRetrofitCost} />
+                <NumberField label="Franchise fee" value={franchiseFee} prefix="$" onChange={setFranchiseFee} />
+              </div>
+              <div className="model-stat-list">
+                <StatLine label="Total initial investment" value={currency.format(initialInvestment)} emphatic />
+              </div>
+            </article>
+
+            <article className="model-card">
+              <div className="model-card-topline">
+                <span className="model-card-icon">
+                  <TrendingUp size={15} />
+                </span>
+                <p className="model-label">Monthly P&amp;L</p>
+              </div>
+              <div className="model-number-grid">
+                <NumberField label="Monthly revenue" value={monthlyRevenue} prefix="$" onChange={setMonthlyRevenue} />
+                <NumberField
+                  label="COGS"
+                  value={Math.round(cogsPct * 100)}
+                  suffix="%"
+                  min={0}
+                  max={100}
+                  onChange={(value) => setCogsPct(clamp(value / 100, 0, 1))}
                 />
-                <input
-                  className="model-inline-input"
-                  type="number"
-                  min="6"
-                  max="120"
-                  value={targetPaybackMonths}
-                  onChange={(event) => setDesiredPayback(parseNumericInput(event.target.value, 6))}
+                <NumberField label="Labor" value={labor} prefix="$" onChange={setLabor} />
+                <NumberField label="Rent" value={rent} prefix="$" onChange={setRent} />
+                <NumberField label="Utilities" value={utilities} prefix="$" onChange={setUtilities} />
+                <NumberField label="Insurance + misc" value={insuranceMisc} prefix="$" onChange={setInsuranceMisc} />
+                <NumberField
+                  label="Tax rate"
+                  value={Math.round(taxRate * 100)}
+                  suffix="%"
+                  min={0}
+                  max={100}
+                  onChange={(value) => setTaxRate(clamp(value / 100, 0, 1))}
                 />
-              </label>
-            </div>
-          </article>
-        </div>
-      </section>
+              </div>
+              <div className="model-stat-list">
+                <StatLine label="Pre-tax profit" value={currency.format(monthlyPnl.pretaxProfit)} />
+                <StatLine label="Taxes" value={currency.format(monthlyPnl.taxes)} />
+                <StatLine label="Monthly net profit" value={currency.format(monthlyPnl.netProfit)} emphatic />
+              </div>
+            </article>
 
-      <section className="panel">
-        <div className="section-heading">
-          <h2>Performance view</h2>
-        </div>
-        <div className="model-chart-grid">
-          <article className="model-card">
-            <p className="micro-label">Cumulative income vs invested capital</p>
-            <p className="summary-detail">
-              Green tracks gross investor take-home. Blue tracks cumulative value after recovering
-              the initial investment.
+            <article className="model-card">
+              <div className="model-card-topline">
+                <span className="model-card-icon">
+                  <Target size={15} />
+                </span>
+                <p className="model-label">Scenario controls</p>
+              </div>
+              <div className="model-slider-stack">
+                <SliderField
+                  label="Annual growth"
+                  valueLabel={`${annualGrowthRate}%`}
+                  min={-5}
+                  max={15}
+                  step={0.5}
+                  value={annualGrowthRate}
+                  onChange={setAnnualGrowthRate}
+                />
+                <SliderField
+                  label="Owner distribution"
+                  valueLabel={`${ownerDistribution}%`}
+                  min={10}
+                  max={100}
+                  step={5}
+                  value={ownerDistribution}
+                  onChange={setOwnerDistribution}
+                />
+                <SliderField
+                  label="Reinvestment rate"
+                  valueLabel={`${reinvestmentRate}%`}
+                  min={0}
+                  max={60}
+                  step={5}
+                  value={reinvestmentRate}
+                  onChange={setReinvestmentRate}
+                />
+                <SliderField
+                  label="Down year"
+                  valueLabel={`Year ${downYear}`}
+                  min={1}
+                  max={10}
+                  step={1}
+                  value={downYear}
+                  onChange={setDownYear}
+                />
+                <SliderField
+                  label="Downturn impact"
+                  valueLabel={`${downturnImpact}%`}
+                  min={0}
+                  max={80}
+                  step={5}
+                  value={downturnImpact}
+                  onChange={setDownturnImpact}
+                />
+                <label className="model-field">
+                  <span className="model-field-topline">
+                    <span>Target payback</span>
+                    <strong>{targetPaybackMonths} months</strong>
+                  </span>
+                  <input
+                    type="range"
+                    min="6"
+                    max="120"
+                    step="1"
+                    value={targetPaybackMonths}
+                    onChange={(event) => setDesiredPayback(Number(event.target.value))}
+                  />
+                  <input
+                    className="model-inline-input"
+                    type="number"
+                    min="6"
+                    max="120"
+                    value={targetPaybackMonths}
+                    onChange={(event) => setDesiredPayback(parseNumericInput(event.target.value, 6))}
+                  />
+                </label>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="model-section">
+          <div className="model-section-head">
+            <h2 className="model-section-title">Performance view</h2>
+            <p className="model-copy model-copy-muted">
+              The charts below keep the original dashboard intent while remaining lightweight and
+              dependency-free.
             </p>
-            <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="cumulative" />
-          </article>
-          <article className="model-card">
-            <p className="micro-label">Annual profit vs investor take-home</p>
-            <p className="summary-detail">
-              Blue shows annual net profit before owner split. Violet shows actual investor cash
-              after reinvestment.
+          </div>
+          <div className="model-chart-grid">
+            <article className="model-card">
+              <p className="model-label">Cumulative income vs invested capital</p>
+              <p className="model-copy model-copy-muted">
+                Green tracks gross investor take-home. Blue tracks cumulative value after recovering
+                the initial investment.
+              </p>
+              <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="cumulative" />
+            </article>
+            <article className="model-card">
+              <p className="model-label">Annual profit vs investor take-home</p>
+              <p className="model-copy model-copy-muted">
+                Blue shows annual net profit before owner split. Violet shows investor cash after
+                reinvestment.
+              </p>
+              <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="annual" />
+            </article>
+          </div>
+        </section>
+
+        <section className="model-section">
+          <div className="model-section-head">
+            <h2 className="model-section-title">Report summary</h2>
+            <p className="model-copy model-copy-muted">
+              The downloadable export is generated from this computed schedule.
             </p>
-            <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="annual" />
-          </article>
-        </div>
-      </section>
+          </div>
+          <div className="model-layout model-layout-report">
+            <article className="model-card">
+              <p className="model-label">Investor bridge</p>
+              <div className="model-stat-list">
+                <StatLine label="Year 1 annual net profit" value={currency.format(roiBridge.yearOneAnnualNetProfit)} />
+                <StatLine label="Year 1 investor distribution" value={currency.format(roiBridge.distributedProfit)} />
+                <StatLine
+                  label="Year 1 take-home after reinvestment"
+                  value={currency.format(roiBridge.takeHomeAfterReinvestment)}
+                />
+                <StatLine label="Year 1 cash yield" value={percent.format(roiBridge.simpleCashYield)} />
+                <StatLine label="Growth contribution" value={percent.format(roiBridge.growthContribution)} />
+                <StatLine label="Year 10 take-home" value={currency.format(summary.year10TakeHome)} emphatic />
+              </div>
+            </article>
 
-      <section className="panel">
-        <div className="section-heading">
-          <h2>Report summary</h2>
-        </div>
-        <div className="model-layout">
-          <article className="model-card">
-            <p className="micro-label">Investor bridge</p>
-            <div className="model-stat-list">
-              <StatLine label="Year 1 annual net profit" value={currency.format(roiBridge.yearOneAnnualNetProfit)} />
-              <StatLine label="Year 1 investor distribution" value={currency.format(roiBridge.distributedProfit)} />
-              <StatLine
-                label="Year 1 take-home after reinvestment"
-                value={currency.format(roiBridge.takeHomeAfterReinvestment)}
-              />
-              <StatLine label="Year 1 cash yield" value={percent.format(roiBridge.simpleCashYield)} />
-              <StatLine label="Growth contribution" value={percent.format(roiBridge.growthContribution)} />
-              <StatLine label="Year 10 take-home" value={currency.format(summary.year10TakeHome)} emphatic />
-            </div>
-          </article>
-
-          <article className="model-card">
-            <p className="micro-label">10-year milestones</p>
-            <div className="milestone-grid">
-              {projection.rows.map((row) => (
-                <div key={row.year} className={rangeLabel(row.milestoneColor)}>
-                  <p className="milestone-year">Year {row.year}</p>
-                  <p className="milestone-value">{currency.format(row.takeHome)}</p>
-                  <p className="milestone-tag">{row.milestone}</p>
-                  <p className="milestone-detail">
-                    {currency.format(row.cumulativeTakeHome)} cumulative take-home
-                  </p>
-                  <p className="milestone-detail">
-                    {currency.format(row.cumulativeValue)} cumulative value
-                  </p>
-                </div>
-              ))}
-            </div>
-          </article>
-        </div>
-      </section>
-    </>
+            <article className="model-card">
+              <p className="model-label">10-year milestones</p>
+              <div className="milestone-grid">
+                {projection.rows.map((row) => (
+                  <div key={row.year} className={rangeLabel(row.milestoneColor)}>
+                    <p className="milestone-year">Year {row.year}</p>
+                    <p className="milestone-value">{currency.format(row.takeHome)}</p>
+                    <p className="milestone-tag">{row.milestone}</p>
+                    <p className="milestone-detail">
+                      {currency.format(row.cumulativeTakeHome)} cumulative take-home
+                    </p>
+                    <p className="milestone-detail">
+                      {currency.format(row.cumulativeValue)} cumulative value
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }

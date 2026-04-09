@@ -1079,6 +1079,10 @@ export default function App() {
 
   useSeo(route);
 
+  if (route === '/work/coffeeshop-financing/model') {
+    return <CoffeeShopFinancingModelPage />;
+  }
+
   let page = <NotFoundPage />;
   if (route === '/') {
     page = <HomePage />;
@@ -1090,16 +1094,14 @@ export default function App() {
     page = <WritingPage />;
   } else if (route === '/work') {
     page = <WorkPage />;
-  } else if (route === '/work/coffeeshop-financing/model') {
-    page = <CoffeeShopFinancingModelPage />;
   }
 
-  const utilityLink = route === '/work' || route === '/work/coffeeshop-financing/model'
+  const utilityLink = route === '/work'
     ? {href: '/' as Route, label: 'Profile'}
     : {href: '/work' as Route, label: 'Portfolio'};
 
   return (
-    <div className={`site-shell ${slowLoadAnimationsDisabled ? 'slow-load-animations' : ''} ${route === '/work' || route === '/work/coffeeshop-financing/model' ? 'site-shell--work' : ''}`}>
+    <div className={`site-shell ${slowLoadAnimationsDisabled ? 'slow-load-animations' : ''} ${route === '/work' ? 'site-shell--work' : ''}`}>
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
         <nav className="topnav" aria-label="Primary">
