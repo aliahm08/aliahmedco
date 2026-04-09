@@ -4,8 +4,208 @@ import {
   profile,
 } from './content/profile';
 import {substackPosts} from './content/substackPosts';
+import CoffeeShopFinancingModelPage from './components/CoffeeShopFinancingModelPage';
 
-type Route = '/' | '/projects' | '/resume' | '/writing';
+type Route =
+  | '/'
+  | '/projects'
+  | '/resume'
+  | '/writing'
+  | '/work'
+  | '/work/coffeeshop-financing/model';
+
+const workIntroItems = {
+  company: 'Ali Ahmed Co',
+  role: 'Founder',
+  project: 'Portfolio portrait',
+  summary:
+    'Selected work across AI systems, internal tooling, design direction, and founder-led product development, presented in the same restrained structure as the homepage. This view keeps the public framing minimal and focuses on how product thinking, frontend execution, and visual direction are brought together across B2W-ai, WSP, LaunchGood, huupe, NASA, and Autodesk.',
+} as const;
+
+const workPortraitSrc = new URL('../IMRJE9561.JPG', import.meta.url).toString();
+const workOgImageSrc = '/og-image.svg';
+
+function createPortfolioDemo(args: {
+  eyebrow: string;
+  title: string;
+  detail: string;
+  metrics: Array<{label: string; value: string}>;
+}) {
+  const metrics = args.metrics
+    .map(
+      (metric) => `
+        <div class="metric">
+          <span>${metric.label}</span>
+          <strong>${metric.value}</strong>
+        </div>
+      `,
+    )
+    .join('');
+
+  return `<!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <style>
+        :root {
+          color-scheme: dark;
+          font-family: "Public Sans", system-ui, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+          margin: 0;
+          min-height: 100vh;
+          padding: 18px;
+          background:
+            radial-gradient(circle at top left, rgba(246, 240, 230, 0.08), transparent 36%),
+            linear-gradient(150deg, #171411, #211c17 70%, #13110f);
+          color: #f1e8de;
+        }
+        .shell {
+          display: grid;
+          gap: 14px;
+          min-height: 100vh;
+        }
+        .eyebrow {
+          margin: 0;
+          color: #c7b29a;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          font-size: 11px;
+        }
+        .hero {
+          display: grid;
+          gap: 14px;
+          padding: 18px;
+          border-radius: 20px;
+          border: 1px solid rgba(241, 232, 222, 0.12);
+          background: rgba(255, 255, 255, 0.04);
+        }
+        h1 {
+          margin: 0;
+          font: 500 34px/1.02 "Newsreader", Georgia, serif;
+          letter-spacing: -0.03em;
+        }
+        p {
+          margin: 0;
+          line-height: 1.6;
+          color: rgba(241, 232, 222, 0.72);
+          font-size: 14px;
+        }
+        .metrics {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .metric {
+          padding: 14px;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.04);
+        }
+        .metric span {
+          display: block;
+          margin-bottom: 6px;
+          color: rgba(241, 232, 222, 0.58);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 10px;
+        }
+        .metric strong {
+          font-size: 22px;
+          font-weight: 600;
+        }
+        @media (max-width: 560px) {
+          .metrics {
+            grid-template-columns: 1fr;
+          }
+          h1 {
+            font-size: 28px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="shell">
+        <p class="eyebrow">${args.eyebrow}</p>
+        <section class="hero">
+          <h1>${args.title}</h1>
+          <p>${args.detail}</p>
+        </section>
+        <section class="metrics">
+          ${metrics}
+        </section>
+      </div>
+    </body>
+  </html>`;
+}
+
+const workExpandedMedia = [
+  {
+    id: 'portrait',
+    label: 'Image',
+    title: 'Founder portrait',
+    description: 'The primary image anchoring the public-facing portfolio view.',
+    type: 'image' as const,
+    src: workPortraitSrc,
+    alt: 'Ali Ahmed portrait.',
+  },
+  {
+    id: 'ops-demo',
+    label: 'Embedded demo',
+    title: 'Operations review concept',
+    description: 'A compact operating view for AI-assisted review, triage, and internal decision support.',
+    type: 'demo' as const,
+    demoHtml: createPortfolioDemo({
+      eyebrow: 'WSP internal tooling',
+      title: 'Signals first, clutter second.',
+      detail: 'Interfaces built to reduce review drag and move teams toward legible operational decisions.',
+      metrics: [
+        {label: 'Flagged items', value: '14'},
+        {label: 'Confidence', value: '86%'},
+        {label: 'Review time', value: '-42%'},
+      ],
+    }),
+  },
+  {
+    id: 'client-demo',
+    label: 'Embedded demo',
+    title: 'Client-facing prototype',
+    description: 'A buyer-facing concept for explaining workflow design, automation, and near-term value.',
+    type: 'demo' as const,
+    demoHtml: createPortfolioDemo({
+      eyebrow: 'B2W-ai concept',
+      title: 'Explain the system before scaling it.',
+      detail: 'Early-stage prototypes are used to make service logic, operating flow, and value proposition legible fast.',
+      metrics: [
+        {label: 'Stage', value: 'Pilot'},
+        {label: 'Workflow', value: '4 steps'},
+        {label: 'Time to value', value: '2 weeks'},
+      ],
+    }),
+  },
+] as const;
+
+const workMainCarouselImages = [
+  {
+    id: 'portrait-primary',
+    src: workPortraitSrc,
+    alt: 'Ali Ahmed portrait, primary crop.',
+    objectPosition: 'center 22%',
+  },
+  {
+    id: 'portrait-detail',
+    src: workPortraitSrc,
+    alt: 'Ali Ahmed portrait, alternate crop.',
+    objectPosition: 'center 38%',
+  },
+  {
+    id: 'brand-study',
+    src: workOgImageSrc,
+    alt: 'Ali Ahmed Co brand image.',
+    objectPosition: 'center center',
+  },
+] as const;
 
 function normalizeRoute(pathname: string): Route {
   const normalizedPathname =
@@ -25,6 +225,14 @@ function normalizeRoute(pathname: string): Route {
 
   if (normalizedPathname === '/writing') {
     return normalizedPathname;
+  }
+
+  if (normalizedPathname === '/portfolio' || normalizedPathname === '/work') {
+    return '/work';
+  }
+
+  if (normalizedPathname === '/work/coffeeshop-financing/model') {
+    return '/work/coffeeshop-financing/model';
   }
 
   return '/';
@@ -80,6 +288,19 @@ function getAbsoluteUrl(pathname: string) {
   return new URL(pathname, window.location.origin).toString();
 }
 
+function upsertJsonLd(id: string, value: unknown) {
+  let element = document.getElementById(id) as HTMLScriptElement | null;
+
+  if (!element) {
+    element = document.createElement('script');
+    element.type = 'application/ld+json';
+    element.id = id;
+    document.head.appendChild(element);
+  }
+
+  element.textContent = JSON.stringify(value);
+}
+
 function useSeo(route: Route) {
   useEffect(() => {
     const pageTitleByRoute: Record<Route, string> = {
@@ -87,13 +308,17 @@ function useSeo(route: Route) {
       '/projects': `Projects | ${profile.name}`,
       '/resume': `Resume | ${profile.name}`,
       '/writing': `Writing | ${profile.name}`,
+      '/work': `Work | ${profile.name}`,
+      '/work/coffeeshop-financing/model': `Coffee Shop Financing Model | ${profile.name}`,
     };
 
     const pageDescriptionByRoute: Record<Route, string> = {
-      '/': `${profile.name} is a software engineer and product manager in ${profile.location} building AI products, full-stack applications, and operational tools.`,
+      '/': `${profile.name} is a software engineer, product manager, and founder in ${profile.location} building AI products, full-stack applications, and operational tools.`,
       '/projects': `Recent projects, technical focus areas, and public code from ${profile.name}.`,
       '/resume': `Resume, experience, education, and profile links for ${profile.name}.`,
       '/writing': `Substack articles and published notes from ${profile.name}.`,
+      '/work': `Selected portfolio work, operating principles, and embedded product demos from ${profile.name}.`,
+      '/work/coffeeshop-financing/model': `Interactive coffee shop financing dashboard with investor payback, operating assumptions, scenario controls, and downloadable report.`,
     };
 
     const title = pageTitleByRoute[route];
@@ -123,6 +348,50 @@ function useSeo(route: Route) {
       content: description,
     });
     upsertLink('link[rel="canonical"]', {rel: 'canonical', href: absoluteUrl});
+
+    if (route === '/') {
+      upsertJsonLd('person-json-ld', {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: profile.name,
+        jobTitle: 'Software Engineer, Product Manager, and Founder',
+        description: description,
+        url: absoluteUrl,
+        image: getAbsoluteUrl('/favicon.svg'),
+        sameAs: [profile.githubUrl, profile.linkedinUrl, profile.substackUrl, profile.b2wUrl].filter(Boolean),
+        alumniOf: [
+          {
+            '@type': 'CollegeOrUniversity',
+            name: 'Columbia University',
+          },
+          {
+            '@type': 'CollegeOrUniversity',
+            name: 'The George Washington University',
+          },
+        ],
+        knowsAbout: [
+          'software engineering',
+          'product management',
+          'front end development',
+          'back end development',
+          'full stack engineering',
+          'AI products',
+          'workflow automation',
+          'computer vision',
+          'machine learning',
+        ],
+        worksFor: [
+          {
+            '@type': 'Organization',
+            name: 'B2W-ai',
+          },
+          {
+            '@type': 'Organization',
+            name: 'WSP',
+          },
+        ],
+      });
+    }
   }, [route]);
 }
 
@@ -196,8 +465,20 @@ function HomePage() {
   const latestPublication = substackPosts[0];
   const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
   const [visiblePastWorkCount, setVisiblePastWorkCount] = useState(0);
-  const pivotPrelude = profile.resume.pivotEntries.filter((item) => item.type !== 'Past Work');
-  const pivotPastWork = profile.resume.pivotEntries.filter((item) => item.type === 'Past Work');
+  type PivotEntry = (typeof profile.resume.pivotEntries)[number];
+  function isPastWork(item: PivotEntry): item is Extract<PivotEntry, {type: 'Past Work'}> {
+    return item.type === 'Past Work';
+  }
+
+  function isPreludeEntry(
+    item: PivotEntry,
+  ): item is Exclude<PivotEntry, {type: 'Past Work'}> {
+    return item.type !== 'Past Work';
+  }
+
+  const pivotEntries = profile.resume.pivotEntries;
+  const pivotPrelude = pivotEntries.filter(isPreludeEntry) as unknown as PivotEntry[];
+  const pivotPastWork = pivotEntries.filter(isPastWork) as unknown as PivotEntry[];
 
   useEffect(() => {
     if (!isPastWorkExpanded) {
@@ -596,6 +877,92 @@ function WritingPage() {
   );
 }
 
+function WorkPage() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <>
+      <section className="panel panel-first">
+        <p className="eyebrow">
+          {workIntroItems.company}, {workIntroItems.role}, {workIntroItems.project}
+        </p>
+        <div className="stack-list now-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy">
+              {workIntroItems.summary}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="panel">
+        <div className="work-main-carousel home-fade-item" style={{animationDelay: '120ms'}}>
+          {workMainCarouselImages.map((image) => (
+            <article key={image.id} className="resume-block work-image-panel">
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="work-media-image"
+                style={{objectPosition: image.objectPosition}}
+              />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <button
+          type="button"
+          className="inline-link-button"
+          aria-expanded={isExpanded}
+          onClick={() => setIsExpanded((current) => !current)}
+        >
+          {isExpanded ? 'Hide more details' : 'Expand more details'}
+        </button>
+        {isExpanded ? (
+          <div className="disclosure-panel work-details-scroll">
+            <div className="work-details-stack" aria-label="Expanded project gallery">
+              {workExpandedMedia.map((item, index) => (
+                <article
+                  key={item.id}
+                  className="resume-block work-slide home-fade-item"
+                  style={{animationDelay: `${80 + index * 70}ms`}}
+                >
+                  <p className="micro-label">{item.label}</p>
+                  <p className="summary-title">{item.title}</p>
+                  <p className="repo-copy">{item.description}</p>
+                  <div className="work-media-frame">
+                    {item.type === 'image' ? (
+                      <img src={item.src} alt={item.alt} className="work-media-image" />
+                    ) : (
+                      <iframe
+                        title={item.title}
+                        srcDoc={item.demoHtml}
+                        loading="lazy"
+                        className="work-media-embed"
+                      />
+                    )}
+                  </div>
+                </article>
+              ))}
+              <article className="resume-block home-fade-item" style={{animationDelay: '260ms'}}>
+                <p className="micro-label">Case Study</p>
+                <p className="summary-title">Ali Ahmed Co, Founder, Portfolio portrait</p>
+                <p className="repo-copy">
+                  This portfolio view is designed as a restrained public wrapper around a broader body of work in AI systems,
+                  internal tools, and product direction. The goal is not to expose client internals, but to show how a project
+                  is framed visually, how interface language stays minimal, and how the same operating logic can extend from a
+                  static image to embedded product concepts and case-study storytelling.
+                </p>
+              </article>
+            </div>
+          </div>
+        ) : null}
+      </section>
+    </>
+  );
+}
+
 function NotFoundPage() {
   return (
     <section className="panel panel-first">
@@ -611,6 +978,7 @@ export default function App() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [slowLoadAnimationsDisabled, setSlowLoadAnimationsDisabled] = useState(false);
 
   useEffect(() => {
     function handlePopState() {
@@ -619,6 +987,42 @@ export default function App() {
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let timeoutId: number | undefined;
+
+    function disableAnimations() {
+      if (cancelled) {
+        return;
+      }
+
+      setSlowLoadAnimationsDisabled(true);
+      document.documentElement.classList.add('slow-load-animations');
+    }
+
+    function handleLoad() {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      return;
+    }
+
+    window.addEventListener('load', handleLoad, {once: true});
+    timeoutId = window.setTimeout(disableAnimations, 1800);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', handleLoad);
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+      document.documentElement.classList.remove('slow-load-animations');
+    };
   }, []);
 
   useEffect(() => {
@@ -664,6 +1068,15 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('theme-work', route === '/work' || route === '/work/coffeeshop-financing/model');
+
+    return () => {
+      root.classList.remove('theme-work');
+    };
+  }, [route]);
+
   useSeo(route);
 
   let page = <NotFoundPage />;
@@ -675,12 +1088,25 @@ export default function App() {
     page = <ResumePage />;
   } else if (route === '/writing') {
     page = <WritingPage />;
+  } else if (route === '/work') {
+    page = <WorkPage />;
+  } else if (route === '/work/coffeeshop-financing/model') {
+    page = <CoffeeShopFinancingModelPage />;
   }
 
+  const utilityLink = route === '/work' || route === '/work/coffeeshop-financing/model'
+    ? {href: '/' as Route, label: 'Profile'}
+    : {href: '/work' as Route, label: 'Portfolio'};
+
   return (
-    <div className="site-shell">
+    <div className={`site-shell ${slowLoadAnimationsDisabled ? 'slow-load-animations' : ''} ${route === '/work' || route === '/work/coffeeshop-financing/model' ? 'site-shell--work' : ''}`}>
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
+        <nav className="topnav" aria-label="Primary">
+          <SmartLink href={utilityLink.href} className={`topnav-link ${route === utilityLink.href ? 'is-active' : ''}`}>
+            {utilityLink.label}
+          </SmartLink>
+        </nav>
       </header>
 
       <main className="page">{page}</main>
