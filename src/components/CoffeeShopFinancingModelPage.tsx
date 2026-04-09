@@ -1,8 +1,23 @@
-import {useMemo, useState} from 'react';
+import {type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
+  Calculator,
   Calendar,
-  Download,
+  ChevronDown,
+  ChevronUp,
   DollarSign,
+  Download,
   Receipt,
   RotateCcw,
   Target,
@@ -49,10 +64,51 @@ type Row = {
   takeHome: number;
   cumulativeTakeHome: number;
   cumulativeValue: number;
+  cumulativeTakeHomeNegative: number | null;
+  cumulativeTakeHomePositive: number | null;
   roiOnOriginalCapital: number;
   milestone: string;
   milestoneColor: MilestoneColor;
+  isSynthetic?: boolean;
 };
+
+type ProjectionResult = {
+  rows: Row[];
+  paybackYear: number | null;
+  paybackMonth: string | null;
+  paybackMonthsExact: number | null;
+};
+
+type DrilldownCardProps = {
+  title: string;
+  icon: ComponentType<{size?: number; className?: string}>;
+  value: string;
+  subtitle?: string;
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  children: ReactNode;
+};
+
+type FilterCardProps = {
+  title: string;
+  icon: ComponentType<{size?: number; className?: string}>;
+  value: string;
+  subtitle?: string;
+  children: ReactNode;
+};
+
+type EditableLineItemProps = {
+  label: string;
+  value: number;
+  onSave: (value: number) => void;
+  formatter?: (value: number) => string;
+  step?: string;
+  min?: number;
+  max?: number;
+};
+
+type ReportMetric = {label: string; value: string};
 
 function milestoneLabel(cumulativeCash: number, initialInvestment: number) {
   if (cumulativeCash < 0) return 'Underwater';
@@ -94,7 +150,7 @@ function buildProjection(args: {
   downYear: number;
   downturnImpact: number;
   initialInvestment: number;
-}) {
+}): ProjectionResult {
   const rows: Row[] = [];
   let cumulativeTakeHome = 0;
   let paybackYear: number | null = null;
@@ -114,11 +170,11 @@ function buildProjection(args: {
 
     if (!paybackYear && cumulativeTakeHome >= args.initialInvestment) {
       paybackYear = year;
-      const amountNeededAtStart = args.initialInvestment - cumulativeBefore;
+      const amountNeededAtStartOfYear = args.initialInvestment - cumulativeBefore;
       const monthlyTakeHomeInPaybackYear = takeHome / 12;
       const monthsIntoYear =
         monthlyTakeHomeInPaybackYear > 0
-          ? Math.min(Math.ceil(amountNeededAtStart / monthlyTakeHomeInPaybackYear), 12)
+          ? Math.min(Math.ceil(amountNeededAtStartOfYear / monthlyTakeHomeInPaybackYear), 12)
           : null;
       paybackMonth = monthsIntoYear ? `Year ${year}, month ${monthsIntoYear}` : `Year ${year}`;
       paybackMonthsExact = monthsIntoYear ? (year - 1) * 12 + monthsIntoYear : year * 12;
@@ -134,6 +190,8 @@ function buildProjection(args: {
       takeHome,
       cumulativeTakeHome,
       cumulativeValue,
+      cumulativeTakeHomeNegative: cumulativeValue < 0 ? cumulativeTakeHome : null,
+      cumulativeTakeHomePositive: cumulativeValue >= 0 ? cumulativeTakeHome : null,
       roiOnOriginalCapital:
         args.initialInvestment > 0 ? cumulativeTakeHome / args.initialInvestment : 0,
       milestone: milestoneLabel(cumulativeTakeHome, args.initialInvestment),
@@ -142,6 +200,47 @@ function buildProjection(args: {
   }
 
   return {rows, paybackYear, paybackMonth, paybackMonthsExact};
+}
+
+function addPaybackCrossoverRows(rows: Row[], initialInvestment: number) {
+  const withCrossovers: Row[] = [];
+
+  for (let i = 0; i < rows.length; i += 1) {
+    const current = rows[i];
+    const next = rows[i + 1];
+    withCrossovers.push(current);
+    if (!next) continue;
+
+    const crossesThreshold =
+      current.cumulativeTakeHome < initialInvestment && next.cumulativeTakeHome > initialInvestment;
+    if (!crossesThreshold) continue;
+
+    const segmentDelta = next.cumulativeTakeHome - current.cumulativeTakeHome;
+    const t =
+      segmentDelta === 0
+        ? 0
+        : (initialInvestment - current.cumulativeTakeHome) / segmentDelta;
+    const crossYear = current.year + t * (next.year - current.year);
+
+    withCrossovers.push({
+      year: Number(crossYear.toFixed(2)),
+      annualNetProfit:
+        current.annualNetProfit + t * (next.annualNetProfit - current.annualNetProfit),
+      investorShare: current.investorShare + t * (next.investorShare - current.investorShare),
+      reinvested: current.reinvested + t * (next.reinvested - current.reinvested),
+      takeHome: current.takeHome + t * (next.takeHome - current.takeHome),
+      cumulativeTakeHome: initialInvestment,
+      cumulativeValue: 0,
+      cumulativeTakeHomeNegative: null,
+      cumulativeTakeHomePositive: initialInvestment,
+      roiOnOriginalCapital: 1,
+      milestone: 'Capital repaid',
+      milestoneColor: 'green',
+      isSynthetic: true,
+    });
+  }
+
+  return withCrossovers.sort((a, b) => a.year - b.year);
 }
 
 function solveMonthlyRevenueForPayback(args: {
@@ -192,209 +291,268 @@ function solveMonthlyRevenueForPayback(args: {
   return Math.round(high);
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
-function parseNumericInput(value: string, fallback: number) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
+function renderStatList(metrics: ReportMetric[]) {
+  return metrics
+    .map(
+      (metric) => `
+        <div class="pdf-stat-line">
+          <span>${escapeHtml(metric.label)}</span>
+          <strong>${escapeHtml(metric.value)}</strong>
+        </div>
+      `,
+    )
+    .join('');
 }
 
-function rangeLabel(color: MilestoneColor) {
-  if (color === 'red') return 'milestone milestone-red';
-  if (color === 'amber') return 'milestone milestone-amber';
-  if (color === 'green') return 'milestone milestone-green';
-  return 'milestone milestone-violet';
-}
-
-function MetricCard(props: {
-  icon: typeof DollarSign;
-  label: string;
-  value: string;
-  detail: string;
+function buildPdfReportHtml(args: {
+  generatedAt: string;
+  initialInvestment: number;
+  monthlyRevenue: number;
+  monthlyNetProfit: number;
+  paybackMonth: string | null;
+  cumulativeTakeHome: number;
+  totalROI: number;
+  year10TakeHome: number;
+  assumptions: ReportMetric[];
+  filters: ReportMetric[];
+  bridge: ReportMetric[];
+  rows: Row[];
 }) {
+  const tableRows = args.rows
+    .map(
+      (row) => `
+        <tr>
+          <td>Year ${row.year}</td>
+          <td>${escapeHtml(currency.format(row.annualNetProfit))}</td>
+          <td>${escapeHtml(currency.format(row.takeHome))}</td>
+          <td>${escapeHtml(currency.format(row.cumulativeTakeHome))}</td>
+          <td>${escapeHtml(currency.format(row.cumulativeValue))}</td>
+          <td>${escapeHtml(row.milestone)}</td>
+        </tr>
+      `,
+    )
+    .join('');
+
+  return `<!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <title>Investor Income Projection Report</title>
+      <style>
+        @page { size: Letter; margin: 0.5in; }
+        * { box-sizing: border-box; }
+        body { margin: 0; color: #0f172a; font-family: Inter, Arial, sans-serif; background: #fff; }
+        .report { display: grid; gap: 16px; }
+        .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; }
+        .eyebrow, h2 { margin: 0; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; color: #64748b; }
+        h1 { margin: 6px 0 10px; font-size: 28px; line-height: .95; letter-spacing: -.04em; }
+        p { margin: 0; font-size: 12px; line-height: 1.55; }
+        .panel { border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; background: #f8fafc; }
+        .meta { color: #64748b; display: grid; gap: 4px; }
+        .summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .metric { border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; }
+        .metric strong { display: block; margin-top: 6px; font-size: 20px; letter-spacing: -.03em; }
+        .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .pdf-stat-line { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+        .pdf-stat-line:last-child { border-bottom: 0; padding-bottom: 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 10px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; background: #eef2ff; color: #64748b; }
+        td { padding: 9px 8px; border-bottom: 1px solid #e2e8f0; font-size: 12px; }
+        tbody tr:nth-child(even) { background: #fbfdff; }
+      </style>
+    </head>
+    <body>
+      <main class="report">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Investor Income Projection</p>
+            <h1>10-Year financing dashboard report</h1>
+            <p>Clean PDF export of the current dashboard state, including live assumption edits and scenario changes.</p>
+          </div>
+          <div class="panel meta">
+            <p>Generated ${escapeHtml(args.generatedAt)}</p>
+            <p>Payback: ${escapeHtml(args.paybackMonth ?? 'Beyond 10 years')}</p>
+            <p>Year 10 take-home: ${escapeHtml(currency.format(args.year10TakeHome))}</p>
+          </div>
+        </section>
+        <section class="summary">
+          <article class="metric"><p class="eyebrow">Initial investment</p><strong>${escapeHtml(currency.format(args.initialInvestment))}</strong></article>
+          <article class="metric"><p class="eyebrow">Monthly revenue</p><strong>${escapeHtml(currency.format(args.monthlyRevenue))}</strong></article>
+          <article class="metric"><p class="eyebrow">Monthly net profit</p><strong>${escapeHtml(currency.format(args.monthlyNetProfit))}</strong></article>
+          <article class="metric"><p class="eyebrow">Payback</p><strong>${escapeHtml(args.paybackMonth ?? 'Beyond 10 years')}</strong></article>
+          <article class="metric"><p class="eyebrow">10-year take-home</p><strong>${escapeHtml(currency.format(args.cumulativeTakeHome))}</strong></article>
+          <article class="metric"><p class="eyebrow">10-year ROI</p><strong>${escapeHtml(percent.format(args.totalROI))}</strong></article>
+        </section>
+        <section class="cols">
+          <article class="panel"><h2>Operating Assumptions</h2>${renderStatList(args.assumptions)}</article>
+          <article class="panel"><h2>Investor Filters</h2>${renderStatList(args.filters)}</article>
+        </section>
+        <section class="cols">
+          <article class="panel"><h2>Return Bridge</h2>${renderStatList(args.bridge)}</article>
+          <article class="panel"><h2>Reading Notes</h2><p>Cumulative value equals cumulative take-home less original invested capital.</p><p>Milestones show the recovery path from underwater to compounding asset.</p></article>
+        </section>
+        <section class="panel">
+          <h2>10-Year Schedule</h2>
+          <table>
+            <thead>
+              <tr><th>Year</th><th>Annual net profit</th><th>Investor take-home</th><th>Cumulative take-home</th><th>Cumulative value</th><th>Milestone</th></tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </section>
+      </main>
+      <script>window.onload = () => window.print();</script>
+    </body>
+  </html>`;
+}
+
+function FieldLabel(props: {children: ReactNode}) {
+  return <label className="model-ui-label">{props.children}</label>;
+}
+
+function DrilldownCard(props: DrilldownCardProps) {
   const Icon = props.icon;
 
   return (
-    <article className="model-card model-card-metric">
-      <div className="model-card-topline">
-        <span className="model-card-icon">
-          <Icon size={15} />
-        </span>
-        <p className="model-label">{props.label}</p>
+    <div className="model-drilldown">
+      <div className={`model-card model-drilldown-card ${props.open ? 'is-open' : ''}`}>
+        <button type="button" onClick={props.onToggle} className="model-card-button">
+          <div className="model-card-body">
+            <div className="model-card-row">
+              <div className="model-card-copy">
+                <div className="model-card-kicker">
+                  <Icon size={16} />
+                  {props.title}
+                </div>
+                <div className="model-card-value">{props.value}</div>
+                {props.subtitle ? <div className="model-card-subtitle">{props.subtitle}</div> : null}
+              </div>
+              <div className="model-card-chevron">
+                {props.open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </div>
+            </div>
+          </div>
+        </button>
       </div>
-      <p className="model-metric-value">{props.value}</p>
-      <p className="model-copy model-copy-muted">{props.detail}</p>
-    </article>
-  );
-}
 
-function SliderField(props: {
-  label: string;
-  valueLabel: string;
-  min: number;
-  max: number;
-  step: number;
-  value: number;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <label className="model-field">
-      <span className="model-field-topline">
-        <span>{props.label}</span>
-        <strong>{props.valueLabel}</strong>
-      </span>
-      <input
-        type="range"
-        min={props.min}
-        max={props.max}
-        step={props.step}
-        value={props.value}
-        onChange={(event) => props.onChange(Number(event.target.value))}
-      />
-    </label>
-  );
-}
-
-function NumberField(props: {
-  label: string;
-  value: number;
-  prefix?: string;
-  suffix?: string;
-  step?: number;
-  min?: number;
-  max?: number;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <label className="model-number-field">
-      <span>{props.label}</span>
-      <div className="model-number-shell">
-        {props.prefix ? <span>{props.prefix}</span> : null}
-        <input
-          type="number"
-          value={props.value}
-          step={props.step ?? 1}
-          min={props.min}
-          max={props.max}
-          onChange={(event) => props.onChange(Number(event.target.value))}
-        />
-        {props.suffix ? <span>{props.suffix}</span> : null}
-      </div>
-    </label>
-  );
-}
-
-function StatLine(props: {label: string; value: string; emphatic?: boolean}) {
-  return (
-    <div className={`model-stat-line ${props.emphatic ? 'is-emphatic' : ''}`}>
-      <span>{props.label}</span>
-      <strong>{props.value}</strong>
+      {props.open ? (
+        <>
+          <button type="button" aria-label="Close panel" onClick={props.onClose} className="model-overlay" />
+          <div className="model-drilldown-panel">
+            <div className="model-drilldown-header">
+              <div className="model-card-kicker">
+                <Icon size={16} />
+                {props.title}
+              </div>
+              <div className="model-drilldown-value">{props.value}</div>
+            </div>
+            <div className="model-drilldown-content">{props.children}</div>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
 
-function LineChart(props: {
-  data: Row[];
-  initialInvestment: number;
-  mode: 'cumulative' | 'annual';
-}) {
-  const width = 860;
-  const height = 320;
-  const padding = {top: 20, right: 16, bottom: 30, left: 70};
-  const innerWidth = width - padding.left - padding.right;
-  const innerHeight = height - padding.top - padding.bottom;
-
-  const values =
-    props.mode === 'cumulative'
-      ? props.data.flatMap((row) => [row.cumulativeTakeHome, row.cumulativeValue, props.initialInvestment])
-      : props.data.flatMap((row) => [row.annualNetProfit, row.takeHome]);
-
-  const minValue = Math.min(0, ...values);
-  const maxValue = Math.max(...values);
-  const span = maxValue - minValue || 1;
-
-  const x = (year: number) =>
-    padding.left + ((year - 1) / Math.max(props.data.length - 1, 1)) * innerWidth;
-  const y = (value: number) => padding.top + (1 - (value - minValue) / span) * innerHeight;
-  const pathFor = (selector: (row: Row) => number) =>
-    props.data
-      .map((row, index) => `${index === 0 ? 'M' : 'L'} ${x(row.year)} ${y(selector(row))}`)
-      .join(' ');
-
-  const zeroY = y(0);
-  const investmentY = y(props.initialInvestment);
+function FilterCard(props: FilterCardProps) {
+  const Icon = props.icon;
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="model-chart" role="img">
-      <title>
-        {props.mode === 'cumulative'
-          ? 'Cumulative investor income compared with initial investment'
-          : 'Annual net profit and investor take-home'}
-      </title>
-      <rect x="0" y="0" width={width} height={height} rx="20" className="model-chart-bg" />
-      {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-        const currentY = padding.top + ratio * innerHeight;
-        const value = Math.round(maxValue - ratio * span);
-        return (
-          <g key={ratio}>
-            <line
-              x1={padding.left}
-              y1={currentY}
-              x2={width - padding.right}
-              y2={currentY}
-              className="model-grid-line"
-            />
-            <text x={12} y={currentY + 4} className="model-axis-label">
-              {currency.format(value)}
-            </text>
-          </g>
-        );
-      })}
-      {props.data.map((row) => (
-        <g key={row.year}>
-          <line
-            x1={x(row.year)}
-            y1={padding.top}
-            x2={x(row.year)}
-            y2={height - padding.bottom}
-            className="model-grid-line model-grid-line-vertical"
-          />
-          <text x={x(row.year)} y={height - 8} textAnchor="middle" className="model-axis-label">
-            Y{row.year}
-          </text>
-        </g>
-      ))}
-      <line
-        x1={padding.left}
-        y1={zeroY}
-        x2={width - padding.right}
-        y2={zeroY}
-        className="model-threshold-line"
-      />
-      {props.mode === 'cumulative' ? (
-        <line
-          x1={padding.left}
-          y1={investmentY}
-          x2={width - padding.right}
-          y2={investmentY}
-          className="model-investment-line"
-        />
-      ) : null}
-      {props.mode === 'cumulative' ? (
-        <>
-          <path d={pathFor((row) => row.cumulativeTakeHome)} className="model-series model-series-green" />
-          <path d={pathFor((row) => row.cumulativeValue)} className="model-series model-series-blue" />
-        </>
-      ) : (
-        <>
-          <path d={pathFor((row) => row.annualNetProfit)} className="model-series model-series-blue" />
-          <path d={pathFor((row) => row.takeHome)} className="model-series model-series-violet" />
-        </>
-      )}
-    </svg>
+    <div className="model-card model-filter-card">
+      <div className="model-card-body">
+        <div className="model-card-copy">
+          <div className="model-card-kicker">
+            <Icon size={16} />
+            {props.title}
+          </div>
+          <div className="model-card-value">{props.value}</div>
+          {props.subtitle ? <div className="model-card-subtitle">{props.subtitle}</div> : null}
+        </div>
+        <div className="model-filter-body">{props.children}</div>
+      </div>
+    </div>
   );
+}
+
+function EditableLineItem(props: EditableLineItemProps) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(String(props.value));
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setDraft(String(props.value));
+  }, [props.value]);
+
+  useEffect(() => {
+    if (editing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [editing]);
+
+  function commit() {
+    let next = Number(draft);
+    if (!Number.isFinite(next)) {
+      setDraft(String(props.value));
+      setEditing(false);
+      return;
+    }
+    if (typeof props.min === 'number') next = Math.max(props.min, next);
+    if (typeof props.max === 'number') next = Math.min(props.max, next);
+    props.onSave(next);
+    setEditing(false);
+  }
+
+  return (
+    <button type="button" onClick={() => setEditing(true)} className="model-editable-row">
+      <span>{props.label}</span>
+      {editing ? (
+        <input
+          ref={inputRef}
+          type="number"
+          step={props.step ?? '1'}
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          onBlur={commit}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') commit();
+            if (event.key === 'Escape') {
+              setDraft(String(props.value));
+              setEditing(false);
+            }
+          }}
+          className="model-editable-input"
+          onClick={(event) => event.stopPropagation()}
+        />
+      ) : (
+        <span className="model-editable-value">
+          {(props.formatter ?? ((value) => currency.format(value)))(props.value)}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function badgeClasses(color: MilestoneColor) {
+  switch (color) {
+    case 'red':
+      return 'model-badge model-badge-red';
+    case 'amber':
+      return 'model-badge model-badge-amber';
+    case 'green':
+      return 'model-badge model-badge-green';
+    default:
+      return 'model-badge model-badge-violet';
+  }
 }
 
 export default function CoffeeShopFinancingModelPage() {
@@ -414,6 +572,7 @@ export default function CoffeeShopFinancingModelPage() {
   const [downYear, setDownYear] = useState(DEFAULTS.downYear);
   const [downturnImpact, setDownturnImpact] = useState(DEFAULTS.downturnImpact);
   const [targetPaybackMonths, setTargetPaybackMonths] = useState(DEFAULTS.targetPaybackMonths);
+  const [openCard, setOpenCard] = useState('');
 
   const initialInvestment = buyoutPrice + retrofitCost + franchiseFee;
 
@@ -453,17 +612,25 @@ export default function CoffeeShopFinancingModelPage() {
     ],
   );
 
+  const graph1Rows = useMemo(
+    () => addPaybackCrossoverRows(projection.rows, initialInvestment),
+    [projection.rows, initialInvestment],
+  );
+
   const summary = useMemo(() => {
     const finalYear = projection.rows[projection.rows.length - 1];
     const avgAnnualTakeHome =
       projection.rows.reduce((sum, row) => sum + row.takeHome, 0) / projection.rows.length;
 
     return {
+      paybackYear: projection.paybackYear,
       paybackMonth: projection.paybackMonth,
+      paybackMonthsExact: projection.paybackMonthsExact,
       cumulativeTakeHome: finalYear?.cumulativeTakeHome ?? 0,
-      totalROI: initialInvestment > 0 ? (finalYear?.cumulativeTakeHome ?? 0) / initialInvestment : 0,
-      avgAnnualTakeHome,
       year10TakeHome: finalYear?.takeHome ?? 0,
+      totalROI:
+        initialInvestment > 0 ? (finalYear?.cumulativeTakeHome ?? 0) / initialInvestment : 0,
+      avgAnnualTakeHome,
     };
   }, [projection, initialInvestment]);
 
@@ -496,8 +663,55 @@ export default function CoffeeShopFinancingModelPage() {
     summary.avgAnnualTakeHome,
   ]);
 
+  const paybackPoint = graph1Rows.find((row) => row.cumulativeTakeHome >= initialInvestment);
+  const minCumulativeValue = Math.min(...graph1Rows.map((row) => row.cumulativeValue), 0);
+  const maxGraphValue = Math.max(
+    ...graph1Rows.map((row) => Math.max(row.cumulativeTakeHome, row.cumulativeValue)),
+    0,
+    initialInvestment * 1.05,
+  );
+
+  const reportAssumptions = useMemo<ReportMetric[]>(
+    () => [
+      {label: 'Buyout price', value: currency.format(buyoutPrice)},
+      {label: 'Retrofit + FF&E', value: currency.format(retrofitCost)},
+      {label: 'Franchise fee', value: currency.format(franchiseFee)},
+      {label: 'COGS', value: percent.format(cogsPct)},
+      {label: 'Labor', value: currency.format(labor)},
+      {label: 'Rent', value: currency.format(rent)},
+      {label: 'Utilities', value: currency.format(utilities)},
+      {label: 'Insurance + misc', value: currency.format(insuranceMisc)},
+      {label: 'Tax rate', value: percent.format(taxRate)},
+    ],
+    [buyoutPrice, retrofitCost, franchiseFee, cogsPct, labor, rent, utilities, insuranceMisc, taxRate],
+  );
+
+  const reportFilters = useMemo<ReportMetric[]>(
+    () => [
+      {label: 'Annual growth', value: `${annualGrowthRate}%`},
+      {label: 'Owner distribution', value: `${ownerDistribution}%`},
+      {label: 'Reinvestment', value: `${reinvestmentRate}%`},
+      {label: 'Target payback', value: `${targetPaybackMonths} months`},
+      {label: 'Down year', value: `${downYear}`},
+      {label: 'Downturn impact', value: `${downturnImpact}%`},
+    ],
+    [annualGrowthRate, ownerDistribution, reinvestmentRate, targetPaybackMonths, downYear, downturnImpact],
+  );
+
+  const reportBridge = useMemo<ReportMetric[]>(
+    () => [
+      {label: 'Year 1 annual net profit', value: currency.format(roiBridge.yearOneAnnualNetProfit)},
+      {label: 'Investor distribution', value: currency.format(roiBridge.distributedProfit)},
+      {label: 'Take-home after reinvestment', value: currency.format(roiBridge.takeHomeAfterReinvestment)},
+      {label: 'Year 1 cash yield', value: percent.format(roiBridge.simpleCashYield)},
+      {label: 'Growth contribution', value: percent.format(roiBridge.growthContribution)},
+      {label: '10-year ROI on original capital', value: percent.format(summary.totalROI)},
+    ],
+    [roiBridge, summary.totalROI],
+  );
+
   function setDesiredPayback(months: number) {
-    const safeMonths = clamp(Math.round(months), 6, 120);
+    const safeMonths = Math.max(6, Math.min(120, Math.round(months)));
     setTargetPaybackMonths(safeMonths);
     const requiredRevenue = solveMonthlyRevenueForPayback({
       targetPaybackMonths: safeMonths,
@@ -534,322 +748,387 @@ export default function CoffeeShopFinancingModelPage() {
     setDownYear(DEFAULTS.downYear);
     setDownturnImpact(DEFAULTS.downturnImpact);
     setTargetPaybackMonths(DEFAULTS.targetPaybackMonths);
+    setOpenCard('');
   }
 
   function downloadReport() {
-    const lines = [
-      'Coffee Shop Financing Model',
-      'Interactive investor income projection report',
-      '',
-      `Initial investment: ${currency.format(initialInvestment)}`,
-      `Monthly revenue: ${currency.format(monthlyRevenue)}`,
-      `Monthly net profit: ${currency.format(monthlyPnl.netProfit)}`,
-      `Estimated payback: ${summary.paybackMonth ?? 'Beyond 10 years'}`,
-      `10-year cumulative take-home: ${currency.format(summary.cumulativeTakeHome)}`,
-      `10-year ROI: ${percent.format(summary.totalROI)}`,
-      '',
-      'Operating assumptions',
-      `Buyout price: ${currency.format(buyoutPrice)}`,
-      `Retrofit + FF&E: ${currency.format(retrofitCost)}`,
-      `Franchise fee: ${currency.format(franchiseFee)}`,
-      `COGS: ${percent.format(cogsPct)}`,
-      `Labor: ${currency.format(labor)}`,
-      `Rent: ${currency.format(rent)}`,
-      `Utilities: ${currency.format(utilities)}`,
-      `Insurance + misc: ${currency.format(insuranceMisc)}`,
-      `Tax rate: ${percent.format(taxRate)}`,
-      '',
-      'Investor filters',
-      `Annual growth: ${annualGrowthRate}%`,
-      `Owner distribution: ${ownerDistribution}%`,
-      `Reinvestment: ${reinvestmentRate}%`,
-      `Down year: ${downYear}`,
-      `Downturn impact: ${downturnImpact}%`,
-      `Target payback: ${targetPaybackMonths} months`,
-      '',
-      '10-year schedule',
-      ...projection.rows.map(
-        (row) =>
-          `Year ${row.year}: take-home ${currency.format(row.takeHome)}, cumulative ${currency.format(
-            row.cumulativeTakeHome,
-          )}, value ${currency.format(row.cumulativeValue)}, status ${row.milestone}`,
-      ),
-    ];
+    const reportHtml = buildPdfReportHtml({
+      generatedAt: new Date().toLocaleString(),
+      initialInvestment,
+      monthlyRevenue,
+      monthlyNetProfit: monthlyPnl.netProfit,
+      paybackMonth: summary.paybackMonth,
+      cumulativeTakeHome: summary.cumulativeTakeHome,
+      totalROI: summary.totalROI,
+      year10TakeHome: summary.year10TakeHome,
+      assumptions: reportAssumptions,
+      filters: reportFilters,
+      bridge: reportBridge,
+      rows: projection.rows,
+    });
 
-    const blob = new Blob([lines.join('\n')], {type: 'text/plain;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'coffeeshop-financing-report.txt';
-    link.click();
-    URL.revokeObjectURL(url);
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=1100,height=900');
+    if (!printWindow) return;
+    printWindow.document.open();
+    printWindow.document.write(reportHtml);
+    printWindow.document.close();
   }
 
   return (
-    <div className="model-app">
-      <div className="model-shell">
-        <section className="model-hero">
-          <div className="model-hero-copy">
-            <p className="model-kicker">Coffee Shop Financing Model</p>
-            <h1 className="model-title">10-year investor income projection dashboard</h1>
-            <p className="model-copy model-copy-lead">
-              An interactive underwriting model built from the attached assumptions, optimized for
-              scenario review, payback calibration, and downloadable reporting.
+    <div className="model-dashboard-app">
+      <div className="model-dashboard-shell">
+        <div className="model-topbar-card">
+          <div className="model-topbar-copy">
+            <h1>10-Year Investor Income Projection</h1>
+            <p>
+              Interactive view of how your take-home income could evolve over 10 years. Optimized
+              for one-page desktop review and a stacked mobile layout.
             </p>
           </div>
-          <div className="model-hero-actions">
-            <button type="button" className="model-action" onClick={resetChanges}>
+          <div className="model-topbar-actions">
+            <button type="button" onClick={resetChanges} className="model-ghost-button">
               <RotateCcw size={16} />
-              Reset assumptions
+              Reset changes
             </button>
-            <button type="button" className="model-action model-action-primary" onClick={downloadReport}>
+            <button type="button" onClick={downloadReport} className="model-primary-button">
               <Download size={16} />
               Download report
             </button>
           </div>
-        </section>
+        </div>
 
-        <section className="model-metric-grid">
-          <MetricCard
+        <div className="model-kpi-grid">
+          <DrilldownCard
+            title="Initial investment"
             icon={DollarSign}
-            label="Initial investment"
             value={currency.format(initialInvestment)}
-            detail="Buyout, retrofit, and franchise fee combined."
-          />
-          <MetricCard
-            icon={TrendingUp}
-            label="Monthly net profit"
-            value={currency.format(monthlyPnl.netProfit)}
-            detail="Derived directly from the operating assumptions."
-          />
-          <MetricCard
-            icon={Calendar}
-            label="Estimated payback"
-            value={summary.paybackMonth ?? 'Beyond 10 years'}
-            detail={`${targetPaybackMonths} month target currently driving revenue calibration.`}
-          />
-          <MetricCard
-            icon={Target}
-            label="10-year ROI"
-            value={percent.format(summary.totalROI)}
-            detail={`${currency.format(summary.cumulativeTakeHome)} cumulative investor take-home.`}
-          />
-        </section>
-
-        <section className="model-section">
-          <div className="model-section-head">
-            <h2 className="model-section-title">Assumptions and controls</h2>
-            <p className="model-copy model-copy-muted">
-              Adjust capital costs, monthly economics, or investor filters and the model updates
-              immediately.
-            </p>
-          </div>
-          <div className="model-layout">
-            <article className="model-card">
-              <div className="model-card-topline">
-                <span className="model-card-icon">
-                  <Receipt size={15} />
-                </span>
-                <p className="model-label">Capital stack</p>
-              </div>
-              <div className="model-number-grid">
-                <NumberField label="Buyout price" value={buyoutPrice} prefix="$" onChange={setBuyoutPrice} />
-                <NumberField label="Retrofit + FF&E" value={retrofitCost} prefix="$" onChange={setRetrofitCost} />
-                <NumberField label="Franchise fee" value={franchiseFee} prefix="$" onChange={setFranchiseFee} />
-              </div>
-              <div className="model-stat-list">
-                <StatLine label="Total initial investment" value={currency.format(initialInvestment)} emphatic />
-              </div>
-            </article>
-
-            <article className="model-card">
-              <div className="model-card-topline">
-                <span className="model-card-icon">
-                  <TrendingUp size={15} />
-                </span>
-                <p className="model-label">Monthly P&amp;L</p>
-              </div>
-              <div className="model-number-grid">
-                <NumberField label="Monthly revenue" value={monthlyRevenue} prefix="$" onChange={setMonthlyRevenue} />
-                <NumberField
-                  label="COGS"
-                  value={Math.round(cogsPct * 100)}
-                  suffix="%"
-                  min={0}
-                  max={100}
-                  onChange={(value) => setCogsPct(clamp(value / 100, 0, 1))}
-                />
-                <NumberField label="Labor" value={labor} prefix="$" onChange={setLabor} />
-                <NumberField label="Rent" value={rent} prefix="$" onChange={setRent} />
-                <NumberField label="Utilities" value={utilities} prefix="$" onChange={setUtilities} />
-                <NumberField label="Insurance + misc" value={insuranceMisc} prefix="$" onChange={setInsuranceMisc} />
-                <NumberField
-                  label="Tax rate"
-                  value={Math.round(taxRate * 100)}
-                  suffix="%"
-                  min={0}
-                  max={100}
-                  onChange={(value) => setTaxRate(clamp(value / 100, 0, 1))}
-                />
-              </div>
-              <div className="model-stat-list">
-                <StatLine label="Pre-tax profit" value={currency.format(monthlyPnl.pretaxProfit)} />
-                <StatLine label="Taxes" value={currency.format(monthlyPnl.taxes)} />
-                <StatLine label="Monthly net profit" value={currency.format(monthlyPnl.netProfit)} emphatic />
-              </div>
-            </article>
-
-            <article className="model-card">
-              <div className="model-card-topline">
-                <span className="model-card-icon">
-                  <Target size={15} />
-                </span>
-                <p className="model-label">Scenario controls</p>
-              </div>
-              <div className="model-slider-stack">
-                <SliderField
-                  label="Annual growth"
-                  valueLabel={`${annualGrowthRate}%`}
-                  min={-5}
-                  max={15}
-                  step={0.5}
-                  value={annualGrowthRate}
-                  onChange={setAnnualGrowthRate}
-                />
-                <SliderField
-                  label="Owner distribution"
-                  valueLabel={`${ownerDistribution}%`}
-                  min={10}
-                  max={100}
-                  step={5}
-                  value={ownerDistribution}
-                  onChange={setOwnerDistribution}
-                />
-                <SliderField
-                  label="Reinvestment rate"
-                  valueLabel={`${reinvestmentRate}%`}
-                  min={0}
-                  max={60}
-                  step={5}
-                  value={reinvestmentRate}
-                  onChange={setReinvestmentRate}
-                />
-                <SliderField
-                  label="Down year"
-                  valueLabel={`Year ${downYear}`}
-                  min={1}
-                  max={10}
-                  step={1}
-                  value={downYear}
-                  onChange={setDownYear}
-                />
-                <SliderField
-                  label="Downturn impact"
-                  valueLabel={`${downturnImpact}%`}
-                  min={0}
-                  max={80}
-                  step={5}
-                  value={downturnImpact}
-                  onChange={setDownturnImpact}
-                />
-                <label className="model-field">
-                  <span className="model-field-topline">
-                    <span>Target payback</span>
-                    <strong>{targetPaybackMonths} months</strong>
-                  </span>
+            subtitle="Includes buyout, retrofit, and franchise fee"
+            open={openCard === 'initialInvestment'}
+            onToggle={() => setOpenCard(openCard === 'initialInvestment' ? '' : 'initialInvestment')}
+            onClose={() => setOpenCard('')}
+          >
+            <div className="model-stack">
+              <div className="model-form-grid">
+                <div>
+                  <FieldLabel>Buyout price</FieldLabel>
                   <input
-                    type="range"
-                    min="6"
-                    max="120"
-                    step="1"
-                    value={targetPaybackMonths}
-                    onChange={(event) => setDesiredPayback(Number(event.target.value))}
-                  />
-                  <input
-                    className="model-inline-input"
+                    className="model-input"
                     type="number"
-                    min="6"
-                    max="120"
-                    value={targetPaybackMonths}
-                    onChange={(event) => setDesiredPayback(parseNumericInput(event.target.value, 6))}
+                    value={buyoutPrice}
+                    onChange={(event) => setBuyoutPrice(Number(event.target.value) || 0)}
                   />
-                </label>
+                </div>
+                <div>
+                  <FieldLabel>Retrofit + FF&amp;E</FieldLabel>
+                  <input
+                    className="model-input"
+                    type="number"
+                    value={retrofitCost}
+                    onChange={(event) => setRetrofitCost(Number(event.target.value) || 0)}
+                  />
+                </div>
+                <div>
+                  <FieldLabel>Franchise fee</FieldLabel>
+                  <input
+                    className="model-input"
+                    type="number"
+                    value={franchiseFee}
+                    onChange={(event) => setFranchiseFee(Number(event.target.value) || 0)}
+                  />
+                </div>
               </div>
-            </article>
-          </div>
-        </section>
+              <div className="model-inline-heading">
+                <Receipt size={16} />
+                Assumptions
+              </div>
+              <div className="model-stack-sm">
+                <div className="model-stat-pill"><span>Buyout price</span><strong>{currency.format(buyoutPrice)}</strong></div>
+                <div className="model-stat-pill"><span>Retrofit + FF&amp;E</span><strong>{currency.format(retrofitCost)}</strong></div>
+                <div className="model-stat-pill"><span>Franchise fee</span><strong>{currency.format(franchiseFee)}</strong></div>
+                <div className="model-stat-pill model-stat-pill-dark"><span>Total initial investment</span><strong>{currency.format(initialInvestment)}</strong></div>
+              </div>
+            </div>
+          </DrilldownCard>
 
-        <section className="model-section">
-          <div className="model-section-head">
-            <h2 className="model-section-title">Performance view</h2>
-            <p className="model-copy model-copy-muted">
-              The charts below keep the original dashboard intent while remaining lightweight and
-              dependency-free.
-            </p>
-          </div>
-          <div className="model-chart-grid">
-            <article className="model-card">
-              <p className="model-label">Cumulative income vs invested capital</p>
-              <p className="model-copy model-copy-muted">
-                Green tracks gross investor take-home. Blue tracks cumulative value after recovering
-                the initial investment.
-              </p>
-              <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="cumulative" />
-            </article>
-            <article className="model-card">
-              <p className="model-label">Annual profit vs investor take-home</p>
-              <p className="model-copy model-copy-muted">
-                Blue shows annual net profit before owner split. Violet shows investor cash after
-                reinvestment.
-              </p>
-              <LineChart data={projection.rows} initialInvestment={initialInvestment} mode="annual" />
-            </article>
-          </div>
-        </section>
-
-        <section className="model-section">
-          <div className="model-section-head">
-            <h2 className="model-section-title">Report summary</h2>
-            <p className="model-copy model-copy-muted">
-              The downloadable export is generated from this computed schedule.
-            </p>
-          </div>
-          <div className="model-layout model-layout-report">
-            <article className="model-card">
-              <p className="model-label">Investor bridge</p>
-              <div className="model-stat-list">
-                <StatLine label="Year 1 annual net profit" value={currency.format(roiBridge.yearOneAnnualNetProfit)} />
-                <StatLine label="Year 1 investor distribution" value={currency.format(roiBridge.distributedProfit)} />
-                <StatLine
-                  label="Year 1 take-home after reinvestment"
-                  value={currency.format(roiBridge.takeHomeAfterReinvestment)}
+          <DrilldownCard
+            title="Monthly net profit"
+            icon={TrendingUp}
+            value={currency.format(monthlyPnl.netProfit)}
+            subtitle="Derived from editable P&L assumptions"
+            open={openCard === 'netProfit'}
+            onToggle={() => setOpenCard(openCard === 'netProfit' ? '' : 'netProfit')}
+            onClose={() => setOpenCard('')}
+          >
+            <div className="model-stack">
+              <div className="model-inline-between">
+                <div className="model-inline-heading">
+                  <Calculator size={16} />
+                  P&amp;L detail
+                </div>
+                <div className="model-caption">Click to edit</div>
+              </div>
+              <div className="model-stack-sm">
+                <EditableLineItem label="Monthly revenue" value={monthlyRevenue} onSave={setMonthlyRevenue} />
+                <EditableLineItem
+                  label={`COGS (${percent.format(cogsPct)})`}
+                  value={cogsPct}
+                  onSave={(value) => setCogsPct(Math.max(0, Math.min(1, value)))}
+                  formatter={(value) => percent.format(value)}
+                  step="0.01"
+                  min={0}
+                  max={1}
                 />
-                <StatLine label="Year 1 cash yield" value={percent.format(roiBridge.simpleCashYield)} />
-                <StatLine label="Growth contribution" value={percent.format(roiBridge.growthContribution)} />
-                <StatLine label="Year 10 take-home" value={currency.format(summary.year10TakeHome)} emphatic />
+                <EditableLineItem label="Labor" value={labor} onSave={setLabor} />
+                <EditableLineItem label="Rent" value={rent} onSave={setRent} />
+                <EditableLineItem label="Utilities" value={utilities} onSave={setUtilities} />
+                <EditableLineItem label="Insurance + misc." value={insuranceMisc} onSave={setInsuranceMisc} />
+                <div className="model-stat-pill"><span>Pre-tax profit</span><strong>{currency.format(monthlyPnl.pretaxProfit)}</strong></div>
+                <EditableLineItem
+                  label={`Tax rate (${percent.format(taxRate)})`}
+                  value={taxRate}
+                  onSave={(value) => setTaxRate(Math.max(0, Math.min(1, value)))}
+                  formatter={(value) => percent.format(value)}
+                  step="0.01"
+                  min={0}
+                  max={1}
+                />
+                <div className="model-stat-pill model-stat-pill-dark"><span>Monthly net profit</span><strong>{currency.format(monthlyPnl.netProfit)}</strong></div>
               </div>
-            </article>
+            </div>
+          </DrilldownCard>
 
-            <article className="model-card">
-              <p className="model-label">10-year milestones</p>
-              <div className="milestone-grid">
-                {projection.rows.map((row) => (
-                  <div key={row.year} className={rangeLabel(row.milestoneColor)}>
-                    <p className="milestone-year">Year {row.year}</p>
-                    <p className="milestone-value">{currency.format(row.takeHome)}</p>
-                    <p className="milestone-tag">{row.milestone}</p>
-                    <p className="milestone-detail">
-                      {currency.format(row.cumulativeTakeHome)} cumulative take-home
-                    </p>
-                    <p className="milestone-detail">
-                      {currency.format(row.cumulativeValue)} cumulative value
-                    </p>
-                  </div>
-                ))}
+          <DrilldownCard
+            title="Annual growth"
+            icon={Target}
+            value={`${annualGrowthRate}%`}
+            subtitle="Expands into the ROI calculation bridge"
+            open={openCard === 'growth'}
+            onToggle={() => setOpenCard(openCard === 'growth' ? '' : 'growth')}
+            onClose={() => setOpenCard('')}
+          >
+            <div className="model-stack">
+              <div>
+                <FieldLabel>Annual growth rate</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="-5"
+                  max="15"
+                  step="0.5"
+                  value={annualGrowthRate}
+                  onChange={(event) => setAnnualGrowthRate(Number(event.target.value))}
+                />
               </div>
-            </article>
+              <div className="model-stack-sm">
+                <div className="model-stat-pill"><span>Year 1 annual net profit</span><strong>{currency.format(roiBridge.yearOneAnnualNetProfit)}</strong></div>
+                <div className="model-stat-pill"><span>Investor distribution</span><strong>{currency.format(roiBridge.distributedProfit)}</strong></div>
+                <div className="model-stat-pill"><span>Take-home after reinvestment</span><strong>{currency.format(roiBridge.takeHomeAfterReinvestment)}</strong></div>
+                <div className="model-stat-pill"><span>Year 1 cash yield</span><strong>{percent.format(roiBridge.simpleCashYield)}</strong></div>
+                <div className="model-stat-pill"><span>Growth effect on average annual take-home</span><strong>{percent.format(roiBridge.growthContribution)}</strong></div>
+                <div className="model-stat-pill model-stat-pill-dark"><span>10-year ROI on original capital</span><strong>{percent.format(summary.totalROI)}</strong></div>
+              </div>
+            </div>
+          </DrilldownCard>
+        </div>
+
+        <div className="model-controls-grid">
+          <div className="model-card">
+            <div className="model-panel-header">
+              <h2>Stress event</h2>
+            </div>
+            <div className="model-stress-grid">
+              <div className="model-stack">
+                <FieldLabel>Down year: {downYear}</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value={downYear}
+                  onChange={(event) => setDownYear(Number(event.target.value))}
+                />
+              </div>
+              <div className="model-stack">
+                <FieldLabel>Profit hit in down year: {downturnImpact}%</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="0"
+                  max="80"
+                  step="5"
+                  value={downturnImpact}
+                  onChange={(event) => setDownturnImpact(Number(event.target.value))}
+                />
+              </div>
+            </div>
           </div>
-        </section>
+
+          <div className="model-filter-grid">
+            <FilterCard title="Owner distribution" icon={DollarSign} value={`${ownerDistribution}%`} subtitle="Editable filter">
+              <div className="model-stack">
+                <FieldLabel>Owner distribution</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="10"
+                  max="100"
+                  step="5"
+                  value={ownerDistribution}
+                  onChange={(event) => setOwnerDistribution(Number(event.target.value))}
+                />
+                <div className="model-stat-pill">
+                  Annual investor share: <strong>{currency.format(roiBridge.distributedProfit)}</strong>
+                </div>
+              </div>
+            </FilterCard>
+
+            <FilterCard title="Reinvestment" icon={TrendingUp} value={`${reinvestmentRate}%`} subtitle="Editable filter">
+              <div className="model-stack">
+                <FieldLabel>Reinvestment rate</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="0"
+                  max="60"
+                  step="5"
+                  value={reinvestmentRate}
+                  onChange={(event) => setReinvestmentRate(Number(event.target.value))}
+                />
+                <div className="model-stat-pill">
+                  Year-1 reinvestment:{' '}
+                  <strong>{currency.format(roiBridge.distributedProfit * (reinvestmentRate / 100))}</strong>
+                </div>
+              </div>
+            </FilterCard>
+
+            <FilterCard title="Payback timing" icon={Calendar} value={`${targetPaybackMonths} mo`} subtitle="Editable filter that recalibrates revenue">
+              <div className="model-stack">
+                <FieldLabel>Target payback: {targetPaybackMonths} months</FieldLabel>
+                <input
+                  className="model-range"
+                  type="range"
+                  min="6"
+                  max="120"
+                  step="1"
+                  value={targetPaybackMonths}
+                  onChange={(event) => setDesiredPayback(Number(event.target.value))}
+                />
+                <input
+                  className="model-input"
+                  type="number"
+                  value={targetPaybackMonths}
+                  onChange={(event) => setDesiredPayback(Number(event.target.value) || 6)}
+                />
+              </div>
+            </FilterCard>
+          </div>
+        </div>
+
+        <div className="model-chart-panels">
+          <div className="model-card">
+            <div className="model-panel-header">
+              <h2>Cumulative investor income vs initial investment</h2>
+            </div>
+            <div className="model-chart-frame">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={graph1Rows} margin={{top: 8, right: 12, left: 8, bottom: 4}}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="year" type="number" domain={[1, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tick={{fontSize: 12}} />
+                  <YAxis tickFormatter={(value) => currency.format(value)} width={88} tick={{fontSize: 12}} />
+                  <Tooltip
+                    content={({active, payload, label}) => {
+                      if (!active || !payload || payload.length === 0) return null;
+                      const row = payload[0]?.payload as Row | undefined;
+                      if (!row) return null;
+                      return (
+                        <div className="model-tooltip">
+                          <div className="model-tooltip-title">Year {label}</div>
+                          <div className={row.cumulativeValue < 0 ? 'model-tooltip-red' : 'model-tooltip-green'}>
+                            Cumulative take-home: {currency.format(row.cumulativeTakeHome)}
+                          </div>
+                          <div className="model-tooltip-blue">
+                            Cumulative value: {currency.format(row.cumulativeValue)}
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Area type="monotone" dataKey="cumulativeTakeHomeNegative" stroke="#dc2626" fill="#fecaca" fillOpacity={0.34} connectNulls />
+                  <Area type="monotone" dataKey="cumulativeTakeHomePositive" stroke="#16a34a" fill="#bbf7d0" fillOpacity={0.34} connectNulls />
+                  <Line type="monotone" dataKey="cumulativeTakeHomeNegative" stroke="#dc2626" strokeWidth={3} dot={false} connectNulls />
+                  <Line type="monotone" dataKey="cumulativeTakeHomePositive" stroke="#16a34a" strokeWidth={3} dot={false} connectNulls />
+                  <Line type="monotone" dataKey="cumulativeValue" stroke="#2563eb" strokeWidth={3} dot={false} />
+                  <ReferenceLine y={0} stroke="#0f172a" strokeDasharray="6 6" label={{value: 'Payback threshold', position: 'insideTopRight', fill: '#0f172a', fontSize: 11}} />
+                  {paybackPoint ? (
+                    <ReferenceLine x={paybackPoint.year} stroke="#334155" strokeDasharray="4 4" label={{value: `Payback: ${summary.paybackMonth}`, angle: -90, position: 'insideLeft', fill: '#334155', fontSize: 11}} />
+                  ) : null}
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="model-chart-notes model-chart-notes-three">
+              <div className="model-note-box">Cumulative take-home switches red or green based on whether cumulative value is below or above zero.</div>
+              <div className="model-note-box model-note-box-blue">Blue line: cumulative value after initial investment.</div>
+              <div className="model-note-box">Hover shows only cumulative take-home and cumulative value.</div>
+            </div>
+          </div>
+
+          <div className="model-card">
+            <div className="model-panel-header">
+              <h2>Annual profit and investor take-home</h2>
+            </div>
+            <div className="model-chart-frame">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={projection.rows} margin={{top: 8, right: 12, left: 8, bottom: 4}}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="year" type="number" domain={[1, 10]} ticks={[1,2,3,4,5,6,7,8,9,10]} tick={{fontSize: 12}} />
+                  <YAxis tickFormatter={(value) => currency.format(value)} width={88} tick={{fontSize: 12}} />
+                  <Tooltip
+                    formatter={(value, name) => [
+                      currency.format(Number(value)),
+                      name === 'annualNetProfit' ? 'Annual net profit' : 'Investor take-home',
+                    ]}
+                    labelFormatter={(label) => `Year ${label}`}
+                  />
+                  <ReferenceLine y={0} stroke="#94a3b8" strokeDasharray="3 3" label={{value: 'Profit baseline', position: 'insideBottomLeft', fill: '#64748b', fontSize: 11}} />
+                  {paybackPoint ? (
+                    <ReferenceLine x={paybackPoint.year} stroke="#475569" strokeDasharray="4 4" label={{value: `Payback year ${Math.floor(paybackPoint.year)}`, angle: -90, position: 'insideLeft', fill: '#475569', fontSize: 11}} />
+                  ) : null}
+                  <Line type="monotone" dataKey="annualNetProfit" stroke="#2563eb" strokeWidth={3} dot={{r: 3, fill: '#2563eb', stroke: '#ffffff', strokeWidth: 2}} />
+                  <Line type="monotone" dataKey="takeHome" stroke="#d946ef" strokeWidth={3} dot={{r: 3, fill: '#d946ef', stroke: '#ffffff', strokeWidth: 2}} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="model-chart-notes">
+              <div className="model-note-box model-note-box-blue">Blue line: annual net profit before owner split.</div>
+              <div className="model-note-box model-note-box-fuchsia">Fuchsia line: investor take-home after split and reinvestment.</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="model-card">
+          <div className="model-panel-header">
+            <h2>Key milestones over 10 years</h2>
+          </div>
+          <div className="model-milestone-grid">
+            {projection.rows.map((row) => (
+              <div key={row.year} className={`model-milestone-card ${row.milestoneColor}`}>
+                <div className="model-milestone-header">
+                  <div>
+                    <div className="model-milestone-year">Year {row.year}</div>
+                    <div className="model-milestone-value">{currency.format(row.takeHome)}</div>
+                  </div>
+                  <span className={badgeClasses(row.milestoneColor)}>{row.milestone}</span>
+                </div>
+                <div className="model-milestone-details">
+                  <div>Cumulative take-home: {currency.format(row.cumulativeTakeHome)}</div>
+                  <div>Cumulative value: {currency.format(row.cumulativeValue)}</div>
+                  <div>ROI to date: {percent.format(row.roiOnOriginalCapital)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
