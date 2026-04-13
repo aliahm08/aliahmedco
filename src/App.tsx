@@ -540,7 +540,7 @@ function HomePage() {
               <a href={profile.b2wUrl} target="_blank" rel="noreferrer" className="entity-link">
                 B2W-ai
               </a>
-              , Founder & CEO, AI Consultancy specializing in SMBs.
+              , Founder & CEO.
             </p>
           </div>
           <div className="stack-item">
@@ -548,7 +548,7 @@ function HomePage() {
               <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
                 WSP
               </a>
-              {' '}Senior Data Analyst, ML Internal Tools for AEC.
+              , Senior Consultant.
             </p>
           </div>
           <div className="stack-item">
@@ -1096,19 +1096,11 @@ export default function App() {
     page = <WorkPage />;
   }
 
-  const utilityLink = route === '/work'
-    ? {href: '/' as Route, label: 'Profile'}
-    : {href: '/work' as Route, label: 'Portfolio'};
-
   return (
     <div className={`site-shell ${slowLoadAnimationsDisabled ? 'slow-load-animations' : ''} ${route === '/work' ? 'site-shell--work' : ''}`}>
       <header className="topbar">
         <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
-        <nav className="topnav" aria-label="Primary">
-          <SmartLink href={utilityLink.href} className={`topnav-link ${route === utilityLink.href ? 'is-active' : ''}`}>
-            {utilityLink.label}
-          </SmartLink>
-        </nav>
+        <nav className="topnav" aria-label="Primary" />
       </header>
 
       <main className="page">{page}</main>
