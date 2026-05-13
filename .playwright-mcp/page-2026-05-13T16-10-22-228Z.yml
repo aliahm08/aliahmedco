@@ -1,0 +1,86 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: Work
+        - heading "Selected work is organized as an index first, then opened as needed." [level=2] [ref=e17]
+        - paragraph [ref=e18]: "The portfolio keeps the surface light for employers, clients, and technical collaborators: project, client, type, role, and scale before long case-study detail."
+      - region "Signal Engine preview stack" [ref=e19]:
+        - generic [ref=e20]:
+          - heading "Signal Engine" [level=1] [ref=e21]
+          - heading "WSP" [level=2] [ref=e22]
+        - generic [ref=e23]:
+          - img [ref=e24]
+          - img [ref=e25]
+          - img [ref=e26]
+          - img [ref=e27]
+          - img [ref=e28]
+          - img [ref=e29]
+          - img [ref=e30]
+        - generic [ref=e31]:
+          - paragraph [ref=e32]:
+            - strong [ref=e33]: Internal Tool
+            - text: ·
+            - strong [ref=e34]: 2024-2025
+            - text: ·
+            - strong [ref=e35]: Product + Engineering
+          - paragraph [ref=e36]: Internal analytics tooling for emerging safety risks and recall detection.
+      - generic "Selected project preview" [ref=e37]:
+        - article [ref=e38]:
+          - button "2024-2025 Signal Engine WSP Internal Tool" [expanded] [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]: 2024-2025
+            - strong [ref=e41]: Signal Engine
+            - generic [ref=e42]: WSP
+            - generic [ref=e43]: Internal Tool
+          - paragraph [ref=e45]:
+            - strong [ref=e46]: Product + Engineering
+            - text: · Enterprise · Internal analytics tooling for emerging safety risks and recall detection.
+        - article [ref=e47]:
+          - button "2023-2024 Delivery Atlas WSP Operations System" [ref=e48] [cursor=pointer]:
+            - generic [ref=e49]: 2023-2024
+            - strong [ref=e50]: Delivery Atlas
+            - generic [ref=e51]: WSP
+            - generic [ref=e52]: Operations System
+        - article [ref=e53]:
+          - button "2022-2023 Reporting Ops WSP Automation" [ref=e54] [cursor=pointer]:
+            - generic [ref=e55]: 2022-2023
+            - strong [ref=e56]: Reporting Ops
+            - generic [ref=e57]: WSP
+            - generic [ref=e58]: Automation
+        - article [ref=e59]:
+          - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61]: 2021-2022
+            - strong [ref=e62]: Design Loop
+            - generic [ref=e63]: LaunchGood
+            - generic [ref=e64]: Growth Platform
+        - article [ref=e65]:
+          - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 2019-2022
+            - strong [ref=e68]: Court Vision
+            - generic [ref=e69]: huupe
+            - generic [ref=e70]: Connected Hardware
+        - article [ref=e71]:
+          - button "2018-2019 Helmet HUD NASA R&D Prototype" [ref=e72] [cursor=pointer]:
+            - generic [ref=e73]: 2018-2019
+            - strong [ref=e74]: Helmet HUD
+            - generic [ref=e75]: NASA
+            - generic [ref=e76]: R&D Prototype
+        - article [ref=e77]:
+          - button "2016-2017 Exhibit Systems Autodesk Prototype Experience" [ref=e78] [cursor=pointer]:
+            - generic [ref=e79]: 2016-2017
+            - strong [ref=e80]: Exhibit Systems
+            - generic [ref=e81]: Autodesk
+            - generic [ref=e82]: Prototype Experience

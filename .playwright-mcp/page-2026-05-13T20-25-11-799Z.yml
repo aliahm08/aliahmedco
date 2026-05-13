@@ -1,0 +1,177 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: Work Background
+        - paragraph [ref=e17]: Product management, design, and developement for Advacned AI, B2B SaaS, and Consumer Products.
+      - generic [ref=e18]:
+        - paragraph [ref=e19]: Project Explorer
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: Product Type
+            - combobox "Product Type" [ref=e23]:
+              - option "All Products" [selected]
+              - option "Automation"
+              - option "Connected Hardware"
+              - option "Data Analytics"
+              - option "Growth Platform"
+              - option "Hardware"
+              - option "Infrastructure"
+              - option "Internal Tool"
+              - option "Operations System"
+              - option "Prototype Experience"
+              - option "R&D Prototype"
+              - option "Research"
+              - option "Robotics"
+          - generic [ref=e24]:
+            - generic [ref=e25]: Role
+            - combobox "Role" [ref=e26]:
+              - option "All Roles" [selected]
+              - option "Analyst + Delivery"
+              - option "Analytics + Systems"
+              - option "Computational Designer"
+              - option "Design Engineering"
+              - option "Design Management"
+              - option "Engineer"
+              - option "Hardware + Product"
+              - option "Innovation Engineer"
+              - option "Product + Engineering"
+              - option "Product Design"
+              - option "Product Engineering"
+              - option "Robotics Engineer"
+      - generic [ref=e27]:
+        - button "All" [ref=e28] [cursor=pointer]
+        - button "Small" [ref=e29] [cursor=pointer]
+        - button "Medium" [ref=e30] [cursor=pointer]
+        - button "Large" [ref=e31] [cursor=pointer]
+      - generic "All projects" [ref=e32]:
+        - article [ref=e33]:
+          - button "2024-2025 Signal Engine Internal Tool Product + Engineering Enterprise" [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]: 2024-2025
+            - strong [ref=e36]:
+              - text: Signal Engine
+              - generic [ref=e37]: +
+            - generic [ref=e38]: Internal Tool
+            - generic [ref=e39]: Product + Engineering
+            - generic [ref=e40]: Enterprise
+        - article [ref=e41]:
+          - button "2023-2024 Delivery Atlas Operations System Analyst + Delivery Enterprise" [ref=e42] [cursor=pointer]:
+            - generic [ref=e43]: 2023-2024
+            - strong [ref=e44]:
+              - text: Delivery Atlas
+              - generic [ref=e45]: +
+            - generic [ref=e46]: Operations System
+            - generic [ref=e47]: Analyst + Delivery
+            - generic [ref=e48]: Enterprise
+        - article [ref=e49]:
+          - button "2022-2023 Reporting Ops Automation Analytics + Systems Enterprise" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: 2022-2023
+            - strong [ref=e52]:
+              - text: Reporting Ops
+              - generic [ref=e53]: +
+            - generic [ref=e54]: Automation
+            - generic [ref=e55]: Analytics + Systems
+            - generic [ref=e56]: Enterprise
+        - article [ref=e57]:
+          - button "2021-2022 Design Loop Growth Platform Design Management Scale-up" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]: 2021-2022
+            - strong [ref=e60]:
+              - text: Design Loop
+              - generic [ref=e61]: +
+            - generic [ref=e62]: Growth Platform
+            - generic [ref=e63]: Design Management
+            - generic [ref=e64]: Scale-up
+        - article [ref=e65]:
+          - button "2019-2022 Court Vision Connected Hardware Hardware + Product Startup" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 2019-2022
+            - strong [ref=e68]:
+              - text: Court Vision
+              - generic [ref=e69]: +
+            - generic [ref=e70]: Connected Hardware
+            - generic [ref=e71]: Hardware + Product
+            - generic [ref=e72]: Startup
+        - article [ref=e73]:
+          - button "2018-2019 Helmet HUD R&D Prototype Engineer Federal" [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: 2018-2019
+            - strong [ref=e76]:
+              - text: Helmet HUD
+              - generic [ref=e77]: +
+            - generic [ref=e78]: R&D Prototype
+            - generic [ref=e79]: Engineer
+            - generic [ref=e80]: Federal
+        - article [ref=e81]:
+          - button "2016-2017 Exhibit Systems Prototype Experience Innovation Engineer Enterprise" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]: 2016-2017
+            - strong [ref=e84]:
+              - text: Exhibit Systems
+              - generic [ref=e85]: +
+            - generic [ref=e86]: Prototype Experience
+            - generic [ref=e87]: Innovation Engineer
+            - generic [ref=e88]: Enterprise
+        - article [ref=e89]:
+          - button "2015-2016 The Dash Hardware Product Engineering Startup" [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: 2015-2016
+            - strong [ref=e92]:
+              - text: The Dash
+              - generic [ref=e93]: +
+            - generic [ref=e94]: Hardware
+            - generic [ref=e95]: Product Engineering
+            - generic [ref=e96]: Startup
+        - article [ref=e97]:
+          - button "2017 Generative Workflows Research Innovation Engineer Enterprise" [ref=e98] [cursor=pointer]:
+            - generic [ref=e99]: "2017"
+            - strong [ref=e100]:
+              - text: Generative Workflows
+              - generic [ref=e101]: +
+            - generic [ref=e102]: Research
+            - generic [ref=e103]: Innovation Engineer
+            - generic [ref=e104]: Enterprise
+        - article [ref=e105]:
+          - button "2016 Droneport Infrastructure Design Engineering Scale-up" [ref=e106] [cursor=pointer]:
+            - generic [ref=e107]: "2016"
+            - strong [ref=e108]:
+              - text: Droneport
+              - generic [ref=e109]: +
+            - generic [ref=e110]: Infrastructure
+            - generic [ref=e111]: Design Engineering
+            - generic [ref=e112]: Scale-up
+        - article [ref=e113]:
+          - button "2018 Inspection Crawlers Robotics Robotics Engineer Enterprise" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]: "2018"
+            - strong [ref=e116]:
+              - text: Inspection Crawlers
+              - generic [ref=e117]: +
+            - generic [ref=e118]: Robotics
+            - generic [ref=e119]: Robotics Engineer
+            - generic [ref=e120]: Enterprise
+        - article [ref=e121]:
+          - button "2014 Replicator Ecosystem Hardware Product Design Scale-up" [ref=e122] [cursor=pointer]:
+            - generic [ref=e123]: "2014"
+            - strong [ref=e124]:
+              - text: Replicator Ecosystem
+              - generic [ref=e125]: +
+            - generic [ref=e126]: Hardware
+            - generic [ref=e127]: Product Design
+            - generic [ref=e128]: Scale-up
+        - article [ref=e129]:
+          - button "2015 Spatial Analytics Data Analytics Computational Designer Enterprise" [ref=e130] [cursor=pointer]:
+            - generic [ref=e131]: "2015"
+            - strong [ref=e132]:
+              - text: Spatial Analytics
+              - generic [ref=e133]: +
+            - generic [ref=e134]: Data Analytics
+            - generic [ref=e135]: Computational Designer
+            - generic [ref=e136]: Enterprise

@@ -1,0 +1,58 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e6]:
+      - link "Work" [ref=e7] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e8] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e9] [cursor=pointer]:
+        - /url: /writing
+      - link "Contact" [ref=e10] [cursor=pointer]:
+        - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: Work
+        - heading "Selected work is organized as an index first, then opened as needed." [level=2] [ref=e16]
+        - paragraph [ref=e17]: "The portfolio keeps the surface light for employers, clients, and technical collaborators: project, client, type, role, and scale before long case-study detail."
+      - generic [ref=e18]:
+        - paragraph [ref=e20]: Signal Engine
+        - button "Open Signal Engine in projects" [ref=e21] [cursor=pointer]:
+          - img "Signal Engine abstract preview 1" [ref=e22]
+          - img "Delivery Atlas abstract preview 1" [ref=e23]
+          - img "Reporting Ops abstract preview 1" [ref=e24]
+          - img "Design Loop abstract preview 1" [ref=e25]
+          - img "Court Vision abstract preview 1" [ref=e26]
+          - img "Helmet HUD abstract preview 1" [ref=e27]
+          - img "Exhibit Systems abstract preview 1" [ref=e28]
+        - paragraph [ref=e30]: WSP
+        - link "Work" [ref=e32] [cursor=pointer]:
+          - /url: /work
+      - generic "Selected project preview" [ref=e33]:
+        - button "2024-2025 Signal Engine WSP Internal Tool" [ref=e34] [cursor=pointer]:
+          - generic [ref=e35]: 2024-2025
+          - strong [ref=e36]: Signal Engine
+          - generic [ref=e37]: WSP
+          - generic [ref=e38]: Internal Tool
+        - button "2023-2024 Delivery Atlas WSP Operations System" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 2023-2024
+          - strong [ref=e41]: Delivery Atlas
+          - generic [ref=e42]: WSP
+          - generic [ref=e43]: Operations System
+        - button "2022-2023 Reporting Ops WSP Automation" [ref=e44] [cursor=pointer]:
+          - generic [ref=e45]: 2022-2023
+          - strong [ref=e46]: Reporting Ops
+          - generic [ref=e47]: WSP
+          - generic [ref=e48]: Automation
+        - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: 2021-2022
+          - strong [ref=e51]: Design Loop
+          - generic [ref=e52]: LaunchGood
+          - generic [ref=e53]: Growth Platform
+        - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]: 2019-2022
+          - strong [ref=e56]: Court Vision
+          - generic [ref=e57]: huupe
+          - generic [ref=e58]: Connected Hardware

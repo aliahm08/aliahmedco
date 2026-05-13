@@ -1,0 +1,161 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed Co" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - link "Projects" [ref=e8] [cursor=pointer]:
+        - /url: /projects
+      - link "Groups" [ref=e9] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e10] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e11] [cursor=pointer]:
+        - /url: /writing
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: Ali Ahmed Co
+        - heading "A picture stack for AI products, systems, and odd pivots that shipped." [level=1] [ref=e16]
+        - paragraph [ref=e17]: "Single-page portfolio for Ali Ahmed: founder, operator, and product builder moving between AI systems, internal tooling, design, and technical storytelling."
+        - paragraph [ref=e18]: Use the stack, spread, or group views to rotate through projects by product type, role, and scale. Details load on demand so the front page stays quick.
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: How to use it
+          - paragraph [ref=e22]: Rotate through the stack, spread the tiles on canvas, or regroup them by scale.
+        - generic [ref=e23]:
+          - paragraph [ref=e24]: Why this format
+          - paragraph [ref=e25]: "The site is intentionally light: one canvas, a small set of filters, and case studies distilled from resume bullets into clearer product narratives."
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - paragraph [ref=e28]: Portfolio explorer
+        - heading "Selected work, reframed as product stories" [level=2] [ref=e29]
+        - paragraph [ref=e30]: The homepage is the primary portfolio surface. Subpages simply reopen the same material with a different default angle.
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: Product type
+            - combobox "Product type" [ref=e35]:
+              - option "All" [selected]
+              - option "Automation"
+              - option "Connected Hardware"
+              - option "Growth Platform"
+              - option "Internal Tool"
+              - option "Operations System"
+              - option "Prototype Experience"
+              - option "R&D Prototype"
+          - generic [ref=e36]:
+            - generic [ref=e37]: Role
+            - combobox "Role" [ref=e38]:
+              - option "All" [selected]
+              - option "Analyst + Delivery"
+              - option "Analytics + Systems"
+              - option "Design Management"
+              - option "Engineer"
+              - option "Hardware + Product"
+              - option "Innovation Engineer"
+              - option "Product + Engineering"
+          - generic [ref=e39]:
+            - generic [ref=e40]: Scale
+            - combobox "Scale" [ref=e41]:
+              - option "All" [selected]
+              - option "Enterprise"
+              - option "Federal"
+              - option "Scale-up"
+              - option "Startup"
+        - tablist "Project layouts" [ref=e42]:
+          - button "stack" [ref=e43] [cursor=pointer]
+          - button "canvas" [ref=e44] [cursor=pointer]
+          - button "groups" [ref=e45] [cursor=pointer]
+      - region "Project carousel" [ref=e46]:
+        - generic [ref=e47]:
+          - paragraph [ref=e48]: Project carousel
+          - generic [ref=e49]:
+            - button "Previous" [ref=e50] [cursor=pointer]
+            - button "Next" [ref=e51] [cursor=pointer]
+        - generic [ref=e52]:
+          - button "Signal Engine navigation poster Signal Engine" [ref=e53] [cursor=pointer]:
+            - img "Signal Engine navigation poster"
+            - generic [ref=e54]: Signal Engine
+          - button "Delivery Atlas navigation poster Delivery Atlas" [ref=e55] [cursor=pointer]:
+            - img "Delivery Atlas navigation poster"
+            - generic [ref=e56]: Delivery Atlas
+          - button "Reporting Ops navigation poster Reporting Ops" [ref=e57] [cursor=pointer]:
+            - img "Reporting Ops navigation poster"
+            - generic [ref=e58]: Reporting Ops
+          - button "Design Loop navigation poster Design Loop" [ref=e59] [cursor=pointer]:
+            - img "Design Loop navigation poster"
+            - generic [ref=e60]: Design Loop
+          - button "Court Vision navigation poster Court Vision" [ref=e61] [cursor=pointer]:
+            - img "Court Vision navigation poster"
+            - generic [ref=e62]: Court Vision
+          - button "Helmet HUD navigation poster Helmet HUD" [ref=e63] [cursor=pointer]:
+            - img "Helmet HUD navigation poster"
+            - generic [ref=e64]: Helmet HUD
+          - button "Exhibit Systems navigation poster Exhibit Systems" [ref=e65] [cursor=pointer]:
+            - img "Exhibit Systems navigation poster"
+            - generic [ref=e66]: Exhibit Systems
+      - generic "Stack view" [ref=e67]:
+        - button "Signal Engine project poster WSP 2024-2025 Signal Engine Internal Tool" [ref=e68] [cursor=pointer]:
+          - img "Signal Engine project poster" [ref=e69]
+          - generic [ref=e70]:
+            - generic [ref=e71]: WSP
+            - generic [ref=e72]: 2024-2025
+          - strong [ref=e73]: Signal Engine
+          - generic [ref=e74]: Internal Tool
+        - button "Delivery Atlas project poster WSP 2023-2024 Delivery Atlas Operations System" [ref=e75] [cursor=pointer]:
+          - img "Delivery Atlas project poster" [ref=e76]
+          - generic [ref=e77]:
+            - generic [ref=e78]: WSP
+            - generic [ref=e79]: 2023-2024
+          - strong [ref=e80]: Delivery Atlas
+          - generic [ref=e81]: Operations System
+        - button "Reporting Ops project poster WSP 2022-2023 Reporting Ops Automation" [ref=e82] [cursor=pointer]:
+          - img "Reporting Ops project poster" [ref=e83]
+          - generic [ref=e84]:
+            - generic [ref=e85]: WSP
+            - generic [ref=e86]: 2022-2023
+          - strong [ref=e87]: Reporting Ops
+          - generic [ref=e88]: Automation
+        - button "Design Loop project poster LaunchGood 2021-2022 Design Loop Growth Platform" [ref=e89] [cursor=pointer]:
+          - img "Design Loop project poster" [ref=e90]
+          - generic [ref=e91]:
+            - generic [ref=e92]: LaunchGood
+            - generic [ref=e93]: 2021-2022
+          - strong [ref=e94]: Design Loop
+          - generic [ref=e95]: Growth Platform
+        - button "Court Vision project poster huupe 2019-2022 Court Vision Connected Hardware" [ref=e96] [cursor=pointer]:
+          - img "Court Vision project poster" [ref=e97]
+          - generic [ref=e98]:
+            - generic [ref=e99]: huupe
+            - generic [ref=e100]: 2019-2022
+          - strong [ref=e101]: Court Vision
+          - generic [ref=e102]: Connected Hardware
+      - generic [ref=e103]: Choose a project to load the case study.
+    - generic [ref=e104]:
+      - article [ref=e105]:
+        - paragraph [ref=e106]: Resume
+        - heading "Product, AI, design, and a few hard left turns." [level=2] [ref=e107]
+        - paragraph [ref=e108]: Operator working across AI, infrastructure, design, and product with experience spanning enterprise software, venture-backed startups, and federal programs.
+        - link "Open resume view" [ref=e109] [cursor=pointer]:
+          - /url: /resume
+      - article [ref=e110]:
+        - paragraph [ref=e111]: Writing
+        - heading "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [level=2] [ref=e112]
+        - paragraph [ref=e113]: The following work was completed by Ali Ahmed for the Washington DC Metro. Codebase, internal product rollouts, and demos are the intellectual property of developers and the associated companies.
+        - link "Read on Substack" [ref=e114] [cursor=pointer]:
+          - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+      - article [ref=e115]:
+        - paragraph [ref=e116]: Contact
+        - heading "ali@ product, ops, design, founder mode." [level=2] [ref=e117]
+        - paragraph [ref=e118]:
+          - text: Email
+          - link "aliahm1208@gmail.com" [ref=e119] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+          - text: or browse more background through LinkedIn and GitHub.
+        - generic [ref=e120]:
+          - link "LinkedIn" [ref=e121] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/aliahmed-co
+          - link "GitHub" [ref=e122] [cursor=pointer]:
+            - /url: https://github.com/aliahm08

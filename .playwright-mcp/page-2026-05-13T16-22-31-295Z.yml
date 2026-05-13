@@ -1,0 +1,58 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic "Selected project preview" [ref=e15]:
+      - article [ref=e16]:
+        - button "2024-2025 Signal Engine WSP Internal Tool" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 2024-2025
+          - strong [ref=e19]: Signal Engine
+          - generic [ref=e20]: WSP
+          - generic [ref=e21]: Internal Tool
+      - article [ref=e22]:
+        - button "2023-2024 Delivery Atlas WSP Operations System" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: 2023-2024
+          - strong [ref=e25]: Delivery Atlas
+          - generic [ref=e26]: WSP
+          - generic [ref=e27]: Operations System
+      - article [ref=e28]:
+        - button "2022-2023 Reporting Ops WSP Automation" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 2022-2023
+          - strong [ref=e31]: Reporting Ops
+          - generic [ref=e32]: WSP
+          - generic [ref=e33]: Automation
+      - article [ref=e34]:
+        - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: 2021-2022
+          - strong [ref=e37]: Design Loop
+          - generic [ref=e38]: LaunchGood
+          - generic [ref=e39]: Growth Platform
+      - article [ref=e40]:
+        - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 2019-2022
+          - strong [ref=e43]: Court Vision
+          - generic [ref=e44]: huupe
+          - generic [ref=e45]: Connected Hardware
+      - article [ref=e46]:
+        - button "2018-2019 Helmet HUD NASA R&D Prototype" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: 2018-2019
+          - strong [ref=e49]: Helmet HUD
+          - generic [ref=e50]: NASA
+          - generic [ref=e51]: R&D Prototype
+      - article [ref=e52]:
+        - button "2016-2017 Exhibit Systems Autodesk Prototype Experience" [ref=e53] [cursor=pointer]:
+          - generic [ref=e54]: 2016-2017
+          - strong [ref=e55]: Exhibit Systems
+          - generic [ref=e56]: Autodesk
+          - generic [ref=e57]: Prototype Experience

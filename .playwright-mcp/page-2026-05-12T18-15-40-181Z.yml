@@ -1,0 +1,156 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed Co" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - link "Projects" [ref=e8] [cursor=pointer]:
+        - /url: /projects
+      - link "Groups" [ref=e9] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e10] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e11] [cursor=pointer]:
+        - /url: /writing
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - heading "Ali Ahmed Co" [level=1] [ref=e15]
+      - paragraph [ref=e16]: A minimal product portfolio index for work across AI systems, internal tools, hardware, and design operations.
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Projects" [level=2] [ref=e19]
+        - paragraph [ref=e20]: "The page establishes the architecture first: browse, filter, regroup, and leave project depth for later."
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: Product type
+            - combobox "Product type" [ref=e25]:
+              - option "All" [selected]
+              - option "Automation"
+              - option "Connected Hardware"
+              - option "Growth Platform"
+              - option "Internal Tool"
+              - option "Operations System"
+              - option "Prototype Experience"
+              - option "R&D Prototype"
+          - generic [ref=e26]:
+            - generic [ref=e27]: Role
+            - combobox "Role" [ref=e28]:
+              - option "All" [selected]
+              - option "Analyst + Delivery"
+              - option "Analytics + Systems"
+              - option "Design Management"
+              - option "Engineer"
+              - option "Hardware + Product"
+              - option "Innovation Engineer"
+              - option "Product + Engineering"
+          - generic [ref=e29]:
+            - generic [ref=e30]: Scale
+            - combobox "Scale" [ref=e31]:
+              - option "All" [selected]
+              - option "Enterprise"
+              - option "Federal"
+              - option "Scale-up"
+              - option "Startup"
+        - tablist "Project layouts" [ref=e32]:
+          - button "index" [ref=e33] [cursor=pointer]
+          - button "grid" [ref=e34] [cursor=pointer]
+          - button "groups" [ref=e35] [cursor=pointer]
+      - generic "Project index" [ref=e36]:
+        - generic [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: Year
+          - generic [ref=e39]: Project
+          - generic [ref=e40]: Context
+          - generic [ref=e41]: Type
+          - generic [ref=e42]: Role
+          - generic [ref=e43]: Scale
+        - button "2024-2025 Signal Engine WSP Internal Tool Product + Engineering Enterprise" [ref=e44] [cursor=pointer]:
+          - generic [ref=e45]: 2024-2025
+          - strong [ref=e46]: Signal Engine
+          - generic [ref=e47]: WSP
+          - generic [ref=e48]: Internal Tool
+          - generic [ref=e49]: Product + Engineering
+          - generic [ref=e50]: Enterprise
+        - button "2023-2024 Delivery Atlas WSP Operations System Analyst + Delivery Enterprise" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: 2023-2024
+          - strong [ref=e53]: Delivery Atlas
+          - generic [ref=e54]: WSP
+          - generic [ref=e55]: Operations System
+          - generic [ref=e56]: Analyst + Delivery
+          - generic [ref=e57]: Enterprise
+        - button "2022-2023 Reporting Ops WSP Automation Analytics + Systems Enterprise" [ref=e58] [cursor=pointer]:
+          - generic [ref=e59]: 2022-2023
+          - strong [ref=e60]: Reporting Ops
+          - generic [ref=e61]: WSP
+          - generic [ref=e62]: Automation
+          - generic [ref=e63]: Analytics + Systems
+          - generic [ref=e64]: Enterprise
+        - button "2021-2022 Design Loop LaunchGood Growth Platform Design Management Scale-up" [ref=e65] [cursor=pointer]:
+          - generic [ref=e66]: 2021-2022
+          - strong [ref=e67]: Design Loop
+          - generic [ref=e68]: LaunchGood
+          - generic [ref=e69]: Growth Platform
+          - generic [ref=e70]: Design Management
+          - generic [ref=e71]: Scale-up
+        - button "2019-2022 Court Vision huupe Connected Hardware Hardware + Product Startup" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: 2019-2022
+          - strong [ref=e74]: Court Vision
+          - generic [ref=e75]: huupe
+          - generic [ref=e76]: Connected Hardware
+          - generic [ref=e77]: Hardware + Product
+          - generic [ref=e78]: Startup
+        - button "2018-2019 Helmet HUD NASA R&D Prototype Engineer Federal" [ref=e79] [cursor=pointer]:
+          - generic [ref=e80]: 2018-2019
+          - strong [ref=e81]: Helmet HUD
+          - generic [ref=e82]: NASA
+          - generic [ref=e83]: R&D Prototype
+          - generic [ref=e84]: Engineer
+          - generic [ref=e85]: Federal
+        - button "2016-2017 Exhibit Systems Autodesk Prototype Experience Innovation Engineer Enterprise" [ref=e86] [cursor=pointer]:
+          - generic [ref=e87]: 2016-2017
+          - strong [ref=e88]: Exhibit Systems
+          - generic [ref=e89]: Autodesk
+          - generic [ref=e90]: Prototype Experience
+          - generic [ref=e91]: Innovation Engineer
+          - generic [ref=e92]: Enterprise
+      - generic [ref=e93]:
+        - paragraph [ref=e94]: Selected
+        - heading "Signal Engine" [level=2] [ref=e95]
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - term [ref=e98]: Context
+            - definition [ref=e99]: WSP
+          - generic [ref=e100]:
+            - term [ref=e101]: Type
+            - definition [ref=e102]: Internal Tool
+          - generic [ref=e103]:
+            - term [ref=e104]: Role
+            - definition [ref=e105]: Product + Engineering
+          - generic [ref=e106]:
+            - term [ref=e107]: Scale
+            - definition [ref=e108]: Enterprise
+    - generic [ref=e109]:
+      - article [ref=e110]:
+        - paragraph [ref=e111]: Resume
+        - paragraph [ref=e112]: Operator working across AI, infrastructure, design, and product with experience spanning enterprise software, venture-backed startups, and federal programs.
+        - link "Open resume view" [ref=e113] [cursor=pointer]:
+          - /url: /resume
+      - article [ref=e114]:
+        - paragraph [ref=e115]: Writing
+        - heading "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [level=2] [ref=e116]
+        - paragraph [ref=e117]: The following work was completed by Ali Ahmed for the Washington DC Metro. Codebase, internal product rollouts, and demos are the intellectual property of developers and the associated companies.
+        - link "Read on Substack" [ref=e118] [cursor=pointer]:
+          - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+      - article [ref=e119]:
+        - paragraph [ref=e120]: Contact
+        - paragraph [ref=e121]:
+          - text: Email
+          - link "aliahm1208@gmail.com" [ref=e122] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+          - text: or browse more background through LinkedIn and GitHub.
+        - generic [ref=e123]:
+          - link "LinkedIn" [ref=e124] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/aliahmed-co
+          - link "GitHub" [ref=e125] [cursor=pointer]:
+            - /url: https://github.com/aliahm08

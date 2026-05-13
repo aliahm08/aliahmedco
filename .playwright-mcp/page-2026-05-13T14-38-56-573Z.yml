@@ -1,0 +1,60 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]: Ali Ahmed
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - paragraph [ref=e8]: SOFTWARE ENGINEER, AI FOUNDER, PRODUCT
+      - generic [ref=e9]:
+        - paragraph [ref=e11]:
+          - link "B2W-ai" [ref=e12] [cursor=pointer]:
+            - /url: https://b2w-ai-com.vercel.app/
+          - text: ", Founder & CEO."
+        - paragraph [ref=e14]:
+          - link "WSP" [ref=e15] [cursor=pointer]:
+            - /url: https://www.wsp.com/en-us
+          - text: ", Senior Consultant."
+        - paragraph [ref=e17]:
+          - link "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [ref=e18] [cursor=pointer]:
+            - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+        - paragraph [ref=e20]:
+          - text: "Email:"
+          - link "aliahm1208@gmail.com" [ref=e21] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+    - generic [ref=e22]:
+      - link "Projects" [ref=e24] [cursor=pointer]:
+        - /url: /projects
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: Project information
+        - paragraph [ref=e27]: Signal Engine
+        - paragraph [ref=e28]: WSP
+        - paragraph [ref=e29]: 2024-2025
+      - button "Open Signal Engine in projects" [ref=e30] [cursor=pointer]:
+        - img "Signal Engine abstract preview 1" [ref=e31]
+        - img "Signal Engine abstract preview 2" [ref=e32]
+        - img "Signal Engine abstract preview 3" [ref=e33]
+        - img "Signal Engine abstract preview 4" [ref=e34]
+      - generic [ref=e35]:
+        - paragraph [ref=e36]: Project details
+        - paragraph [ref=e37]: Internal Tool
+        - paragraph [ref=e38]: Product + Engineering
+        - paragraph [ref=e39]: Enterprise
+        - paragraph [ref=e40]: Internal analytics tooling for emerging safety risks and recall detection.
+    - generic [ref=e41]:
+      - paragraph [ref=e42]: Connect With Ali
+      - generic [ref=e43]:
+        - paragraph [ref=e45]:
+          - text: "GitHub:"
+          - link "@aliahm08" [ref=e46] [cursor=pointer]:
+            - /url: https://github.com/aliahm08
+        - paragraph [ref=e48]:
+          - text: "LinkedIn:"
+          - link "Ali Ahmed" [ref=e49] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/aliahmed-co
+        - paragraph [ref=e51]:
+          - text: "Substack:"
+          - link "@aliahmed312" [ref=e52] [cursor=pointer]:
+            - /url: https://aliahmed312.substack.com
+        - paragraph [ref=e54]:
+          - text: "Portfolio:"
+          - link "aliahmed.co/portfolio" [ref=e55] [cursor=pointer]:
+            - /url: /portfolio

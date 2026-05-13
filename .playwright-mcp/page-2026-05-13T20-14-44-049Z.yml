@@ -1,0 +1,198 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - button "Open menu" [ref=e7] [cursor=pointer]
+      - navigation "Primary":
+        - link "Work":
+          - /url: /work
+        - link "Resume":
+          - /url: /resume
+        - link "Writing":
+          - /url: /writing
+        - link "Contact":
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - paragraph [ref=e13]: Resume
+          - heading "Ali Ahmed" [level=1] [ref=e14]
+          - paragraph [ref=e15]: Founder and CEO at B2W-ai | Senior Data Analyst at WSP | Columbia M.Arch 2023
+          - paragraph [ref=e16]: Ali has built his career at the intersection of engineering, architecture, and innovation. Across roles at WSP (consulting), Huupe (VC-backed), Autodesk, and NASA, he has managed $220M worth of organization-wide enterprise enhancement projects from technical design and analysis through product strategy and implementation. His experience includes product development, project evaluation, cross-functional coordination, and helping turn complex opportunities into clear decisions and actionable plans.
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - img [ref=e20]
+            - link "aliahm1208@gmail.com" [ref=e23] [cursor=pointer]:
+              - /url: mailto:aliahm1208@gmail.com
+          - generic [ref=e24]:
+            - img [ref=e25]
+            - link "aliahmed-co" [ref=e29] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+          - generic [ref=e30]:
+            - img [ref=e31]
+            - generic [ref=e34]: Washington, District of Columbia
+      - generic [ref=e35]:
+        - complementary [ref=e36]:
+          - article [ref=e37]:
+            - paragraph [ref=e38]: Focus
+            - generic [ref=e39]:
+              - generic [ref=e40]: Sales
+              - generic [ref=e41]: Revenue engine
+              - generic [ref=e42]: Product management
+              - generic [ref=e43]: M&A
+              - generic [ref=e44]: Financial modeling
+              - generic [ref=e45]: Business development
+              - generic [ref=e46]: Partnerships
+              - generic [ref=e47]: Negotiations
+              - generic [ref=e48]: AI SaaS
+              - generic [ref=e49]: LLM optimization
+              - generic [ref=e50]: Marketing
+              - generic [ref=e51]: Design
+          - article [ref=e52]:
+            - paragraph [ref=e53]: Tools
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - paragraph [ref=e56]:
+                  - strong [ref=e57]: Programming
+                - paragraph [ref=e58]: JavaScript, TypeScript, Node.js, React
+              - generic [ref=e59]:
+                - paragraph [ref=e60]:
+                  - strong [ref=e61]: Data analytics
+                - paragraph [ref=e62]: Python, NumPy, Pandas, TensorFlow, Tableau
+              - generic [ref=e63]:
+                - paragraph [ref=e64]:
+                  - strong [ref=e65]: AI tools
+                - paragraph [ref=e66]: Cursor, Codex, Antigravity, MCP, CLIs
+              - generic [ref=e67]:
+                - paragraph [ref=e68]:
+                  - strong [ref=e69]: Infrastructure
+                - paragraph [ref=e70]: AWS, Vercel, Next.js, Supabase
+          - article [ref=e71]:
+            - paragraph [ref=e72]: Credentials
+            - generic [ref=e73]:
+              - paragraph [ref=e74]:
+                - strong [ref=e75]: Certifications
+                - text: · Sketchbook Pro, Fortus FDM, Objet 3D Printing, Fusion 360, CNC, Laser Cutter, Metal & Wood, Shop Trained, AutoCAD.
+              - paragraph [ref=e76]:
+                - strong [ref=e77]: Honors
+                - text: · Featured on Engineering.com, GW University & Alumni Scholarship Award, Booz Allen Hamilton University Scholar, GW New Venture Competition Semi-Finalist, Dean's List.
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - paragraph [ref=e80]: Experience
+            - generic [ref=e81]:
+              - article [ref=e82]:
+                - generic [ref=e83]:
+                  - generic [ref=e84]:
+                    - heading "Senior Analyst" [level=2] [ref=e85]
+                    - paragraph [ref=e86]: WSP
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: September 2024 - December 2025
+                    - generic [ref=e89]: Washington, D.C.
+                - list [ref=e90]:
+                  - listitem [ref=e91]: Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.
+                  - listitem [ref=e92]: Developed a machine learning workflow in Python that identified potential recalls with 79% success and supported $600k in renewals.
+              - article [ref=e93]:
+                - generic [ref=e94]:
+                  - generic [ref=e95]:
+                    - heading "Analyst" [level=2] [ref=e96]
+                    - paragraph [ref=e97]: WSP
+                  - generic [ref=e98]:
+                    - generic [ref=e99]: September 2023 - September 2024
+                    - generic [ref=e100]: Washington, D.C.
+                - list [ref=e101]:
+                  - listitem [ref=e102]: Tracked 14 resources through agile delivery to support safety risk training and improve project delivery speed by 80%.
+                  - listitem [ref=e103]: Researched system data models and taxonomy cleanup patterns to support a SharePoint AI agent workflow.
+              - article [ref=e104]:
+                - generic [ref=e105]:
+                  - generic [ref=e106]:
+                    - heading "Junior Analyst" [level=2] [ref=e107]
+                    - paragraph [ref=e108]: WSP
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: September 2022 - September 2023
+                    - generic [ref=e111]: Washington, D.C.
+                - list [ref=e112]:
+                  - listitem [ref=e113]: Automated 12 reporting workflows using clustering and operational checkpoint analysis.
+                  - listitem [ref=e114]: Expanded report completeness by 25% to support more proactive operational measures.
+              - article [ref=e115]:
+                - generic [ref=e116]:
+                  - generic [ref=e117]:
+                    - heading "Design Manager" [level=2] [ref=e118]
+                    - paragraph [ref=e119]: LaunchGood
+                  - generic [ref=e121]: 2021 - 2022
+                - list [ref=e122]:
+                  - listitem [ref=e123]: Managed design systems to create unity between UX and customer engagement design processes.
+                  - listitem [ref=e124]: Met with design teams weekly to ensure consistency in Notion documentation with Figma embeds.
+                  - listitem [ref=e125]: Oversaw KPI development for brand performance using 1,500 copywriting A/B tests with Notion AI and Python.
+              - article [ref=e126]:
+                - generic [ref=e127]:
+                  - generic [ref=e128]:
+                    - heading "Hardware Engineer" [level=2] [ref=e129]
+                    - paragraph [ref=e130]: huupe
+                  - generic [ref=e131]:
+                    - generic [ref=e132]: 2019 - 2022
+                    - generic [ref=e133]: New York, New York, United States
+                - list [ref=e134]:
+                  - listitem [ref=e135]: Designed computer vision workflows to assess vision black zones and improve 3D scope by 15% for LiDAR integration.
+                  - listitem [ref=e136]: Rendered 3D elements in a real-time engine to interpret athlete movement for AI-powered sporting goods.
+                  - listitem [ref=e137]: Supported founders with technical briefs and design renderings that helped close $11M in seed funding.
+              - article [ref=e138]:
+                - generic [ref=e139]:
+                  - generic [ref=e140]:
+                    - heading "Architectural Designer" [level=2] [ref=e141]
+                    - paragraph [ref=e142]: Norman Foster Foundation
+                  - generic [ref=e143]:
+                    - generic [ref=e144]: 2019 - 2020
+                    - generic [ref=e145]: Madrid, Community of Madrid, Spain
+                - list [ref=e146]:
+                  - listitem [ref=e147]: Collaborated with Lord Norman Foster and MIT Media Lab on diagnosing slum dwelling worldwide for a sustainable alternative.
+                  - listitem [ref=e148]: Selected as one of ten global designers for the initiative.
+              - article [ref=e149]:
+                - generic [ref=e150]:
+                  - generic [ref=e151]:
+                    - heading "Space Suit Engineer" [level=2] [ref=e152]
+                    - paragraph [ref=e153]: NASA
+                  - generic [ref=e154]:
+                    - generic [ref=e155]: 2018 - 2019
+                    - generic [ref=e156]: Houston, Texas, United States
+                - list [ref=e157]:
+                  - listitem [ref=e158]: Focused on materials testing.
+                  - listitem [ref=e159]: Trained computer vision models for object recognition integrated into space suit helmet heads-up displays.
+                  - listitem [ref=e160]: Prototyped soft goods hardware for self-egress implemented in a Mars suit cockpit.
+              - article [ref=e161]:
+                - generic [ref=e162]:
+                  - generic [ref=e163]:
+                    - heading "AR Exhibits Engineer" [level=2] [ref=e164]
+                    - paragraph [ref=e165]: Autodesk
+                  - generic [ref=e166]:
+                    - generic [ref=e167]: "2017"
+                    - generic [ref=e168]: San Francisco, California, United States
+                - paragraph [ref=e169]: Details available on request.
+              - article [ref=e170]:
+                - generic [ref=e171]:
+                  - generic [ref=e172]:
+                    - heading "Design Engineer" [level=2] [ref=e173]
+                    - paragraph [ref=e174]: Bragi
+                  - generic [ref=e175]:
+                    - generic [ref=e176]: 2016 - 2017
+                    - generic [ref=e177]: Munich, Bavaria, Germany
+                - paragraph [ref=e178]: Details available on request.
+              - article [ref=e179]:
+                - generic [ref=e180]:
+                  - generic [ref=e181]:
+                    - heading "Applied Innovation Engineer" [level=2] [ref=e182]
+                    - paragraph [ref=e183]: Autodesk
+                  - generic [ref=e184]:
+                    - generic [ref=e185]: "2016"
+                    - generic [ref=e186]: San Francisco, California, United States
+                - list [ref=e187]:
+                  - listitem [ref=e188]: Presented software functionality within a $4M software development effort directly to CEO Carl Bass.
+                  - listitem [ref=e189]: Tested design environments for a 15% UX optimization through robotics, 3D-print generation, and FEA animation.
+          - generic [ref=e190]:
+            - paragraph [ref=e191]: Education
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: Master of Architecture (leave of absence), Columbia University
+              - paragraph [ref=e194]: Bachelor of Science, Mechanical Engineering, The George Washington University
+              - paragraph [ref=e195]: High School Diploma, American School of Doha
+              - paragraph [ref=e196]: High School, American Community School of Abu Dhabi

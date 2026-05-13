@@ -1,0 +1,45 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]: Ali Ahmed
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: SOFTWARE ENGINEER, AI FOUNDER, PRODUCT
+        - generic [ref=e10]:
+          - paragraph [ref=e11]: Ali has managed AI, machine learning, and data analytics projects adding nearly $100M in value across VC-backed startups, federal contracts, and enterprise software. Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.
+          - button "Expand summary" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - paragraph [ref=e15]: Signal Engine
+        - button "Open Signal Engine in projects" [ref=e16] [cursor=pointer]:
+          - img "Signal Engine abstract preview 1" [ref=e17]
+          - img "Delivery Atlas abstract preview 1" [ref=e18]
+          - img "Reporting Ops abstract preview 1" [ref=e19]
+          - img "Design Loop abstract preview 1" [ref=e20]
+          - img "Court Vision abstract preview 1" [ref=e21]
+          - img "Helmet HUD abstract preview 1" [ref=e22]
+          - img "Exhibit Systems abstract preview 1" [ref=e23]
+        - paragraph [ref=e25]: WSP
+        - link "Projects" [ref=e27] [cursor=pointer]:
+          - /url: /projects
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Connect With Ali
+        - generic [ref=e30]:
+          - paragraph [ref=e32]:
+            - text: "GitHub:"
+            - link "@aliahm08" [ref=e33] [cursor=pointer]:
+              - /url: https://github.com/aliahm08
+          - paragraph [ref=e35]:
+            - text: "LinkedIn:"
+            - link "Ali Ahmed" [ref=e36] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+          - paragraph [ref=e38]:
+            - text: "Substack:"
+            - link "@aliahmed312" [ref=e39] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com
+            - text: ·
+            - link "Latest" [ref=e40] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+          - paragraph [ref=e42]:
+            - text: "Portfolio:"
+            - link "aliahmed.co/portfolio" [ref=e43] [cursor=pointer]:
+              - /url: /portfolio

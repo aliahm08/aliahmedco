@@ -1,0 +1,68 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - button "Type" [ref=e18] [cursor=pointer]:
+            - text: Type
+            - generic [ref=e19]: +
+          - button "Role" [ref=e21] [cursor=pointer]:
+            - text: Role
+            - generic [ref=e22]: +
+        - generic [ref=e23]:
+          - button "All" [ref=e24] [cursor=pointer]
+          - button "Enterprise" [ref=e25] [cursor=pointer]
+          - button "Startup" [ref=e26] [cursor=pointer]
+          - button "Scale-up" [ref=e27] [cursor=pointer]
+      - generic "All projects" [ref=e28]:
+        - paragraph [ref=e29]: No projects match those filters.
+  - contentinfo "Site footer" [ref=e30]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - paragraph [ref=e34]: Contact
+          - link "aliahm1208@gmail.com" [ref=e35] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+          - paragraph [ref=e36]: DC and NYC
+        - navigation "Navigate" [ref=e37]:
+          - paragraph [ref=e38]: Navigate
+          - generic [ref=e39]:
+            - link "Home" [ref=e40] [cursor=pointer]:
+              - /url: /
+            - link "Work" [ref=e41] [cursor=pointer]:
+              - /url: /work
+            - link "Resume" [ref=e42] [cursor=pointer]:
+              - /url: /resume
+            - link "Writing" [ref=e43] [cursor=pointer]:
+              - /url: /writing
+        - region "Connect" [ref=e44]:
+          - paragraph [ref=e45]: Connect
+          - generic [ref=e46]:
+            - link "LinkedIn" [ref=e47] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+            - link "GitHub" [ref=e48] [cursor=pointer]:
+              - /url: https://github.com/aliahm08
+            - link "Substack" [ref=e49] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com
+            - link "B2W-ai" [ref=e50] [cursor=pointer]:
+              - /url: https://b2w-ai-com.vercel.app/
+            - link "Email" [ref=e51] [cursor=pointer]:
+              - /url: mailto:aliahm1208@gmail.com
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: © 2026 Ali Ahmed Co.
+        - paragraph [ref=e54]:
+          - link "Back to home" [ref=e55] [cursor=pointer]:
+            - /url: /

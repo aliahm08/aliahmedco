@@ -1,0 +1,12 @@
+[     550ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:20100
+[     566ms] [ERROR] AbortError: signal is aborted without reason
+    at http://localhost:3000/src/App.tsx:1216:29
+    at Object.react_stack_bottom_frame (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:18571:13)
+    at runWithFiberInDEV (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:995:72)
+    at commitHookEffectListUnmount (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:9447:160)
+    at commitHookPassiveUnmountEffects (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:9466:60)
+    at disconnectPassiveEffect (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:11558:13)
+    at recursivelyTraverseDisconnectPassiveEffects (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:11550:11)
+    at disconnectPassiveEffect (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:11570:13)
+    at doubleInvokeEffectsOnFiber (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:13337:42)
+    at runWithFiberInDEV (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f169bc1c:995:72) @ http://localhost:3000/src/App.tsx:1210

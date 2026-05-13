@@ -1,0 +1,54 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]: Ali Ahmed
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: SOFTWARE ENGINEER, AI FOUNDER, PRODUCT
+        - generic [ref=e10]:
+          - paragraph [ref=e11]: Ali has managed AI, machine learning, and data analytics projects adding nearly $100M in value across VC-backed startups, federal contracts, and enterprise software. Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.
+          - button "Expand summary" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - link "Projects" [ref=e15] [cursor=pointer]:
+          - /url: /projects
+        - generic [ref=e16]:
+          - paragraph [ref=e17]: Project information
+          - paragraph [ref=e18]: Signal Engine
+          - paragraph [ref=e19]: WSP
+          - paragraph [ref=e20]: 2024-2025
+        - button "Open Signal Engine in projects" [ref=e21] [cursor=pointer]:
+          - img "Signal Engine abstract preview 1" [ref=e22]
+          - img "Delivery Atlas abstract preview 1" [ref=e23]
+          - img "Reporting Ops abstract preview 1" [ref=e24]
+          - img "Design Loop abstract preview 1" [ref=e25]
+          - img "Court Vision abstract preview 1" [ref=e26]
+          - img "Helmet HUD abstract preview 1" [ref=e27]
+          - img "Exhibit Systems abstract preview 1" [ref=e28]
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: Project details
+          - paragraph [ref=e31]: Internal Tool
+          - paragraph [ref=e32]: Product + Engineering
+          - paragraph [ref=e33]: Enterprise
+          - paragraph [ref=e34]: Internal analytics tooling for emerging safety risks and recall detection.
+      - generic [ref=e35]:
+        - paragraph [ref=e36]: Connect With Ali
+        - generic [ref=e37]:
+          - paragraph [ref=e39]:
+            - text: "GitHub:"
+            - link "@aliahm08" [ref=e40] [cursor=pointer]:
+              - /url: https://github.com/aliahm08
+          - paragraph [ref=e42]:
+            - text: "LinkedIn:"
+            - link "Ali Ahmed" [ref=e43] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+          - paragraph [ref=e45]:
+            - text: "Substack:"
+            - link "@aliahmed312" [ref=e46] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com
+            - text: ·
+            - link "Latest" [ref=e47] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+          - paragraph [ref=e49]:
+            - text: "Portfolio:"
+            - link "aliahmed.co/portfolio" [ref=e50] [cursor=pointer]:
+              - /url: /portfolio

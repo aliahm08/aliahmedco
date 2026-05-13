@@ -1,0 +1,350 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - button "Open menu" [ref=e7] [cursor=pointer]
+      - navigation "Primary":
+        - link "Work":
+          - /url: /work
+        - link "Resume":
+          - /url: /resume
+        - link "Writing":
+          - /url: /writing
+        - link "Contact":
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - heading "Work Background" [level=1] [ref=e12]
+        - paragraph [ref=e13]: Product management, design, and developement for Advacned AI, B2B SaaS, and Consumer Products.
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - paragraph [ref=e17]: Project Explorer
+          - paragraph [ref=e18]: 13 projects
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: Product Type
+            - combobox [ref=e22]:
+              - option "All Products" [selected]
+              - option "Automation"
+              - option "Connected Hardware"
+              - option "Data Analytics"
+              - option "Growth Platform"
+              - option "Hardware"
+              - option "Infrastructure"
+              - option "Internal Tool"
+              - option "Operations System"
+              - option "Prototype Experience"
+              - option "R&D Prototype"
+              - option "Research"
+              - option "Robotics"
+          - generic [ref=e23]:
+            - generic [ref=e24]: Role
+            - combobox [ref=e25]:
+              - option "All Roles" [selected]
+              - option "Analyst + Delivery"
+              - option "Analytics + Systems"
+              - option "Computational Designer"
+              - option "Design Engineering"
+              - option "Design Management"
+              - option "Engineer"
+              - option "Hardware + Product"
+              - option "Innovation Engineer"
+              - option "Product + Engineering"
+              - option "Product Design"
+              - option "Product Engineering"
+              - option "Robotics Engineer"
+      - tablist "Project scale groups" [ref=e26]:
+        - tab "All" [selected] [ref=e27] [cursor=pointer]
+        - tab "Enterprise" [ref=e28] [cursor=pointer]
+        - tab "Federal" [ref=e29] [cursor=pointer]
+        - tab "Scale-up" [ref=e30] [cursor=pointer]
+        - tab "Startup" [ref=e31] [cursor=pointer]
+      - generic [ref=e32]:
+        - button "2024-2025 Signal Engine WSP · Safety Management Group Product Type Internal Tool Role Product + Engineering Scale Enterprise Location Washington, D.C." [ref=e34] [cursor=pointer]:
+          - generic [ref=e35]:
+            - generic [ref=e36]: 2024-2025
+            - generic [ref=e37]:
+              - generic [ref=e39]:
+                - generic [ref=e40]:
+                  - strong [ref=e41]: Signal Engine
+                  - generic [ref=e42]: +
+                - generic [ref=e43]: WSP · Safety Management Group
+              - generic [ref=e44]:
+                - generic [ref=e45]:
+                  - generic [ref=e46]: Product Type
+                  - text: Internal Tool
+                - generic [ref=e47]:
+                  - generic [ref=e48]: Role
+                  - text: Product + Engineering
+                - generic [ref=e49]:
+                  - generic [ref=e50]: Scale
+                  - text: Enterprise
+                - generic [ref=e51]:
+                  - generic [ref=e52]: Location
+                  - text: Washington, D.C.
+        - button "2023-2024 Delivery Atlas WSP · Project Management Group Product Type Operations System Role Analyst + Delivery Scale Enterprise Location Washington, D.C." [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: 2023-2024
+            - generic [ref=e57]:
+              - generic [ref=e59]:
+                - generic [ref=e60]:
+                  - strong [ref=e61]: Delivery Atlas
+                  - generic [ref=e62]: +
+                - generic [ref=e63]: WSP · Project Management Group
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - generic [ref=e66]: Product Type
+                  - text: Operations System
+                - generic [ref=e67]:
+                  - generic [ref=e68]: Role
+                  - text: Analyst + Delivery
+                - generic [ref=e69]:
+                  - generic [ref=e70]: Scale
+                  - text: Enterprise
+                - generic [ref=e71]:
+                  - generic [ref=e72]: Location
+                  - text: Washington, D.C.
+        - button "2022-2023 Reporting Ops WSP · Data Analytics Group Product Type Automation Role Analytics + Systems Scale Enterprise Location Washington, D.C." [ref=e74] [cursor=pointer]:
+          - generic [ref=e75]:
+            - generic [ref=e76]: 2022-2023
+            - generic [ref=e77]:
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - strong [ref=e81]: Reporting Ops
+                  - generic [ref=e82]: +
+                - generic [ref=e83]: WSP · Data Analytics Group
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - generic [ref=e86]: Product Type
+                  - text: Automation
+                - generic [ref=e87]:
+                  - generic [ref=e88]: Role
+                  - text: Analytics + Systems
+                - generic [ref=e89]:
+                  - generic [ref=e90]: Scale
+                  - text: Enterprise
+                - generic [ref=e91]:
+                  - generic [ref=e92]: Location
+                  - text: Washington, D.C.
+        - button "2021-2022 Design Loop LaunchGood · Growth Product Type Growth Platform Role Design Management Scale Scale-up Location Remote" [ref=e94] [cursor=pointer]:
+          - generic [ref=e95]:
+            - generic [ref=e96]: 2021-2022
+            - generic [ref=e97]:
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - strong [ref=e101]: Design Loop
+                  - generic [ref=e102]: +
+                - generic [ref=e103]: LaunchGood · Growth
+              - generic [ref=e104]:
+                - generic [ref=e105]:
+                  - generic [ref=e106]: Product Type
+                  - text: Growth Platform
+                - generic [ref=e107]:
+                  - generic [ref=e108]: Role
+                  - text: Design Management
+                - generic [ref=e109]:
+                  - generic [ref=e110]: Scale
+                  - text: Scale-up
+                - generic [ref=e111]:
+                  - generic [ref=e112]: Location
+                  - text: Remote
+        - button "2019-2022 Court Vision huupe · Hardware Product Type Connected Hardware Role Hardware + Product Scale Startup Location New York City" [ref=e114] [cursor=pointer]:
+          - generic [ref=e115]:
+            - generic [ref=e116]: 2019-2022
+            - generic [ref=e117]:
+              - generic [ref=e119]:
+                - generic [ref=e120]:
+                  - strong [ref=e121]: Court Vision
+                  - generic [ref=e122]: +
+                - generic [ref=e123]: huupe · Hardware
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - generic [ref=e126]: Product Type
+                  - text: Connected Hardware
+                - generic [ref=e127]:
+                  - generic [ref=e128]: Role
+                  - text: Hardware + Product
+                - generic [ref=e129]:
+                  - generic [ref=e130]: Scale
+                  - text: Startup
+                - generic [ref=e131]:
+                  - generic [ref=e132]: Location
+                  - text: New York City
+        - button "2018-2019 Helmet HUD NASA · Space Suits Product Type R&D Prototype Role Engineer Scale Federal Location Houston" [ref=e134] [cursor=pointer]:
+          - generic [ref=e135]:
+            - generic [ref=e136]: 2018-2019
+            - generic [ref=e137]:
+              - generic [ref=e139]:
+                - generic [ref=e140]:
+                  - strong [ref=e141]: Helmet HUD
+                  - generic [ref=e142]: +
+                - generic [ref=e143]: NASA · Space Suits
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - generic [ref=e146]: Product Type
+                  - text: R&D Prototype
+                - generic [ref=e147]:
+                  - generic [ref=e148]: Role
+                  - text: Engineer
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Scale
+                  - text: Federal
+                - generic [ref=e151]:
+                  - generic [ref=e152]: Location
+                  - text: Houston
+        - button "2016-2017 Exhibit Systems Autodesk · Exhibits Product Type Prototype Experience Role Innovation Engineer Scale Enterprise Location San Francisco" [ref=e154] [cursor=pointer]:
+          - generic [ref=e155]:
+            - generic [ref=e156]: 2016-2017
+            - generic [ref=e157]:
+              - generic [ref=e159]:
+                - generic [ref=e160]:
+                  - strong [ref=e161]: Exhibit Systems
+                  - generic [ref=e162]: +
+                - generic [ref=e163]: Autodesk · Exhibits
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - generic [ref=e166]: Product Type
+                  - text: Prototype Experience
+                - generic [ref=e167]:
+                  - generic [ref=e168]: Role
+                  - text: Innovation Engineer
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Scale
+                  - text: Enterprise
+                - generic [ref=e171]:
+                  - generic [ref=e172]: Location
+                  - text: San Francisco
+        - button "2015-2016 The Dash Bragi · Hardware Product Type Hardware Role Product Engineering Scale Startup Location Munich" [ref=e174] [cursor=pointer]:
+          - generic [ref=e175]:
+            - generic [ref=e176]: 2015-2016
+            - generic [ref=e177]:
+              - generic [ref=e179]:
+                - generic [ref=e180]:
+                  - strong [ref=e181]: The Dash
+                  - generic [ref=e182]: +
+                - generic [ref=e183]: Bragi · Hardware
+              - generic [ref=e184]:
+                - generic [ref=e185]:
+                  - generic [ref=e186]: Product Type
+                  - text: Hardware
+                - generic [ref=e187]:
+                  - generic [ref=e188]: Role
+                  - text: Product Engineering
+                - generic [ref=e189]:
+                  - generic [ref=e190]: Scale
+                  - text: Startup
+                - generic [ref=e191]:
+                  - generic [ref=e192]: Location
+                  - text: Munich
+        - button "2017 Generative Workflows Autodesk · Research Product Type Research Role Innovation Engineer Scale Enterprise Location San Francisco" [ref=e194] [cursor=pointer]:
+          - generic [ref=e195]:
+            - generic [ref=e196]: "2017"
+            - generic [ref=e197]:
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - strong [ref=e201]: Generative Workflows
+                  - generic [ref=e202]: +
+                - generic [ref=e203]: Autodesk · Research
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - generic [ref=e206]: Product Type
+                  - text: Research
+                - generic [ref=e207]:
+                  - generic [ref=e208]: Role
+                  - text: Innovation Engineer
+                - generic [ref=e209]:
+                  - generic [ref=e210]: Scale
+                  - text: Enterprise
+                - generic [ref=e211]:
+                  - generic [ref=e212]: Location
+                  - text: San Francisco
+        - button "2016 Droneport Norman Foster · Infrastructure Product Type Infrastructure Role Design Engineering Scale Scale-up Location Madrid" [ref=e214] [cursor=pointer]:
+          - generic [ref=e215]:
+            - generic [ref=e216]: "2016"
+            - generic [ref=e217]:
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - strong [ref=e221]: Droneport
+                  - generic [ref=e222]: +
+                - generic [ref=e223]: Norman Foster · Infrastructure
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - generic [ref=e226]: Product Type
+                  - text: Infrastructure
+                - generic [ref=e227]:
+                  - generic [ref=e228]: Role
+                  - text: Design Engineering
+                - generic [ref=e229]:
+                  - generic [ref=e230]: Scale
+                  - text: Scale-up
+                - generic [ref=e231]:
+                  - generic [ref=e232]: Location
+                  - text: Madrid
+        - button "2018 Inspection Crawlers GE · Robotics Product Type Robotics Role Robotics Engineer Scale Enterprise Location New York" [ref=e234] [cursor=pointer]:
+          - generic [ref=e235]:
+            - generic [ref=e236]: "2018"
+            - generic [ref=e237]:
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - strong [ref=e241]: Inspection Crawlers
+                  - generic [ref=e242]: +
+                - generic [ref=e243]: GE · Robotics
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]: Product Type
+                  - text: Robotics
+                - generic [ref=e247]:
+                  - generic [ref=e248]: Role
+                  - text: Robotics Engineer
+                - generic [ref=e249]:
+                  - generic [ref=e250]: Scale
+                  - text: Enterprise
+                - generic [ref=e251]:
+                  - generic [ref=e252]: Location
+                  - text: New York
+        - button "2014 Replicator Ecosystem MakerBot · Product Design Product Type Hardware Role Product Design Scale Scale-up Location Brooklyn" [ref=e254] [cursor=pointer]:
+          - generic [ref=e255]:
+            - generic [ref=e256]: "2014"
+            - generic [ref=e257]:
+              - generic [ref=e259]:
+                - generic [ref=e260]:
+                  - strong [ref=e261]: Replicator Ecosystem
+                  - generic [ref=e262]: +
+                - generic [ref=e263]: MakerBot · Product Design
+              - generic [ref=e264]:
+                - generic [ref=e265]:
+                  - generic [ref=e266]: Product Type
+                  - text: Hardware
+                - generic [ref=e267]:
+                  - generic [ref=e268]: Role
+                  - text: Product Design
+                - generic [ref=e269]:
+                  - generic [ref=e270]: Scale
+                  - text: Scale-up
+                - generic [ref=e271]:
+                  - generic [ref=e272]: Location
+                  - text: Brooklyn
+        - button "2015 Spatial Analytics Gensler · Data Analytics Product Type Data Analytics Role Computational Designer Scale Enterprise Location Global" [ref=e274] [cursor=pointer]:
+          - generic [ref=e275]:
+            - generic [ref=e276]: "2015"
+            - generic [ref=e277]:
+              - generic [ref=e279]:
+                - generic [ref=e280]:
+                  - strong [ref=e281]: Spatial Analytics
+                  - generic [ref=e282]: +
+                - generic [ref=e283]: Gensler · Data Analytics
+              - generic [ref=e284]:
+                - generic [ref=e285]:
+                  - generic [ref=e286]: Product Type
+                  - text: Data Analytics
+                - generic [ref=e287]:
+                  - generic [ref=e288]: Role
+                  - text: Computational Designer
+                - generic [ref=e289]:
+                  - generic [ref=e290]: Scale
+                  - text: Enterprise
+                - generic [ref=e291]:
+                  - generic [ref=e292]: Location
+                  - text: Global

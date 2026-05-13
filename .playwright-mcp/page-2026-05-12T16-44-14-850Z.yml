@@ -1,0 +1,200 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed Co" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - link "Projects" [ref=e8] [cursor=pointer]:
+        - /url: /projects
+      - link "Groups" [ref=e9] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e10] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e11] [cursor=pointer]:
+        - /url: /writing
+  - main [ref=e12]:
+    - generic [ref=e13]: Project index could not be loaded.
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: Ali Ahmed Co
+        - heading "A picture stack for AI products, systems, and odd pivots that shipped." [level=1] [ref=e17]
+        - paragraph [ref=e18]: "Single-page portfolio for Ali Ahmed: founder, operator, and product builder moving between AI systems, internal tooling, design, and technical storytelling."
+        - paragraph [ref=e19]: Use the stack, spread, or group views to rotate through projects by product type, role, and scale. Details load on demand so the front page stays quick.
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: How to use it
+          - paragraph [ref=e23]: Rotate through the stack, spread the tiles on canvas, or regroup them by scale.
+        - generic [ref=e24]:
+          - paragraph [ref=e25]: Why this format
+          - paragraph [ref=e26]: "The site is intentionally light: one canvas, a small set of filters, and case studies distilled from resume bullets into clearer product narratives."
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: Portfolio explorer
+        - heading "Selected work, reframed as product stories" [level=2] [ref=e30]
+        - paragraph [ref=e31]: The homepage is the primary portfolio surface. Subpages simply reopen the same material with a different default angle.
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]: Product type
+            - combobox "Product type" [ref=e36]:
+              - option "All" [selected]
+              - option "Automation"
+              - option "Connected Hardware"
+              - option "Growth Platform"
+              - option "Internal Tool"
+              - option "Operations System"
+              - option "Prototype Experience"
+              - option "R&D Prototype"
+          - generic [ref=e37]:
+            - generic [ref=e38]: Role
+            - combobox "Role" [ref=e39]:
+              - option "All" [selected]
+              - option "Analyst + Delivery"
+              - option "Analytics + Systems"
+              - option "Design Management"
+              - option "Engineer"
+              - option "Hardware + Product"
+              - option "Innovation Engineer"
+              - option "Product + Engineering"
+          - generic [ref=e40]:
+            - generic [ref=e41]: Scale
+            - combobox "Scale" [ref=e42]:
+              - option "All" [selected]
+              - option "Enterprise"
+              - option "Federal"
+              - option "Scale-up"
+              - option "Startup"
+        - tablist "Project layouts" [ref=e43]:
+          - button "stack" [ref=e44] [cursor=pointer]
+          - button "canvas" [ref=e45] [cursor=pointer]
+          - button "groups" [ref=e46] [cursor=pointer]
+      - region "Project carousel" [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: Project carousel
+          - generic [ref=e50]:
+            - button "Previous" [ref=e51] [cursor=pointer]
+            - button "Next" [ref=e52] [cursor=pointer]
+        - generic [ref=e53]:
+          - button "Signal Engine navigation poster Signal Engine" [ref=e54] [cursor=pointer]:
+            - img "Signal Engine navigation poster" [ref=e55]
+            - generic [ref=e56]: Signal Engine
+          - button "Delivery Atlas navigation poster Delivery Atlas" [ref=e57] [cursor=pointer]:
+            - img "Delivery Atlas navigation poster" [ref=e58]
+            - generic [ref=e59]: Delivery Atlas
+          - button "Reporting Ops navigation poster Reporting Ops" [ref=e60] [cursor=pointer]:
+            - img "Reporting Ops navigation poster" [ref=e61]
+            - generic [ref=e62]: Reporting Ops
+          - button "Design Loop navigation poster Design Loop" [ref=e63] [cursor=pointer]:
+            - img "Design Loop navigation poster" [ref=e64]
+            - generic [ref=e65]: Design Loop
+          - button "Court Vision navigation poster Court Vision" [ref=e66] [cursor=pointer]:
+            - img "Court Vision navigation poster" [ref=e67]
+            - generic [ref=e68]: Court Vision
+          - button "Helmet HUD navigation poster Helmet HUD" [ref=e69] [cursor=pointer]:
+            - img "Helmet HUD navigation poster" [ref=e70]
+            - generic [ref=e71]: Helmet HUD
+          - button "Exhibit Systems navigation poster Exhibit Systems" [ref=e72] [cursor=pointer]:
+            - img "Exhibit Systems navigation poster" [ref=e73]
+            - generic [ref=e74]: Exhibit Systems
+      - generic "Stack view" [ref=e75]:
+        - button "Signal Engine project poster WSP 2024-2025 Signal Engine Internal Tool" [ref=e76] [cursor=pointer]:
+          - img "Signal Engine project poster" [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]: WSP
+            - generic [ref=e80]: 2024-2025
+          - strong [ref=e81]: Signal Engine
+          - generic [ref=e82]: Internal Tool
+        - button "Delivery Atlas project poster WSP 2023-2024 Delivery Atlas Operations System" [ref=e83] [cursor=pointer]:
+          - img "Delivery Atlas project poster" [ref=e84]
+          - generic [ref=e85]:
+            - generic [ref=e86]: WSP
+            - generic [ref=e87]: 2023-2024
+          - strong [ref=e88]: Delivery Atlas
+          - generic [ref=e89]: Operations System
+        - button "Reporting Ops project poster WSP 2022-2023 Reporting Ops Automation" [ref=e90] [cursor=pointer]:
+          - img "Reporting Ops project poster" [ref=e91]
+          - generic [ref=e92]:
+            - generic [ref=e93]: WSP
+            - generic [ref=e94]: 2022-2023
+          - strong [ref=e95]: Reporting Ops
+          - generic [ref=e96]: Automation
+        - button "Design Loop project poster LaunchGood 2021-2022 Design Loop Growth Platform" [ref=e97] [cursor=pointer]:
+          - img "Design Loop project poster" [ref=e98]
+          - generic [ref=e99]:
+            - generic [ref=e100]: LaunchGood
+            - generic [ref=e101]: 2021-2022
+          - strong [ref=e102]: Design Loop
+          - generic [ref=e103]: Growth Platform
+        - button "Court Vision project poster huupe 2019-2022 Court Vision Connected Hardware" [ref=e104] [cursor=pointer]:
+          - img "Court Vision project poster" [ref=e105]
+          - generic [ref=e106]:
+            - generic [ref=e107]: huupe
+            - generic [ref=e108]: 2019-2022
+          - strong [ref=e109]: Court Vision
+          - generic [ref=e110]: Connected Hardware
+      - generic [ref=e111]:
+        - figure "Internal review surface designed like a pinned operating snapshot." [ref=e113]:
+          - img "Poster for WSP Signal Engine." [ref=e114]
+          - generic [ref=e115]: Internal review surface designed like a pinned operating snapshot.
+        - generic [ref=e116]:
+          - paragraph [ref=e117]: WSP / Product + Engineering
+          - heading "Signal Engine" [level=2] [ref=e118]
+          - paragraph [ref=e119]: A compact internal product that turned murky safety signals into reviewable decisions.
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e122]: Risk accuracy
+              - strong [ref=e123]: 86%
+            - generic [ref=e124]:
+              - generic [ref=e125]: Recall success
+              - strong [ref=e126]: 79%
+            - generic [ref=e127]:
+              - generic [ref=e128]: Renewals
+              - strong [ref=e129]: $600k
+          - generic [ref=e130]:
+            - article [ref=e131]:
+              - heading "Challenge" [level=3] [ref=e132]
+              - paragraph [ref=e133]: WSP needed a legible way to spot emerging safety risks and possible recalls without forcing teams through a slow reporting loop.
+            - article [ref=e134]:
+              - heading "Outcome" [level=3] [ref=e135]
+              - paragraph [ref=e136]: Ali built the interface and workflow logic around TypeScript, Codex, and Python-based analysis so teams could move from noise to action faster while supporting renewal conversations.
+          - generic [ref=e137]:
+            - article [ref=e138]:
+              - heading "Resume bullets remixed" [level=3] [ref=e139]
+              - list [ref=e140]:
+                - listitem [ref=e141]: Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.
+                - listitem [ref=e142]: Developed a machine learning workflow in Python that identified potential recalls with 79% success.
+                - listitem [ref=e143]: The recall workflow supported $600k in renewals by making operational insight more defensible.
+            - article [ref=e144]:
+              - heading "Capabilities" [level=3] [ref=e145]
+              - list [ref=e146]:
+                - listitem [ref=e147]: Product framing
+                - listitem [ref=e148]: Frontend development
+                - listitem [ref=e149]: ML workflow design
+                - listitem [ref=e150]: Operations analytics
+    - generic [ref=e151]:
+      - article [ref=e152]:
+        - paragraph [ref=e153]: Resume
+        - heading "Product, AI, design, and a few hard left turns." [level=2] [ref=e154]
+        - paragraph [ref=e155]: Operator working across AI, infrastructure, design, and product with experience spanning enterprise software, venture-backed startups, and federal programs.
+        - link "Open resume view" [ref=e156] [cursor=pointer]:
+          - /url: /resume
+      - article [ref=e157]:
+        - paragraph [ref=e158]: Writing
+        - heading "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [level=2] [ref=e159]
+        - paragraph [ref=e160]: The following work was completed by Ali Ahmed for the Washington DC Metro. Codebase, internal product rollouts, and demos are the intellectual property of developers and the associated companies.
+        - link "Read on Substack" [ref=e161] [cursor=pointer]:
+          - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+      - article [ref=e162]:
+        - paragraph [ref=e163]: Contact
+        - heading "ali@ product, ops, design, founder mode." [level=2] [ref=e164]
+        - paragraph [ref=e165]:
+          - text: Email
+          - link "aliahm1208@gmail.com" [ref=e166] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+          - text: or browse more background through LinkedIn and GitHub.
+        - generic [ref=e167]:
+          - link "LinkedIn" [ref=e168] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/aliahmed-co
+          - link "GitHub" [ref=e169] [cursor=pointer]:
+            - /url: https://github.com/aliahm08

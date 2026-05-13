@@ -1,0 +1,85 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed" [ref=e5] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e6]:
+      - link "Work" [ref=e7] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e8] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e9] [cursor=pointer]:
+        - /url: /writing
+      - link "Contact" [ref=e10] [cursor=pointer]:
+        - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: Work
+        - heading "Selected work is organized as an index first, then opened as needed." [level=2] [ref=e16]
+        - paragraph [ref=e17]: "The portfolio keeps the surface light for employers, clients, and technical collaborators: project, client, type, role, and scale before long case-study detail."
+      - region "Delivery Atlas preview stack" [ref=e82]:
+        - generic [ref=e19]:
+          - heading "Delivery Atlas" [level=1] [ref=e83]
+          - heading "WSP" [level=2] [ref=e21]
+        - generic [ref=e22]:
+          - img [ref=e24]
+          - img [ref=e23]
+          - img [ref=e25]
+          - img [ref=e26]
+          - img [ref=e27]
+          - img [ref=e28]
+          - img [ref=e29]
+        - generic [ref=e30]:
+          - paragraph [ref=e31]:
+            - strong [ref=e32]: Operations System
+            - text: ·
+            - strong [ref=e33]: 2023-2024
+            - text: ·
+            - strong [ref=e34]: Analyst + Delivery
+          - paragraph [ref=e35]: Resource tracking and taxonomy cleanup work for AI-assisted delivery operations.
+      - generic "Selected project preview" [ref=e36]:
+        - article [ref=e37]:
+          - button "2024-2025 Signal Engine WSP Internal Tool" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 2024-2025
+            - strong [ref=e40]: Signal Engine
+            - generic [ref=e41]: WSP
+            - generic [ref=e42]: Internal Tool
+        - article [ref=e46]:
+          - button "2023-2024 Delivery Atlas WSP Operations System" [expanded] [active] [ref=e47] [cursor=pointer]:
+            - generic [ref=e48]: 2023-2024
+            - strong [ref=e49]: Delivery Atlas
+            - generic [ref=e50]: WSP
+            - generic [ref=e51]: Operations System
+          - paragraph [ref=e85]:
+            - strong [ref=e86]: Analyst + Delivery
+            - text: · Enterprise · Resource tracking and taxonomy cleanup work for AI-assisted delivery operations.
+        - article [ref=e52]:
+          - button "2022-2023 Reporting Ops WSP Automation" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54]: 2022-2023
+            - strong [ref=e55]: Reporting Ops
+            - generic [ref=e56]: WSP
+            - generic [ref=e57]: Automation
+        - article [ref=e58]:
+          - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: 2021-2022
+            - strong [ref=e61]: Design Loop
+            - generic [ref=e62]: LaunchGood
+            - generic [ref=e63]: Growth Platform
+        - article [ref=e64]:
+          - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]: 2019-2022
+            - strong [ref=e67]: Court Vision
+            - generic [ref=e68]: huupe
+            - generic [ref=e69]: Connected Hardware
+        - article [ref=e70]:
+          - button "2018-2019 Helmet HUD NASA R&D Prototype" [ref=e71] [cursor=pointer]:
+            - generic [ref=e72]: 2018-2019
+            - strong [ref=e73]: Helmet HUD
+            - generic [ref=e74]: NASA
+            - generic [ref=e75]: R&D Prototype
+        - article [ref=e76]:
+          - button "2016-2017 Exhibit Systems Autodesk Prototype Experience" [ref=e77] [cursor=pointer]:
+            - generic [ref=e78]: 2016-2017
+            - strong [ref=e79]: Exhibit Systems
+            - generic [ref=e80]: Autodesk
+            - generic [ref=e81]: Prototype Experience

@@ -1,0 +1,165 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - generic [ref=e16]:
+        - generic "Product type filter" [ref=e17]:
+          - button "All Products" [ref=e18] [cursor=pointer]
+          - button "Advanced AI" [ref=e19] [cursor=pointer]
+          - button "B2B SaaS" [ref=e20] [cursor=pointer]
+          - button "Consumer Products" [ref=e21] [cursor=pointer]
+        - generic "Role filter" [ref=e22]:
+          - button "All Roles" [ref=e23] [cursor=pointer]
+          - button "Management" [ref=e24] [cursor=pointer]
+          - button "Design" [ref=e25] [cursor=pointer]
+          - button "Development" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]:
+        - button "All" [ref=e28] [cursor=pointer]
+        - button "Enterprise" [ref=e29] [cursor=pointer]
+        - button "Startup" [ref=e30] [cursor=pointer]
+        - button "Scale-up" [ref=e31] [cursor=pointer]
+      - generic "All projects" [ref=e32]:
+        - article [ref=e33]:
+          - button "2024-2025 Signal Engine Advanced AI Development Enterprise" [expanded] [ref=e34] [cursor=pointer]:
+            - generic [ref=e35]: 2024-2025
+            - strong [ref=e36]:
+              - text: Signal Engine
+              - generic [ref=e37]: x
+            - generic [ref=e38]: Advanced AI
+            - generic [ref=e39]: Development
+            - generic [ref=e40]: Enterprise
+          - region "Signal Engine preview stack" [ref=e42]:
+            - generic [ref=e43]:
+              - heading "Safety Management Group" [level=1] [ref=e44]
+              - generic [ref=e45]:
+                - button "Previous photo" [ref=e46] [cursor=pointer]: ←
+                - button "Next photo" [ref=e47] [cursor=pointer]: →
+            - button "Next photo" [ref=e48] [cursor=pointer]:
+              - img "Signal Engine abstract preview 1" [ref=e49]
+              - img "Signal Engine abstract preview 2" [ref=e50]
+              - img "Signal Engine abstract preview 3" [ref=e51]
+              - img "Signal Engine abstract preview 4" [ref=e52]
+            - generic [ref=e53]:
+              - paragraph [ref=e54]:
+                - strong [ref=e55]: Signal Engine
+              - paragraph [ref=e56]: Internal analytics tooling for emerging safety risks and recall detection.
+        - article [ref=e57]:
+          - button "2023-2024 Delivery Atlas B2B SaaS Management Enterprise" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]: 2023-2024
+            - strong [ref=e60]:
+              - text: Delivery Atlas
+              - generic [ref=e61]: +
+            - generic [ref=e62]: B2B SaaS
+            - generic [ref=e63]: Management
+            - generic [ref=e64]: Enterprise
+        - article [ref=e65]:
+          - button "2022-2023 Reporting Ops Advanced AI Development Enterprise" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 2022-2023
+            - strong [ref=e68]:
+              - text: Reporting Ops
+              - generic [ref=e69]: +
+            - generic [ref=e70]: Advanced AI
+            - generic [ref=e71]: Development
+            - generic [ref=e72]: Enterprise
+        - article [ref=e73]:
+          - button "2021-2022 Design Loop B2B SaaS Management Scale-up" [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: 2021-2022
+            - strong [ref=e76]:
+              - text: Design Loop
+              - generic [ref=e77]: +
+            - generic [ref=e78]: B2B SaaS
+            - generic [ref=e79]: Management
+            - generic [ref=e80]: Scale-up
+        - article [ref=e81]:
+          - button "2019-2022 Court Vision Advanced AI Development Startup" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]: 2019-2022
+            - strong [ref=e84]:
+              - text: Court Vision
+              - generic [ref=e85]: +
+            - generic [ref=e86]: Advanced AI
+            - generic [ref=e87]: Development
+            - generic [ref=e88]: Startup
+        - article [ref=e89]:
+          - button "2018-2019 Helmet HUD Advanced AI Development Enterprise" [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: 2018-2019
+            - strong [ref=e92]:
+              - text: Helmet HUD
+              - generic [ref=e93]: +
+            - generic [ref=e94]: Advanced AI
+            - generic [ref=e95]: Development
+            - generic [ref=e96]: Enterprise
+        - article [ref=e97]:
+          - button "2016-2017 Exhibit Systems Consumer Products Development Enterprise" [ref=e98] [cursor=pointer]:
+            - generic [ref=e99]: 2016-2017
+            - strong [ref=e100]:
+              - text: Exhibit Systems
+              - generic [ref=e101]: +
+            - generic [ref=e102]: Consumer Products
+            - generic [ref=e103]: Development
+            - generic [ref=e104]: Enterprise
+        - article [ref=e105]:
+          - button "2015-2016 The Dash Consumer Products Development Startup" [ref=e106] [cursor=pointer]:
+            - generic [ref=e107]: 2015-2016
+            - strong [ref=e108]:
+              - text: The Dash
+              - generic [ref=e109]: +
+            - generic [ref=e110]: Consumer Products
+            - generic [ref=e111]: Development
+            - generic [ref=e112]: Startup
+        - article [ref=e113]:
+          - button "2017 Generative Workflows Advanced AI Development Enterprise" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]: "2017"
+            - strong [ref=e116]:
+              - text: Generative Workflows
+              - generic [ref=e117]: +
+            - generic [ref=e118]: Advanced AI
+            - generic [ref=e119]: Development
+            - generic [ref=e120]: Enterprise
+        - article [ref=e121]:
+          - button "2016 Droneport Consumer Products Design Scale-up" [ref=e122] [cursor=pointer]:
+            - generic [ref=e123]: "2016"
+            - strong [ref=e124]:
+              - text: Droneport
+              - generic [ref=e125]: +
+            - generic [ref=e126]: Consumer Products
+            - generic [ref=e127]: Design
+            - generic [ref=e128]: Scale-up
+        - article [ref=e129]:
+          - button "2018 Inspection Crawlers Advanced AI Development Scale-up" [ref=e130] [cursor=pointer]:
+            - generic [ref=e131]: "2018"
+            - strong [ref=e132]:
+              - text: Inspection Crawlers
+              - generic [ref=e133]: +
+            - generic [ref=e134]: Advanced AI
+            - generic [ref=e135]: Development
+            - generic [ref=e136]: Scale-up
+        - article [ref=e137]:
+          - button "2014 Replicator Ecosystem Consumer Products Design Scale-up" [ref=e138] [cursor=pointer]:
+            - generic [ref=e139]: "2014"
+            - strong [ref=e140]:
+              - text: Replicator Ecosystem
+              - generic [ref=e141]: +
+            - generic [ref=e142]: Consumer Products
+            - generic [ref=e143]: Design
+            - generic [ref=e144]: Scale-up
+        - article [ref=e145]:
+          - button "2015 Spatial Analytics Advanced AI Design Scale-up" [ref=e146] [cursor=pointer]:
+            - generic [ref=e147]: "2015"
+            - strong [ref=e148]:
+              - text: Spatial Analytics
+              - generic [ref=e149]: +
+            - generic [ref=e150]: Advanced AI
+            - generic [ref=e151]: Design
+            - generic [ref=e152]: Scale-up

@@ -1,0 +1,169 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Ali Ahmed" [ref=e44] [cursor=pointer]:
+      - /url: /
+    - navigation "Primary" [ref=e45]:
+      - link "Home" [ref=e46] [cursor=pointer]:
+        - /url: /
+      - link "Projects" [ref=e47] [cursor=pointer]:
+        - /url: /projects
+      - link "Groups" [ref=e48] [cursor=pointer]:
+        - /url: /work
+      - link "Resume" [ref=e49] [cursor=pointer]:
+        - /url: /resume
+      - link "Writing" [ref=e50] [cursor=pointer]:
+        - /url: /writing
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: 01 / Summary and profile
+          - heading "Ali Ahmed builds AI products, operational software, and technical systems for teams that need work to move faster." [level=1] [ref=e53]
+        - generic [ref=e10]:
+          - generic [ref=e54]:
+            - paragraph [ref=e55]: Ali has managed AI, machine learning, and data analytics projects adding nearly $100M in value across VC-backed startups, federal contracts, and enterprise software. Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.
+            - button "Collapse summary" [expanded] [active] [ref=e142] [cursor=pointer]
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - term [ref=e59]: Current
+              - definition [ref=e60]: Founder at B2W-ai / Senior data work at WSP
+            - generic [ref=e61]:
+              - term [ref=e62]: Range
+              - definition [ref=e63]: AI systems, analytics, product design, hardware, and infrastructure
+            - generic [ref=e64]:
+              - term [ref=e65]: Location
+              - definition [ref=e66]: Washington, District of Columbia
+        - generic [ref=e144]:
+          - article [ref=e145]:
+            - paragraph [ref=e146]:
+              - link "B2W-ai" [ref=e147] [cursor=pointer]:
+                - /url: https://b2w-ai-com.vercel.app/
+              - text: ", Founder & CEO."
+          - article [ref=e148]:
+            - paragraph [ref=e149]:
+              - link "WSP" [ref=e150] [cursor=pointer]:
+                - /url: https://www.wsp.com/en-us
+              - text: ", Senior Consultant."
+          - article [ref=e151]:
+            - paragraph [ref=e152]:
+              - link "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [ref=e153] [cursor=pointer]:
+                - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+          - article [ref=e154]:
+            - paragraph [ref=e155]:
+              - strong [ref=e156]: NASA
+              - text: · Space Suit Engineer
+          - article [ref=e157]:
+            - paragraph [ref=e158]:
+              - strong [ref=e159]: Columbia University
+              - text: · Master of Architecture (M.Arch)
+          - article [ref=e160]:
+            - paragraph [ref=e161]:
+              - strong [ref=e162]: Autodesk
+              - text: · Applied Innovation Engineer
+          - article [ref=e163]:
+            - paragraph [ref=e164]:
+              - strong [ref=e165]: Norman Foster Foundation
+              - text: · Architectural Designer
+          - article [ref=e166]:
+            - paragraph [ref=e167]:
+              - strong [ref=e168]: huupe
+              - text: · Hardware Engineer
+          - article [ref=e169]:
+            - paragraph [ref=e170]:
+              - strong [ref=e171]: Medium
+              - text: ·
+              - link "Strategizing the Future of Computer Aided Design by (re)moving the Computer" [ref=e172] [cursor=pointer]:
+                - /url: https://medium.com/@aliahmed/strategizing-the-future-of-computer-aided-design-by-re-moving-the-computer-56f5ee878b32
+          - article [ref=e173]:
+            - paragraph [ref=e174]:
+              - strong [ref=e175]: Columbia GSAPP
+              - text: ·
+              - link "Urban Magazine - Fall 2020" [ref=e176] [cursor=pointer]:
+                - /url: https://www.arch.columbia.edu/books/reader/597-urban-magazine-fall-2020
+          - article [ref=e177]:
+            - paragraph [ref=e178]:
+              - strong [ref=e179]: The George Washington University
+              - text: · Bachelor of Science (BS), Mechanical Engineering
+          - article [ref=e180]:
+            - paragraph [ref=e181]:
+              - strong [ref=e182]: Autodesk
+              - text: · AR Exhibits Engineer
+          - article [ref=e183]:
+            - paragraph [ref=e184]:
+              - strong [ref=e185]: LaunchGood
+              - text: · Design Manager
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - paragraph [ref=e69]: 02 / Portfolio of work and projects
+          - heading "Selected work is organized as an index first, then opened as needed." [level=2] [ref=e70]
+          - paragraph [ref=e71]: "The portfolio keeps the surface light for employers, clients, and technical collaborators: project, client, type, role, and scale before long case-study detail."
+        - generic [ref=e72]:
+          - button "Open Helmet HUD in projects" [ref=e141] [cursor=pointer]:
+            - img "Helmet HUD abstract preview 1" [ref=e81]
+            - img "Signal Engine abstract preview 1" [ref=e77]
+            - img "Delivery Atlas abstract preview 1" [ref=e78]
+            - img "Reporting Ops abstract preview 1" [ref=e79]
+            - img "Design Loop abstract preview 1" [ref=e76]
+            - img "Court Vision abstract preview 1" [ref=e80]
+            - img "Exhibit Systems abstract preview 1" [ref=e82]
+          - link "Projects" [ref=e86] [cursor=pointer]:
+            - /url: /projects
+        - generic "Selected project preview" [ref=e87]:
+          - button "2024-2025 Signal Engine WSP Internal Tool" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89]: 2024-2025
+            - strong [ref=e90]: Signal Engine
+            - generic [ref=e91]: WSP
+            - generic [ref=e92]: Internal Tool
+          - button "2023-2024 Delivery Atlas WSP Operations System" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: 2023-2024
+            - strong [ref=e95]: Delivery Atlas
+            - generic [ref=e96]: WSP
+            - generic [ref=e97]: Operations System
+          - button "2022-2023 Reporting Ops WSP Automation" [ref=e98] [cursor=pointer]:
+            - generic [ref=e99]: 2022-2023
+            - strong [ref=e100]: Reporting Ops
+            - generic [ref=e101]: WSP
+            - generic [ref=e102]: Automation
+          - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e103] [cursor=pointer]:
+            - generic [ref=e104]: 2021-2022
+            - strong [ref=e105]: Design Loop
+            - generic [ref=e106]: LaunchGood
+            - generic [ref=e107]: Growth Platform
+          - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e108] [cursor=pointer]:
+            - generic [ref=e109]: 2019-2022
+            - strong [ref=e110]: Court Vision
+            - generic [ref=e111]: huupe
+            - generic [ref=e112]: Connected Hardware
+      - generic [ref=e28]:
+        - generic [ref=e113]:
+          - paragraph [ref=e114]: 03 / Writings in chronological order
+          - heading "Notes on AI, interfaces, operations, and the way technical work gets shipped." [level=2] [ref=e115]
+        - article [ref=e116]:
+          - time [ref=e117]: Oct 28, 2025
+          - generic [ref=e118]:
+            - heading "Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [level=3] [ref=e119]
+            - paragraph [ref=e120]: The following work was completed by Ali Ahmed for the Washington DC Metro. Codebase, internal product rollouts, and demos are the intellectual property of developers and the associated companies.
+            - link "Read writing" [ref=e121] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com/p/rebuilding-washington-dcs-metrobus
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - paragraph [ref=e124]: 04 / Connect with Ali
+          - heading "For employers, clients, founders, and teams working through AI, IT, data, or product problems." [level=2] [ref=e125]
+          - paragraph [ref=e126]: Reach out for product engineering, analytics systems, AI workflow design, technical product management, or conversations about building software that changes how a team operates.
+        - generic [ref=e127]:
+          - link "Email aliahm1208@gmail.com" [ref=e128] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+            - generic [ref=e129]: Email
+            - strong [ref=e130]: aliahm1208@gmail.com
+          - link "LinkedIn aliahmed-co" [ref=e131] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/aliahmed-co
+            - generic [ref=e132]: LinkedIn
+            - strong [ref=e133]: aliahmed-co
+          - link "GitHub @aliahm08" [ref=e134] [cursor=pointer]:
+            - /url: https://github.com/aliahm08
+            - generic [ref=e135]: GitHub
+            - strong [ref=e136]: "@aliahm08"
+          - link "Substack Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI" [ref=e137] [cursor=pointer]:
+            - /url: https://aliahmed312.substack.com
+            - generic [ref=e138]: Substack
+            - strong [ref=e139]: Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI

@@ -1,0 +1,79 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - region "Signal Engine preview stack" [ref=e15]:
+        - generic [ref=e16]:
+          - heading "Signal Engine" [level=1] [ref=e17]
+          - heading "WSP" [level=2] [ref=e18]
+        - button "Show next project after Signal Engine" [ref=e19] [cursor=pointer]:
+          - img "Signal Engine abstract preview 1" [ref=e20]
+          - img "Delivery Atlas abstract preview 2" [ref=e21]
+          - img "Reporting Ops abstract preview 3" [ref=e22]
+          - img "Design Loop abstract preview 4" [ref=e23]
+          - img "Court Vision abstract preview 1" [ref=e24]
+          - img "Helmet HUD abstract preview 2" [ref=e25]
+          - img "Exhibit Systems abstract preview 3" [ref=e26]
+        - generic [ref=e27]:
+          - paragraph [ref=e28]:
+            - strong [ref=e29]: Internal Tool
+            - text: ·
+            - strong [ref=e30]: 2024-2025
+            - text: ·
+            - strong [ref=e31]: Product + Engineering
+          - paragraph [ref=e32]: Internal analytics tooling for emerging safety risks and recall detection.
+      - generic "Selected project preview" [ref=e33]:
+        - article [ref=e34]:
+          - button "2024-2025 Signal Engine WSP Internal Tool" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36]: 2024-2025
+            - strong [ref=e37]: Signal Engine
+            - generic [ref=e38]: WSP
+            - generic [ref=e39]: Internal Tool
+        - article [ref=e40]:
+          - button "2023-2024 Delivery Atlas WSP Operations System" [ref=e41] [cursor=pointer]:
+            - generic [ref=e42]: 2023-2024
+            - strong [ref=e43]: Delivery Atlas
+            - generic [ref=e44]: WSP
+            - generic [ref=e45]: Operations System
+        - article [ref=e46]:
+          - button "2022-2023 Reporting Ops WSP Automation" [ref=e47] [cursor=pointer]:
+            - generic [ref=e48]: 2022-2023
+            - strong [ref=e49]: Reporting Ops
+            - generic [ref=e50]: WSP
+            - generic [ref=e51]: Automation
+        - article [ref=e52]:
+          - button "2021-2022 Design Loop LaunchGood Growth Platform" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54]: 2021-2022
+            - strong [ref=e55]: Design Loop
+            - generic [ref=e56]: LaunchGood
+            - generic [ref=e57]: Growth Platform
+        - article [ref=e58]:
+          - button "2019-2022 Court Vision huupe Connected Hardware" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: 2019-2022
+            - strong [ref=e61]: Court Vision
+            - generic [ref=e62]: huupe
+            - generic [ref=e63]: Connected Hardware
+        - article [ref=e64]:
+          - button "2018-2019 Helmet HUD NASA R&D Prototype" [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]: 2018-2019
+            - strong [ref=e67]: Helmet HUD
+            - generic [ref=e68]: NASA
+            - generic [ref=e69]: R&D Prototype
+        - article [ref=e70]:
+          - button "2016-2017 Exhibit Systems Autodesk Prototype Experience" [ref=e71] [cursor=pointer]:
+            - generic [ref=e72]: 2016-2017
+            - strong [ref=e73]: Exhibit Systems
+            - generic [ref=e74]: Autodesk
+            - generic [ref=e75]: Prototype Experience
