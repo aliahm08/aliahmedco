@@ -1,16 +1,100 @@
-export default function Footer() {
+import {ReactNode} from 'react';
+import {profile} from '../content/profile';
+import {AppRoute, navItems, site} from '../content/site';
+
+function navigateTo(route: AppRoute) {
+  window.history.pushState({}, '', route);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+
+function InternalLink(props: {href: AppRoute; children: ReactNode; isCurrent?: boolean}) {
   return (
-    <footer className="py-12 px-6 max-w-7xl mx-auto border-t border-neutral-200">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-        <div>
-          <h3 className="text-lg font-medium tracking-tight">Minimal AI Solutions</h3>
-          <p className="text-sm text-neutral-500 mt-2">© 2024 All rights reserved.</p>
+    <a
+      href={props.href}
+      aria-current={props.isCurrent ? 'page' : undefined}
+      onClick={(event) => {
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        navigateTo(props.href);
+      }}
+    >
+      {props.children}
+    </a>
+  );
+}
+
+export default function Footer(props: {route: AppRoute | null}) {
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="site-footer" aria-label="Site footer">
+      <div className="footer-background" aria-hidden="true">
+        <span className="footer-background-lines" />
+      </div>
+      <div className="footer-inner">
+        <div className="footer-grid">
+          <section className="footer-intro">
+            <p className="eyebrow">Contact</p>
+            <a href={`mailto:${site.email}`} className="footer-contact-link">
+              {site.email}
+            </a>
+            <p className="footer-location">DC and NYC</p>
+          </section>
+
+          <nav className="footer-column" aria-labelledby="footer-nav-heading">
+            <p id="footer-nav-heading" className="eyebrow">
+              Navigate
+            </p>
+            <div className="footer-link-list">
+              <InternalLink href="/" isCurrent={props.route === '/'}>
+                Home
+              </InternalLink>
+              {navItems.map((item) => (
+                <InternalLink key={item.href} href={item.href} isCurrent={props.route === item.href}>
+                  {item.label}
+                </InternalLink>
+              ))}
+            </div>
+          </nav>
+
+          <section className="footer-column" aria-labelledby="footer-links-heading">
+            <p id="footer-links-heading" className="eyebrow">
+              Connect
+            </p>
+            <div className="footer-link-list">
+              <a href={site.linkedinUrl} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+              <a href={site.githubUrl} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a href={site.substackUrl} target="_blank" rel="noreferrer">
+                Substack
+              </a>
+              <a href={profile.b2wUrl} target="_blank" rel="noreferrer">
+                B2W-ai
+              </a>
+            </div>
+          </section>
         </div>
-        
-        <div className="flex gap-8 text-sm text-neutral-600">
-          <a href="#" className="hover:text-black transition-colors">Privacy</a>
-          <a href="#" className="hover:text-black transition-colors">Terms</a>
-          <a href="#" className="hover:text-black transition-colors">Contact</a>
+
+        <div className="footer-meta">
+          <p>© {year} Ali Ahmed Co.</p>
+          <p>
+            {props.route === '/' ? 'Portfolio, resume, and writing.' : (
+              <InternalLink href="/">Back to home</InternalLink>
+            )}
+          </p>
         </div>
       </div>
     </footer>

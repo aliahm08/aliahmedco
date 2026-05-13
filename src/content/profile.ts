@@ -7,7 +7,7 @@ export const profile = {
   intro:
     'Product manager adding value across go-to-market, business development, and product design teams using frontend development and full-stack engineering.',
   summary:
-    'Ali has managed AI, machine learning, and data analytics projects adding nearly $100M in value across VC-backed startups, federal contracts, and enterprise software.',
+    'Ali has managed $220M worth of organization-wide enterprise enhancement projects across WSP, Huupe, Autodesk, and NASA, from technical design through product strategy.',
   location: 'Washington, District of Columbia',
   email: 'aliahm1208@gmail.com',
   linkedinUrl: 'https://www.linkedin.com/in/aliahmed-co',
@@ -43,10 +43,10 @@ export const profile = {
   ],
   resume: {
     summary:
-      'Building the future of AI systems for architecture, construction, and engineering by developing agents that work off price-build models.',
+      'Ali has built his career at the intersection of engineering, architecture, and innovation, managing $220M in enterprise projects across NASA, Autodesk, Huupe, and WSP.',
     pivotsTitle: 'my many pivots',
     profileSummary:
-      'Operator working across AI, infrastructure, design, and product, with experience spanning federal programs, venture-backed startups, and enterprise software.',
+      'Ali has built his career at the intersection of engineering, architecture, and innovation. Across roles at WSP (consulting), Huupe (VC-backed), Autodesk, and NASA, he has managed $220M worth of organization-wide enterprise enhancement projects from technical design and analysis through product strategy and implementation. His experience includes product development, project evaluation, cross-functional coordination, and helping turn complex opportunities into clear decisions and actionable plans.',
     focusAreas: [
       'Sales',
       'Revenue engine',

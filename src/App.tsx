@@ -1,4 +1,6 @@
-import {CSSProperties, PointerEvent, ReactNode, startTransition, useEffect, useState} from 'react';
+import {CSSProperties, PointerEvent, ReactNode, startTransition, useEffect, useRef, useState} from 'react';
+import {AnimatePresence, motion} from 'motion/react';
+import Footer from './components/Footer';
 import {useSeo} from './components/Seo';
 import {substackPosts} from './content/substackPosts';
 import {profile} from './content/profile';
@@ -651,6 +653,13 @@ function WorkProjectStack(props: {
           <strong>{(currentPhoto as any).title || props.project.title}</strong>
         </p>
         <p className="work-stack-description">{currentPhoto.caption}</p>
+        {props.project.tags.length ? (
+          <ul className="tag-list work-stack-tags" aria-label={`${props.project.title} tags`}>
+            {props.project.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </section>
   );
@@ -866,41 +875,249 @@ function WorkPage(props: {
   projects: ProjectIndexItem[];
   onOpenProject: (projectId: string) => void;
 }) {
-  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
+  const [productTypeFilter, setProductTypeFilter] = useState(allLabel);
+  const [roleFilter, setRoleFilter] = useState(allLabel);
+  const [activeGroup, setActiveGroup] = useState('All');
+  const [openFilter, setOpenFilter] = useState<'product' | 'role' | null>(null);
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(props.projects[0]?.id ?? null);
+  const [manualProjectId, setManualProjectId] = useState<string | null>(null);
+  const projectRefs = useRef<Record<string, HTMLElement | null>>({});
+  const pendingOpenRef = useRef<number | null>(null);
 
-  const groups = Array.from(new Set(props.projects.map((p) => p.scale)));
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  
-  const activeGroup = selectedGroup ?? groups[0] ?? '';
-  const groupProjects = props.projects.filter((p) => p.scale === activeGroup);
+  const productTypes = ['Advanced AI', 'B2B SaaS', 'Consumer Product'];
+  const roles = ['Management', 'Design', 'Development'];
+  const groups = ['All', 'Enterprise', 'Startup', 'Scale-up'];
+  const productFilterLabel = productTypeFilter === allLabel ? 'Type' : productTypeFilter;
+  const roleFilterLabel = roleFilter === allLabel ? 'Role' : roleFilter;
+  const productTypeForProject = (project: ProjectIndexItem) => {
+    if (
+      project.tags.some((tag) => ['Codex', 'Python', 'Analytics', 'Computer Vision'].includes(tag)) ||
+      ['Internal Tool', 'Automation', 'Data Analytics', 'Research', 'Robotics'].includes(project.productType)
+    ) {
+      return 'Advanced AI';
+    }
+    if (['Operations System', 'Growth Platform'].includes(project.productType)) {
+      return 'B2B SaaS';
+    }
+    return 'Consumer Product';
+  };
+  const roleForProject = (project: ProjectIndexItem) => {
+    if (project.role.includes('Management') || project.role.includes('Analyst') || project.role.includes('Delivery')) {
+      return 'Management';
+    }
+    if (project.role.includes('Design') || project.role.includes('Computational')) {
+      return 'Design';
+    }
+    return 'Development';
+  };
+  const groupForProject = (project: ProjectIndexItem) => {
+    if (project.company === 'GE' || project.company === 'Gensler') {
+      return 'Scale-up';
+    }
+    return project.scale === 'Federal' ? 'Enterprise' : project.scale;
+  };
+
+  const groupProjects = props.projects.filter((project) => {
+    const matchesProductType = productTypeFilter === allLabel || productTypeForProject(project) === productTypeFilter;
+    const matchesRole = roleFilter === allLabel || roleForProject(project) === roleFilter;
+    const matchesGroup = activeGroup === 'All' || groupForProject(project) === activeGroup;
+    return matchesProductType && matchesRole && matchesGroup;
+  });
+  const activeProjectId = expandedProjectId;
+  const openProjectTray = (projectId: string, source: 'scroll' | 'click') => {
+    if (projectId === expandedProjectId) {
+      return;
+    }
+
+    if (source === 'click') {
+      setManualProjectId(projectId);
+    }
+
+    if (pendingOpenRef.current) {
+      window.clearTimeout(pendingOpenRef.current);
+    }
+
+    setExpandedProjectId(null);
+    pendingOpenRef.current = window.setTimeout(() => {
+      setExpandedProjectId(projectId);
+      pendingOpenRef.current = null;
+    }, 180);
+  };
+
+  useEffect(() => {
+    if (!groupProjects.length) {
+      setExpandedProjectId(null);
+      return;
+    }
+
+    if (manualProjectId && !groupProjects.some((project) => project.id === manualProjectId)) {
+      setManualProjectId(null);
+    }
+
+    if (!pendingOpenRef.current && !groupProjects.some((project) => project.id === activeProjectId)) {
+      setExpandedProjectId(groupProjects[0].id);
+    }
+  }, [activeProjectId, groupProjects, manualProjectId]);
+
+  useEffect(() => {
+    setManualProjectId(null);
+  }, [productTypeFilter, roleFilter, activeGroup]);
+
+  useEffect(() => {
+    return () => {
+      if (pendingOpenRef.current) {
+        window.clearTimeout(pendingOpenRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!groupProjects.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const centeredEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => {
+            const viewportCenter = window.innerHeight / 2;
+            const leftCenter = left.boundingClientRect.top + left.boundingClientRect.height / 2;
+            const rightCenter = right.boundingClientRect.top + right.boundingClientRect.height / 2;
+            return Math.abs(leftCenter - viewportCenter) - Math.abs(rightCenter - viewportCenter);
+          })[0];
+
+        const nextId = centeredEntry?.target.getAttribute('data-project-id');
+        if (nextId && !manualProjectId && !pendingOpenRef.current) {
+          openProjectTray(nextId, 'scroll');
+        }
+      },
+      {rootMargin: '-38% 0% -38% 0%', threshold: 0},
+    );
+
+    groupProjects.forEach((project) => {
+      const element = projectRefs.current[project.id];
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [groupProjects, manualProjectId, expandedProjectId]);
 
   return (
     <div className="work-page">
       <section id="portfolio" className="landing-section landing-portfolio-section">
-        <div className="work-group-tabs">
-          {groups.map((group) => (
-            <button 
-              key={group} 
-              type="button" 
-              className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
-              onClick={() => {
-                setSelectedGroup(group);
-                setExpandedProjectId(null);
-              }}
-            >
-              {group}
-            </button>
-          ))}
+        <div className="work-filter-section">
+          <div className="work-filter-grid">
+            <div className="work-filter-dropdown">
+              <button
+                type="button"
+                className={`work-filter-trigger ${openFilter === 'product' ? 'is-open' : ''}`}
+                aria-expanded={openFilter === 'product'}
+                aria-controls="work-product-filter"
+                onClick={() => setOpenFilter((current) => (current === 'product' ? null : 'product'))}
+              >
+                {productFilterLabel}
+                <span aria-hidden="true">+</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openFilter === 'product' ? (
+                  <motion.div
+                    id="work-product-filter"
+                    className="work-filter-menu"
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.22, ease: 'easeInOut'}}
+                  >
+                    {[allLabel, ...productTypes].map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        className={`work-filter-option ${productTypeFilter === type ? 'is-active' : ''}`}
+                        onClick={() => {
+                          setProductTypeFilter(type);
+                          setOpenFilter(null);
+                        }}
+                      >
+                        {type === allLabel ? 'All Products' : type}
+                      </button>
+                    ))}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            <div className="work-filter-dropdown">
+              <button
+                type="button"
+                className={`work-filter-trigger ${openFilter === 'role' ? 'is-open' : ''}`}
+                aria-expanded={openFilter === 'role'}
+                aria-controls="work-role-filter"
+                onClick={() => setOpenFilter((current) => (current === 'role' ? null : 'role'))}
+              >
+                {roleFilterLabel}
+                <span aria-hidden="true">+</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openFilter === 'role' ? (
+                  <motion.div
+                    id="work-role-filter"
+                    className="work-filter-menu"
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.22, ease: 'easeInOut'}}
+                  >
+                    {[allLabel, ...roles].map((role) => (
+                      <button
+                        key={role}
+                        type="button"
+                        className={`work-filter-option ${roleFilter === role ? 'is-active' : ''}`}
+                        onClick={() => {
+                          setRoleFilter(role);
+                          setOpenFilter(null);
+                        }}
+                      >
+                        {role === allLabel ? 'All Roles' : role}
+                      </button>
+                    ))}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="work-group-tabs">
+            {groups.map((group) => (
+                <button
+                  key={group}
+                  type="button"
+                  className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
+                  onClick={() => setActiveGroup(group)}
+                >
+                  {group}
+                </button>
+              ))}
+          </div>
         </div>
-        
-        <div className="landing-project-strip work-accordion home-fade-list" aria-label={`${activeGroup} projects`}>
+
+        <div className="landing-project-strip work-accordion" aria-label={`${activeGroup} projects`}>
+          {!groupProjects.length ? (
+            <p className="micro-copy empty-state">No projects match those filters.</p>
+          ) : null}
           {groupProjects.map((project) => {
-            const isExpanded = expandedProjectId === project.id;
+            const isExpanded = activeProjectId === project.id;
 
             return (
-              <article 
-                key={project.id} 
+              <article
+                key={project.id}
                 id={`project-accordion-${project.id}`}
+                data-project-id={project.id}
+                ref={(element) => {
+                  projectRefs.current[project.id] = element;
+                }}
                 className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
               >
                 <button
@@ -908,32 +1125,42 @@ function WorkPage(props: {
                   className="landing-project-row"
                   aria-expanded={isExpanded}
                   onClick={() => {
-                    const willExpand = expandedProjectId !== project.id;
-                    setExpandedProjectId(willExpand ? project.id : null);
-                    
-                    if (willExpand && window.innerWidth <= 768) {
-                      setTimeout(() => {
-                        const el = document.getElementById(`project-accordion-${project.id}`);
-                        if (el) {
-                          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                      }, 100);
+                    if (isExpanded) {
+                      props.onOpenProject(project.id);
+                      return;
                     }
+
+                    openProjectTray(project.id, 'click');
+                    projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
                   }}
                 >
                   <span>{project.company}</span>
-                  <strong>{project.title}</strong>
+                  <strong>
+                    {project.title}
+                  </strong>
                   <span>{project.client}</span>
                   <span>{project.productType}</span>
+                  <span>{project.role}</span>
+                  <span className="accordion-indicator" aria-hidden="true">
+                    +
+                  </span>
                 </button>
-                {isExpanded ? (
-                  <div className="work-accordion-panel">
-                    <WorkProjectStack 
-                      projects={props.projects} 
-                      project={project} 
-                    />
-                  </div>
-                ) : null}
+                <AnimatePresence initial={false} mode="wait">
+                  {isExpanded ? (
+                    <motion.div
+                      className="work-accordion-panel"
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
+                      transition={{duration: 0.34, ease: 'easeInOut'}}
+                    >
+                      <WorkProjectStack
+                        projects={props.projects}
+                        project={project}
+                      />
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
               </article>
             );
           })}
@@ -948,7 +1175,7 @@ function ResumePage() {
     <>
       <section className="panel panel-first">
         <p className="eyebrow">Resume</p>
-        <div className="stack-list now-list home-fade-list">
+        <div className="stack-list now-list">
           <div className="stack-item">
             <p className="micro-copy">{profile.resume.summary}</p>
           </div>
@@ -974,7 +1201,7 @@ function ResumePage() {
 
       <section className="panel">
         <p className="eyebrow">Experience</p>
-        <div className="stack-list now-list home-fade-list">
+        <div className="stack-list now-list">
           {profile.resume.experience.map((item) => (
             <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
               <div className="repo-topline">
@@ -1004,7 +1231,7 @@ function ResumePage() {
 
       <section className="panel">
         <p className="eyebrow">Focus and tools</p>
-        <div className="stack-list home-fade-list">
+        <div className="stack-list">
           <div className="stack-item">
             <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
           </div>
@@ -1022,7 +1249,7 @@ function ResumePage() {
 
       <section className="panel">
         <p className="eyebrow">Education and recognition</p>
-        <div className="stack-list home-fade-list">
+        <div className="stack-list">
           {profile.resume.education.map((entry) => (
             <div key={entry} className="stack-item">
               <p className="micro-copy">{entry}</p>
@@ -1038,41 +1265,57 @@ function ResumePage() {
 }
 
 function WritingPage() {
-  return (
-    <div className="writing-page-layout">
-      <aside className="writing-sidebar home-fade-item">
-        <div className="sticky-sidebar">
-          <p className="eyebrow">Writing</p>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 500, margin: '8px 0 16px' }}>Notes & Essays</h2>
-          <p className="micro-copy" style={{ color: 'var(--portfolio-muted)', lineHeight: 1.6 }}>
-            {site.writingSummary}
-          </p>
-          
-          <div className="external-sources" style={{ marginTop: '48px' }}>
-            <p className="eyebrow">External Sources</p>
-            <div style={{ marginTop: '16px' }}>
-              <a href={profile.substackUrl} target="_blank" rel="noreferrer" className="entity-link">
-                Substack (@aliahmed312)
-              </a>
-            </div>
-          </div>
-        </div>
-      </aside>
+  const [activePostUrl, setActivePostUrl] = useState(substackPosts[0]?.url ?? null);
 
-      <main className="writing-content home-fade-list">
-        {substackPosts.map((post) => (
-          <article key={post.url} className="writing-post-item stack-item">
-            <h3 className="post-title">
-              <a href={post.url} target="_blank" rel="noreferrer">{post.title}</a>
-            </h3>
-            <p className="post-meta">{formatLongDate(post.publishedAt)}</p>
-            {'description' in post && post.description ? (
-              <p className="post-teaser">{post.description}</p>
-            ) : null}
-          </article>
-        ))}
-      </main>
-    </div>
+  return (
+    <section className="writing-archive">
+      <div className="writing-archive-header">
+        <p className="eyebrow">Writing</p>
+        <p className="micro-copy">{site.writingSummary}</p>
+      </div>
+      <div className="writing-row-list">
+        {substackPosts.map((post) => {
+          const isActive = activePostUrl === post.url;
+
+          return (
+            <article key={post.url} className={`writing-row-item ${isActive ? 'is-active' : ''}`}>
+              <button
+                type="button"
+                className="writing-row-trigger"
+                aria-expanded={isActive}
+                onClick={() => setActivePostUrl(isActive ? null : post.url)}
+              >
+                <span>{formatLongDate(post.publishedAt)}</span>
+                <strong>
+                  {post.title}
+                  <span className="accordion-indicator" aria-hidden="true">
+                    {isActive ? 'x' : '+'}
+                  </span>
+                </strong>
+              </button>
+              <AnimatePresence initial={false}>
+                {isActive ? (
+                  <motion.div
+                    className="writing-row-panel"
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.28, ease: 'easeOut'}}
+                  >
+                    {'description' in post && post.description ? (
+                      <p className="post-teaser">{post.description}</p>
+                    ) : null}
+                    <a href={post.url} target="_blank" rel="noreferrer" className="inline-link">
+                      Read on Substack
+                    </a>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -1292,6 +1535,7 @@ export default function App() {
           <WritingPage />
         )}
       </main>
+      {route !== '/' ? <Footer route={route} /> : null}
     </div>
   );
 }
