@@ -898,13 +898,27 @@ function WorkPage(props: {
             const isExpanded = expandedProjectId === project.id;
 
             return (
-              <article key={project.id} className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}>
+              <article 
+                key={project.id} 
+                id={`project-accordion-${project.id}`}
+                className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
+              >
                 <button
                   type="button"
                   className="landing-project-row"
                   aria-expanded={isExpanded}
                   onClick={() => {
-                    setExpandedProjectId((current) => (current === project.id ? null : project.id));
+                    const willExpand = expandedProjectId !== project.id;
+                    setExpandedProjectId(willExpand ? project.id : null);
+                    
+                    if (willExpand && window.innerWidth <= 768) {
+                      setTimeout(() => {
+                        const el = document.getElementById(`project-accordion-${project.id}`);
+                        if (el) {
+                          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }, 100);
+                    }
                   }}
                 >
                   <span>{project.company}</span>
