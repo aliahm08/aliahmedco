@@ -869,8 +869,9 @@ function WorkPage(props: {
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
 
   const groups = Array.from(new Set(props.projects.map((p) => p.scale)));
-  const [activeGroup, setActiveGroup] = useState(groups[0]);
-
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  
+  const activeGroup = selectedGroup ?? groups[0] ?? '';
   const groupProjects = props.projects.filter((p) => p.scale === activeGroup);
 
   return (
@@ -883,7 +884,7 @@ function WorkPage(props: {
               type="button" 
               className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
               onClick={() => {
-                setActiveGroup(group);
+                setSelectedGroup(group);
                 setExpandedProjectId(null);
               }}
             >
@@ -1097,6 +1098,7 @@ export default function App() {
     scale: allLabel,
   });
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const resolvedRoute = route ?? '/';
   useSeo(resolvedRoute, routeMeta[resolvedRoute]);
 
@@ -1113,6 +1115,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    setIsMobileMenuOpen(false);
     const nextView = route ? routeDefaultView[route] : 'index';
     if (route === '/portfolio' || route === '/projects' || route === '/work') {
       setViewMode(nextView);
@@ -1210,7 +1213,15 @@ export default function App() {
           <SmartLink href="/" className="wordmark">
             {profile.name}
           </SmartLink>
-          <nav className="topnav" aria-label="Primary">
+          <button 
+            className="mobile-menu-toggle eyebrow"
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? 'Close' : 'Menu'}
+          </button>
+          <nav className={`topnav ${isMobileMenuOpen ? 'is-open' : ''}`} aria-label="Primary">
             {navItems.map((item) => (
               <SmartLink
                 key={item.href}
