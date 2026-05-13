@@ -1134,6 +1134,12 @@ export default function App() {
     if (route === '/portfolio' || route === '/projects' || route === '/work') {
       setViewMode(nextView);
     }
+    
+    if (route === '/work') {
+      document.body.classList.add('work-page-active');
+    } else {
+      document.body.classList.remove('work-page-active');
+    }
   }, [route]);
 
   useEffect(() => {
@@ -1219,9 +1225,10 @@ export default function App() {
     onPreviewLeave: hidePreview,
   };
   const usesPortfolioShell = route === '/portfolio';
+  const isWorkRoute = route === '/work';
 
   return (
-    <div className={`site-shell ${usesPortfolioShell ? 'site-shell--portfolio' : ''}`}>
+    <div className={`site-shell ${usesPortfolioShell ? 'site-shell--portfolio' : ''} ${isWorkRoute ? 'site-shell--work' : ''}`}>
       <header className="topbar">
         <div className="topbar-inner">
           <SmartLink href="/" className="wordmark">

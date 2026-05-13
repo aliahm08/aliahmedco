@@ -170,7 +170,7 @@ textarea {
     z-index: 50;
   }
   
-  body:has(.work-page) .topnav {
+  body.work-page-active .topnav {
     background: #ffffff;
   }
   
@@ -323,15 +323,15 @@ textarea {
   border-bottom: 1px solid var(--portfolio-line);
 }
 
-body:has(.work-page) {
+body.work-page-active {
   background-color: #ffffff;
 }
 
-body:has(.work-page) .topbar {
+body.work-page-active .topbar {
   background-color: #ffffff;
 }
 
-body:has(.work-page) .site-shell {
+body.work-page-active .site-shell {
   width: min(960px, calc(100% - 48px));
 }
 
