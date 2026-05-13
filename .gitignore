@@ -7,5 +7,5 @@ coverage/
 .env*
 !.env.example
 .vercel
-data/
-uploads/
+/data/
+/uploads/

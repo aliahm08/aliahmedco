@@ -1,0 +1,53 @@
+{
+  "id": "gensler-spatial",
+  "title": "Spatial Analytics",
+  "client": "Data Analytics",
+  "year": "2015",
+  "location": "Global",
+  "teaser": "Data-driven spatial analysis tools for optimizing large-scale workplace environments.",
+  "productType": "Data Analytics",
+  "role": "Computational Designer",
+  "scale": "Enterprise",
+  "poster": "/projects/gensler-spatial.svg",
+  "accent": "#ff3b30",
+  "tags": [
+    "Computational Design",
+    "Analytics",
+    "Architecture"
+  ],
+  "metrics": [
+    {
+      "label": "Scale",
+      "value": "100k+ sqft"
+    },
+    {
+      "label": "Focus",
+      "value": "Utilization"
+    },
+    {
+      "label": "Output",
+      "value": "Dashboards"
+    }
+  ],
+  "headline": "Detailed view of Spatial Analytics at Gensler",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Gensler.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "Computational Design",
+    "Analytics",
+    "Architecture"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/gensler-spatial.svg",
+      "alt": "Spatial Analytics",
+      "caption": "Data-driven spatial analysis tools for optimizing large-scale workplace environments."
+    }
+  ],
+  "company": "Gensler"
+}

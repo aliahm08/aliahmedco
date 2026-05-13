@@ -1,0 +1,53 @@
+{
+  "id": "ge-robotics-inspection",
+  "title": "Inspection Crawlers",
+  "client": "Robotics",
+  "year": "2018",
+  "location": "New York",
+  "teaser": "Robotics hardware design and computer vision integration for non-destructive pipeline inspection.",
+  "productType": "Robotics",
+  "role": "Robotics Engineer",
+  "scale": "Enterprise",
+  "poster": "/projects/ge-robotics-inspection.svg",
+  "accent": "#005e9d",
+  "tags": [
+    "Robotics",
+    "Computer Vision",
+    "Hardware"
+  ],
+  "metrics": [
+    {
+      "label": "Environment",
+      "value": "Extreme"
+    },
+    {
+      "label": "Modality",
+      "value": "Non-destructive"
+    },
+    {
+      "label": "Sensor",
+      "value": "LiDAR/Optical"
+    }
+  ],
+  "headline": "Detailed view of Inspection Crawlers at GE Robotics",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at GE Robotics.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "Robotics",
+    "Computer Vision",
+    "Hardware"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/ge-robotics-inspection.svg",
+      "alt": "Inspection Crawlers",
+      "caption": "Robotics hardware design and computer vision integration for non-destructive pipeline inspection."
+    }
+  ],
+  "company": "GE"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "bragi-dash",
+  "title": "The Dash",
+  "client": "Hardware",
+  "year": "2015-2016",
+  "location": "Munich",
+  "teaser": "Product design and engineering for the world's first truly wireless smart earphones.",
+  "productType": "Hardware",
+  "role": "Product Engineering",
+  "scale": "Startup",
+  "poster": "/projects/bragi-dash.svg",
+  "accent": "#2f3136",
+  "tags": [
+    "Hardware",
+    "Prototyping",
+    "Wearables"
+  ],
+  "metrics": [
+    {
+      "label": "Funding",
+      "value": "$3.3M+"
+    },
+    {
+      "label": "Sensors",
+      "value": "27"
+    },
+    {
+      "label": "Category",
+      "value": "Hearables"
+    }
+  ],
+  "headline": "Detailed view of The Dash at Bragi",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Bragi.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "Hardware",
+    "Prototyping",
+    "Wearables"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/bragi-dash.svg",
+      "alt": "The Dash",
+      "caption": "Product design and engineering for the world's first truly wireless smart earphones."
+    }
+  ],
+  "company": "Bragi"
+}

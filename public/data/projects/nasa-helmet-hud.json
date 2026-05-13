@@ -1,0 +1,55 @@
+{
+  "id": "nasa-helmet-hud",
+  "title": "Helmet HUD",
+  "client": "Space Suits",
+  "year": "2018-2019",
+  "location": "Houston",
+  "teaser": "Computer vision, soft-goods hardware, and materials testing for future EVA systems.",
+  "productType": "R&D Prototype",
+  "role": "Engineer",
+  "scale": "Federal",
+  "poster": "/projects/nasa-helmet-hud.svg",
+  "accent": "#456b88",
+  "tags": [
+    "Computer Vision",
+    "Materials",
+    "Prototyping",
+    "EVA"
+  ],
+  "metrics": [
+    {
+      "label": "Mode",
+      "value": "Prototype"
+    },
+    {
+      "label": "Interface",
+      "value": "HUD"
+    },
+    {
+      "label": "Context",
+      "value": "Mars suit"
+    }
+  ],
+  "headline": "An R&D prototype where object recognition and physical prototyping had to share the same future-facing brief.",
+  "challenge": "Spacesuit work demanded equal comfort with materials testing, interface concepts, and embodied hardware prototyping.",
+  "outcome": "Ali contributed across materials, helmet HUD recognition concepts, and soft-goods mechanisms for self-egress in a Mars suit cockpit context.",
+  "bullets": [
+    "Focused on materials testing.",
+    "Trained computer vision models for object recognition integrated into space suit helmet heads-up displays.",
+    "Prototyped soft goods hardware for self-egress implemented in a Mars suit cockpit."
+  ],
+  "capabilities": [
+    "R&D prototyping",
+    "Computer vision",
+    "Materials testing",
+    "Hardware systems thinking"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/nasa-helmet-hud.svg",
+      "alt": "Poster for NASA Helmet HUD.",
+      "caption": "A federal R&D project rendered like a pinned mission still."
+    }
+  ],
+  "company": "NASA"
+}

@@ -1,0 +1,55 @@
+{
+  "id": "huupe-court-vision",
+  "title": "Court Vision",
+  "client": "Hardware",
+  "year": "2019-2022",
+  "location": "New York City",
+  "teaser": "Computer vision and real-time 3D work for an AI-powered sports hardware product.",
+  "productType": "Connected Hardware",
+  "role": "Hardware + Product",
+  "scale": "Startup",
+  "poster": "/projects/huupe-court-vision.svg",
+  "accent": "#ae6048",
+  "tags": [
+    "Computer Vision",
+    "LiDAR",
+    "3D",
+    "Fundraising"
+  ],
+  "metrics": [
+    {
+      "label": "3D scope",
+      "value": "+15%"
+    },
+    {
+      "label": "Seed raised",
+      "value": "$11M"
+    },
+    {
+      "label": "Stack",
+      "value": "CV + RT3D"
+    }
+  ],
+  "headline": "A hardware story where computer vision, rendering, and fundraising all needed to reinforce each other.",
+  "challenge": "The product had to be technically credible, visually legible, and investor-ready at the same time.",
+  "outcome": "Ali improved computer vision coverage, built real-time visual interpretation layers, and produced technical material that helped the company close seed funding.",
+  "bullets": [
+    "Designed computer vision workflows to assess vision black zones and improve 3D scope by 15% for LiDAR integration.",
+    "Rendered 3D elements in a real-time engine to interpret athlete movement for AI-powered sporting goods.",
+    "Supported founders with technical briefs and design renderings that helped close $11M in seed funding."
+  ],
+  "capabilities": [
+    "Computer vision",
+    "Real-time 3D",
+    "Hardware storytelling",
+    "Investor communication"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/huupe-court-vision.svg",
+      "alt": "Poster for huupe Court Vision.",
+      "caption": "A startup hardware case study framed like a glossy sports proof print."
+    }
+  ],
+  "company": "huupe"
+}

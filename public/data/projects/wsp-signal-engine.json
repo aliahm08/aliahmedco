@@ -1,0 +1,55 @@
+{
+  "id": "wsp-signal-engine",
+  "title": "Signal Engine",
+  "client": "Safety Management Group",
+  "year": "2024-2025",
+  "location": "Washington, D.C.",
+  "teaser": "Internal analytics tooling for emerging safety risks and recall detection.",
+  "productType": "Internal Tool",
+  "role": "Product + Engineering",
+  "scale": "Enterprise",
+  "poster": "/projects/wsp-signal-engine.svg",
+  "accent": "#c86f31",
+  "tags": [
+    "TypeScript",
+    "Codex",
+    "Python",
+    "Analytics"
+  ],
+  "metrics": [
+    {
+      "label": "Risk accuracy",
+      "value": "86%"
+    },
+    {
+      "label": "Recall success",
+      "value": "79%"
+    },
+    {
+      "label": "Renewals",
+      "value": "$600k"
+    }
+  ],
+  "headline": "A compact internal product that turned murky safety signals into reviewable decisions.",
+  "challenge": "WSP needed a legible way to spot emerging safety risks and possible recalls without forcing teams through a slow reporting loop.",
+  "outcome": "Ali built the interface and workflow logic around TypeScript, Codex, and Python-based analysis so teams could move from noise to action faster while supporting renewal conversations.",
+  "bullets": [
+    "Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.",
+    "Developed a machine learning workflow in Python that identified potential recalls with 79% success.",
+    "The recall workflow supported $600k in renewals by making operational insight more defensible."
+  ],
+  "capabilities": [
+    "Product framing",
+    "Frontend development",
+    "ML workflow design",
+    "Operations analytics"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/wsp-signal-engine.svg",
+      "alt": "Poster for WSP Signal Engine.",
+      "caption": "Internal review surface designed like a pinned operating snapshot."
+    }
+  ],
+  "company": "WSP"
+}

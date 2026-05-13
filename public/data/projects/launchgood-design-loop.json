@@ -1,0 +1,55 @@
+{
+  "id": "launchgood-design-loop",
+  "title": "Design Loop",
+  "client": "Growth",
+  "year": "2021-2022",
+  "location": "Remote",
+  "teaser": "Design systems, experimentation, and brand KPI instrumentation across growth surfaces.",
+  "productType": "Growth Platform",
+  "role": "Design Management",
+  "scale": "Scale-up",
+  "poster": "/projects/launchgood-design-loop.svg",
+  "accent": "#1f6e62",
+  "tags": [
+    "Figma",
+    "Notion",
+    "A/B Testing",
+    "Brand"
+  ],
+  "metrics": [
+    {
+      "label": "A/B tests",
+      "value": "1,500"
+    },
+    {
+      "label": "Cadence",
+      "value": "Weekly"
+    },
+    {
+      "label": "Focus",
+      "value": "Brand KPIs"
+    }
+  ],
+  "headline": "A system for keeping design, documentation, and experimentation pointed at the same brand problem.",
+  "challenge": "Growth work was spread across UX, customer engagement, and brand surfaces that could drift apart without strong system governance.",
+  "outcome": "Ali managed the design system, tightened documentation loops, and paired experimentation with KPI tracking across a large body of copy and creative tests.",
+  "bullets": [
+    "Managed design systems to create unity between UX and customer engagement design processes.",
+    "Met with design teams weekly to ensure consistency in Notion documentation with Figma embeds.",
+    "Oversaw KPI development for brand performance using 1,500 copywriting A/B tests with Notion AI and Python."
+  ],
+  "capabilities": [
+    "Design systems",
+    "Experimentation",
+    "Brand analytics",
+    "Cross-functional ops"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/launchgood-design-loop.svg",
+      "alt": "Poster for LaunchGood Design Loop.",
+      "caption": "Growth work laid out like editorial proof sheets instead of a marketing dashboard."
+    }
+  ],
+  "company": "LaunchGood"
+}

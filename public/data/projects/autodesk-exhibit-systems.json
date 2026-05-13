@@ -1,0 +1,54 @@
+{
+  "id": "autodesk-exhibit-systems",
+  "title": "Exhibit Systems",
+  "client": "Exhibits",
+  "year": "2016-2017",
+  "location": "San Francisco",
+  "teaser": "Advanced software demos, robotics-driven UX studies, and immersive product storytelling.",
+  "productType": "Prototype Experience",
+  "role": "Innovation Engineer",
+  "scale": "Enterprise",
+  "poster": "/projects/autodesk-exhibit-systems.svg",
+  "accent": "#8d6842",
+  "tags": [
+    "Robotics",
+    "AR",
+    "Simulation",
+    "Executive Demo"
+  ],
+  "metrics": [
+    {
+      "label": "Program size",
+      "value": "$4M"
+    },
+    {
+      "label": "UX lift",
+      "value": "+15%"
+    },
+    {
+      "label": "Audience",
+      "value": "CEO"
+    }
+  ],
+  "headline": "Executive-facing prototypes that made advanced product ideas feel concrete before they were mainstream.",
+  "challenge": "The work needed to prove technical ambition and experience quality in the same room, often for senior leadership.",
+  "outcome": "Ali helped shape demo systems and test environments that connected robotics, fabrication, simulation, and immersive storytelling.",
+  "bullets": [
+    "Presented software functionality within a $4M software development effort directly to CEO Carl Bass.",
+    "Tested design environments for a 15% UX optimization through robotics, 3D-print generation, and FEA animation."
+  ],
+  "capabilities": [
+    "Prototype strategy",
+    "Experience design",
+    "Robotics-enabled UX",
+    "Executive communication"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/autodesk-exhibit-systems.svg",
+      "alt": "Poster for Autodesk Exhibit Systems.",
+      "caption": "A prototype experience framed like a museum placard with better taste."
+    }
+  ],
+  "company": "Autodesk"
+}

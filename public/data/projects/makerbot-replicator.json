@@ -1,0 +1,53 @@
+{
+  "id": "makerbot-replicator",
+  "title": "Replicator Ecosystem",
+  "client": "Product Design",
+  "year": "2014",
+  "location": "Brooklyn",
+  "teaser": "Product design and mechanical engineering for the next generation of desktop 3D printing.",
+  "productType": "Hardware",
+  "role": "Product Design",
+  "scale": "Scale-up",
+  "poster": "/projects/makerbot-replicator.svg",
+  "accent": "#e62e2e",
+  "tags": [
+    "3D Printing",
+    "Product Design",
+    "Hardware"
+  ],
+  "metrics": [
+    {
+      "label": "Market",
+      "value": "Prosumer"
+    },
+    {
+      "label": "Ecosystem",
+      "value": "Hardware + Software"
+    },
+    {
+      "label": "Volume",
+      "value": "High"
+    }
+  ],
+  "headline": "Detailed view of Replicator Ecosystem at MakerBot",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at MakerBot.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "3D Printing",
+    "Product Design",
+    "Hardware"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/makerbot-replicator.svg",
+      "alt": "Replicator Ecosystem",
+      "caption": "Product design and mechanical engineering for the next generation of desktop 3D printing."
+    }
+  ],
+  "company": "MakerBot"
+}

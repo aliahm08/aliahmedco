@@ -1,0 +1,53 @@
+{
+  "id": "norman-foster-droneport",
+  "title": "Droneport",
+  "client": "Infrastructure",
+  "year": "2016",
+  "location": "Madrid",
+  "teaser": "Structural prototyping and material research for scalable drone infrastructure in emerging economies.",
+  "productType": "Infrastructure",
+  "role": "Design Engineering",
+  "scale": "Non-profit",
+  "poster": "/projects/norman-foster-droneport.svg",
+  "accent": "#bf4c3b",
+  "tags": [
+    "Architecture",
+    "Fabrication",
+    "Logistics"
+  ],
+  "metrics": [
+    {
+      "label": "Exhibited",
+      "value": "Venice Biennale"
+    },
+    {
+      "label": "Material",
+      "value": "Earth Brick"
+    },
+    {
+      "label": "Goal",
+      "value": "Medical Delivery"
+    }
+  ],
+  "headline": "Detailed view of Droneport at Norman Foster Foundation",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Norman Foster Foundation.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "Architecture",
+    "Fabrication",
+    "Logistics"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/norman-foster-droneport.svg",
+      "alt": "Droneport",
+      "caption": "Structural prototyping and material research for scalable drone infrastructure in emerging economies."
+    }
+  ],
+  "company": "Norman Foster"
+}

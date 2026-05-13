@@ -1,0 +1,53 @@
+{
+  "id": "autodesk-generative",
+  "title": "Generative Workflows",
+  "client": "Research",
+  "year": "2017",
+  "location": "San Francisco",
+  "teaser": "Applied research into generative design tools for advanced manufacturing.",
+  "productType": "Research",
+  "role": "Innovation Engineer",
+  "scale": "Enterprise",
+  "poster": "/projects/autodesk-generative.svg",
+  "accent": "#0696d7",
+  "tags": [
+    "Generative Design",
+    "Manufacturing",
+    "Research"
+  ],
+  "metrics": [
+    {
+      "label": "Focus",
+      "value": "Topology Optimization"
+    },
+    {
+      "label": "Adoption",
+      "value": "Internal Beta"
+    },
+    {
+      "label": "Outcome",
+      "value": "UX Patterns"
+    }
+  ],
+  "headline": "Detailed view of Generative Workflows at Autodesk",
+  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Autodesk.",
+  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "bullets": [
+    "Led the technical architecture and prototyping phases.",
+    "Iterated rapidly with cross-functional teams.",
+    "Shipped the final product ahead of schedule."
+  ],
+  "capabilities": [
+    "Generative Design",
+    "Manufacturing",
+    "Research"
+  ],
+  "gallery": [
+    {
+      "src": "/projects/autodesk-generative.svg",
+      "alt": "Generative Workflows",
+      "caption": "Applied research into generative design tools for advanced manufacturing."
+    }
+  ],
+  "company": "Autodesk"
+}
