@@ -145,6 +145,8 @@ textarea {
   .topbar-inner {
     position: relative;
     flex-direction: row-reverse;
+    min-height: 72px;
+    padding: 16px 0 24px;
   }
   
   .topnav {
@@ -727,7 +729,7 @@ body:has(.work-page) .site-shell {
     padding: 16px 24px;
     gap: 16px;
     position: sticky;
-    top: 71px;
+    top: 72px;
     z-index: 40;
     background: #ffffff;
     border-bottom: 1px solid var(--portfolio-line);
