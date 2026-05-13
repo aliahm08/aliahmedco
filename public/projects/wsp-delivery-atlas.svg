@@ -1,0 +1,16 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#E7E2D8"/>
+  <rect x="100" y="84" width="1000" height="732" rx="34" fill="#F8F5EE"/>
+  <rect x="152" y="138" width="896" height="624" rx="28" fill="#203331"/>
+  <rect x="194" y="182" width="388" height="538" rx="24" fill="#4F7C72"/>
+  <rect x="624" y="182" width="382" height="156" rx="18" fill="#314543"/>
+  <rect x="624" y="368" width="382" height="156" rx="18" fill="#314543"/>
+  <rect x="624" y="554" width="382" height="166" rx="18" fill="#314543"/>
+  <text x="194" y="126" fill="#6B6B63" font-family="Georgia, serif" font-size="30">WSP / Operations System</text>
+  <text x="226" y="294" fill="#F5FAF8" font-family="Arial, sans-serif" font-size="62" font-weight="700">Delivery</text>
+  <text x="226" y="366" fill="#F5FAF8" font-family="Arial, sans-serif" font-size="62" font-weight="700">Atlas</text>
+  <text x="226" y="626" fill="#D8F0EB" font-family="Arial, sans-serif" font-size="26">14 resources tracked</text>
+  <text x="656" y="272" fill="#EDF7F4" font-family="Arial, sans-serif" font-size="28">agile delivery map</text>
+  <text x="656" y="458" fill="#EDF7F4" font-family="Arial, sans-serif" font-size="28">taxonomy cleanup</text>
+  <text x="656" y="644" fill="#EDF7F4" font-family="Arial, sans-serif" font-size="28">SharePoint agent workflow</text>
+</svg>

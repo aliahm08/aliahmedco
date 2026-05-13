@@ -1,0 +1,16 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#E8DFD2"/>
+  <rect x="92" y="84" width="1016" height="732" rx="36" fill="#F8F2EA"/>
+  <rect x="156" y="148" width="888" height="604" rx="28" fill="#261F1A"/>
+  <rect x="204" y="196" width="300" height="508" rx="24" fill="#8D6842"/>
+  <rect x="542" y="196" width="454" height="122" rx="18" fill="#3B3027"/>
+  <rect x="542" y="350" width="454" height="122" rx="18" fill="#3B3027"/>
+  <rect x="542" y="504" width="454" height="200" rx="18" fill="#3B3027"/>
+  <text x="204" y="128" fill="#72665B" font-family="Georgia, serif" font-size="30">Autodesk / Prototype Experience</text>
+  <text x="236" y="286" fill="#FDF6EE" font-family="Arial, sans-serif" font-size="62" font-weight="700">Exhibit</text>
+  <text x="236" y="358" fill="#FDF6EE" font-family="Arial, sans-serif" font-size="62" font-weight="700">Systems</text>
+  <text x="236" y="626" fill="#F5DDC4" font-family="Arial, sans-serif" font-size="26">$4M software effort</text>
+  <text x="574" y="276" fill="#F5ECE2" font-family="Arial, sans-serif" font-size="28">executive software demos</text>
+  <text x="574" y="430" fill="#F5ECE2" font-family="Arial, sans-serif" font-size="28">robotics + fabrication UX tests</text>
+  <text x="574" y="626" fill="#F5ECE2" font-family="Arial, sans-serif" font-size="28">15% experience optimization</text>
+</svg>

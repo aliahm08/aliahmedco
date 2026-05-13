@@ -1,406 +1,70 @@
-import {ReactNode, useEffect, useState} from 'react';
-import {
-  GitHubRepo,
-  profile,
-} from './content/profile';
+import {CSSProperties, PointerEvent, ReactNode, startTransition, useEffect, useState} from 'react';
+import {useSeo} from './components/Seo';
 import {substackPosts} from './content/substackPosts';
-import CoffeeShopFinancingModelPage from './components/CoffeeShopFinancingModelPage';
+import {profile} from './content/profile';
+import {AppRoute, navItems, routeMeta, site} from './content/site';
+import {
+  loadProjectIndex,
+  loadProjectDetail,
+  ProjectIndexItem,
+  ProjectDetail,
+  uniqueValues,
+} from './lib/projects';
 
-type Route =
-  | '/'
-  | '/projects'
-  | '/resume'
-  | '/writing'
-  | '/work'
-  | '/work/coffeeshop-financing/model';
+type ViewMode = 'index' | 'grid' | 'groups';
 
-const workIntroItems = {
-  company: 'Ali Ahmed Co',
-  role: 'Founder',
-  project: 'Portfolio portrait',
-  summary:
-    'Selected work across AI systems, internal tooling, design direction, and founder-led product development, presented in the same restrained structure as the homepage. This view keeps the public framing minimal and focuses on how product thinking, frontend execution, and visual direction are brought together across B2W-ai, WSP, LaunchGood, huupe, NASA, and Autodesk.',
-} as const;
+type FilterState = {
+  productType: string;
+  role: string;
+  scale: string;
+};
 
-const workPortraitSrc = new URL('../IMRJE9561.JPG', import.meta.url).toString();
-const workOgImageSrc = '/og-image.svg';
+const allLabel = 'All';
+const organicStackOffsets = [
+  {x: -14, y: 4, hoverX: -18, hoverY: 2, rotation: -2.1, hoverRotation: -1.3},
+  {x: 11, y: 17, hoverX: 15, hoverY: 19, rotation: 1.4, hoverRotation: 0.7},
+  {x: -4, y: 31, hoverX: -7, hoverY: 34, rotation: -0.6, hoverRotation: -0.2},
+  {x: 18, y: 42, hoverX: 21, hoverY: 45, rotation: 2.3, hoverRotation: 1.4},
+  {x: -19, y: 50, hoverX: -23, hoverY: 52, rotation: -1.1, hoverRotation: -0.5},
+  {x: 4, y: 61, hoverX: 7, hoverY: 64, rotation: 0.9, hoverRotation: 0.4},
+  {x: -9, y: 70, hoverX: -11, hoverY: 73, rotation: -2.7, hoverRotation: -1.6},
+];
+const routeDefaultView: Record<AppRoute, ViewMode> = {
+  '/': 'index',
+  '/portfolio': 'index',
+  '/projects': 'grid',
+  '/work': 'groups',
+  '/resume': 'index',
+  '/writing': 'index',
+};
 
-function createPortfolioDemo(args: {
-  eyebrow: string;
-  title: string;
-  detail: string;
-  metrics: Array<{label: string; value: string}>;
-}) {
-  const metrics = args.metrics
-    .map(
-      (metric) => `
-        <div class="metric">
-          <span>${metric.label}</span>
-          <strong>${metric.value}</strong>
-        </div>
-      `,
-    )
-    .join('');
+function normalizeRoute(pathname: string): AppRoute | null {
+  const normalizedPathname = pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
 
-  return `<!doctype html>
-  <html lang="en">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <style>
-        :root {
-          color-scheme: dark;
-          font-family: "Public Sans", system-ui, sans-serif;
-        }
-        * { box-sizing: border-box; }
-        body {
-          margin: 0;
-          min-height: 100vh;
-          padding: 18px;
-          background:
-            radial-gradient(circle at top left, rgba(246, 240, 230, 0.08), transparent 36%),
-            linear-gradient(150deg, #171411, #211c17 70%, #13110f);
-          color: #f1e8de;
-        }
-        .shell {
-          display: grid;
-          gap: 14px;
-          min-height: 100vh;
-        }
-        .eyebrow {
-          margin: 0;
-          color: #c7b29a;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          font-size: 11px;
-        }
-        .hero {
-          display: grid;
-          gap: 14px;
-          padding: 18px;
-          border-radius: 20px;
-          border: 1px solid rgba(241, 232, 222, 0.12);
-          background: rgba(255, 255, 255, 0.04);
-        }
-        h1 {
-          margin: 0;
-          font: 500 34px/1.02 "Newsreader", Georgia, serif;
-          letter-spacing: -0.03em;
-        }
-        p {
-          margin: 0;
-          line-height: 1.6;
-          color: rgba(241, 232, 222, 0.72);
-          font-size: 14px;
-        }
-        .metrics {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 10px;
-        }
-        .metric {
-          padding: 14px;
-          border-radius: 16px;
-          background: rgba(255, 255, 255, 0.04);
-        }
-        .metric span {
-          display: block;
-          margin-bottom: 6px;
-          color: rgba(241, 232, 222, 0.58);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          font-size: 10px;
-        }
-        .metric strong {
-          font-size: 22px;
-          font-weight: 600;
-        }
-        @media (max-width: 560px) {
-          .metrics {
-            grid-template-columns: 1fr;
-          }
-          h1 {
-            font-size: 28px;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="shell">
-        <p class="eyebrow">${args.eyebrow}</p>
-        <section class="hero">
-          <h1>${args.title}</h1>
-          <p>${args.detail}</p>
-        </section>
-        <section class="metrics">
-          ${metrics}
-        </section>
-      </div>
-    </body>
-  </html>`;
-}
-
-const workExpandedMedia = [
-  {
-    id: 'portrait',
-    label: 'Image',
-    title: 'Founder portrait',
-    description: 'The primary image anchoring the public-facing portfolio view.',
-    type: 'image' as const,
-    src: workPortraitSrc,
-    alt: 'Ali Ahmed portrait.',
-  },
-  {
-    id: 'ops-demo',
-    label: 'Embedded demo',
-    title: 'Operations review concept',
-    description: 'A compact operating view for AI-assisted review, triage, and internal decision support.',
-    type: 'demo' as const,
-    demoHtml: createPortfolioDemo({
-      eyebrow: 'WSP internal tooling',
-      title: 'Signals first, clutter second.',
-      detail: 'Interfaces built to reduce review drag and move teams toward legible operational decisions.',
-      metrics: [
-        {label: 'Flagged items', value: '14'},
-        {label: 'Confidence', value: '86%'},
-        {label: 'Review time', value: '-42%'},
-      ],
-    }),
-  },
-  {
-    id: 'client-demo',
-    label: 'Embedded demo',
-    title: 'Client-facing prototype',
-    description: 'A buyer-facing concept for explaining workflow design, automation, and near-term value.',
-    type: 'demo' as const,
-    demoHtml: createPortfolioDemo({
-      eyebrow: 'B2W-ai concept',
-      title: 'Explain the system before scaling it.',
-      detail: 'Early-stage prototypes are used to make service logic, operating flow, and value proposition legible fast.',
-      metrics: [
-        {label: 'Stage', value: 'Pilot'},
-        {label: 'Workflow', value: '4 steps'},
-        {label: 'Time to value', value: '2 weeks'},
-      ],
-    }),
-  },
-] as const;
-
-const workMainCarouselImages = [
-  {
-    id: 'portrait-primary',
-    src: workPortraitSrc,
-    alt: 'Ali Ahmed portrait, primary crop.',
-    objectPosition: 'center 22%',
-  },
-  {
-    id: 'portrait-detail',
-    src: workPortraitSrc,
-    alt: 'Ali Ahmed portrait, alternate crop.',
-    objectPosition: 'center 38%',
-  },
-  {
-    id: 'brand-study',
-    src: workOgImageSrc,
-    alt: 'Ali Ahmed Co brand image.',
-    objectPosition: 'center center',
-  },
-] as const;
-
-function normalizeRoute(pathname: string): Route {
-  const normalizedPathname =
-    pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
-
-  if (normalizedPathname === '/now') {
-    return '/';
-  }
-
-  if (normalizedPathname === '/repos' || normalizedPathname === '/projects') {
-    return '/projects';
-  }
-
-  if (normalizedPathname === '/linkedin' || normalizedPathname === '/resume') {
-    return '/resume';
-  }
-
-  if (normalizedPathname === '/writing') {
-    return normalizedPathname;
-  }
-
-  if (normalizedPathname === '/portfolio' || normalizedPathname === '/work') {
+  if (normalizedPathname === '/projects') {
     return '/work';
   }
 
-  if (normalizedPathname === '/work/coffeeshop-financing/model') {
-    return '/work/coffeeshop-financing/model';
+  if (
+    normalizedPathname === '/' ||
+    normalizedPathname === '/portfolio' ||
+    normalizedPathname === '/work' ||
+    normalizedPathname === '/resume' ||
+    normalizedPathname === '/writing'
+  ) {
+    return normalizedPathname;
   }
 
-  return '/';
+  return null;
 }
 
-function formatUpdatedDate(value?: string) {
-  if (!value) {
-    return 'No recent update';
-  }
-
-  return new Date(value).toLocaleDateString();
+function navigateTo(route: AppRoute) {
+  window.history.pushState({}, '', route);
+  window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-function formatLongDate(value: string) {
-  return new Date(value).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
-function upsertMeta(selector: string, attributes: Record<string, string>) {
-  let element = document.head.querySelector(selector) as HTMLMetaElement | null;
-
-  if (!element) {
-    element = document.createElement('meta');
-    document.head.appendChild(element);
-  }
-
-  Object.entries(attributes).forEach(([key, value]) => {
-    element?.setAttribute(key, value);
-  });
-}
-
-function upsertLink(selector: string, attributes: Record<string, string>) {
-  let element = document.head.querySelector(selector) as HTMLLinkElement | null;
-
-  if (!element) {
-    element = document.createElement('link');
-    document.head.appendChild(element);
-  }
-
-  Object.entries(attributes).forEach(([key, value]) => {
-    element?.setAttribute(key, value);
-  });
-}
-
-function getAbsoluteUrl(pathname: string) {
-  if (profile.siteUrl) {
-    return new URL(pathname, profile.siteUrl).toString();
-  }
-
-  return new URL(pathname, window.location.origin).toString();
-}
-
-function upsertJsonLd(id: string, value: unknown) {
-  let element = document.getElementById(id) as HTMLScriptElement | null;
-
-  if (!element) {
-    element = document.createElement('script');
-    element.type = 'application/ld+json';
-    element.id = id;
-    document.head.appendChild(element);
-  }
-
-  element.textContent = JSON.stringify(value);
-}
-
-function useSeo(route: Route) {
-  useEffect(() => {
-    const pageTitleByRoute: Record<Route, string> = {
-      '/': `${profile.name} | Software Engineer and Product Manager`,
-      '/projects': `Projects | ${profile.name}`,
-      '/resume': `Resume | ${profile.name}`,
-      '/writing': `Writing | ${profile.name}`,
-      '/work': `Work | ${profile.name}`,
-      '/work/coffeeshop-financing/model': `Coffee Shop Financing Model | ${profile.name}`,
-    };
-
-    const pageDescriptionByRoute: Record<Route, string> = {
-      '/': `${profile.name} is a software engineer, product manager, and founder in ${profile.location} building AI products, full-stack applications, and operational tools.`,
-      '/projects': `Recent projects, technical focus areas, and public code from ${profile.name}.`,
-      '/resume': `Resume, experience, education, and profile links for ${profile.name}.`,
-      '/writing': `Substack articles and published notes from ${profile.name}.`,
-      '/work': `Selected portfolio work, operating principles, and embedded product demos from ${profile.name}.`,
-      '/work/coffeeshop-financing/model': `Interactive coffee shop financing dashboard with investor payback, operating assumptions, scenario controls, and downloadable report.`,
-    };
-
-    const title = pageTitleByRoute[route];
-    const description = pageDescriptionByRoute[route];
-    const absoluteUrl = getAbsoluteUrl(route === '/' ? '/' : route);
-
-    document.title = title;
-    document.documentElement.lang = 'en';
-
-    upsertMeta('meta[name="description"]', {name: 'description', content: description});
-    upsertMeta('meta[name="keywords"]', {
-      name: 'keywords',
-      content: profile.keywords.join(', '),
-    });
-    upsertMeta('meta[name="robots"]', {name: 'robots', content: 'index, follow'});
-    upsertMeta('meta[property="og:title"]', {property: 'og:title', content: title});
-    upsertMeta('meta[property="og:description"]', {
-      property: 'og:description',
-      content: description,
-    });
-    upsertMeta('meta[property="og:type"]', {property: 'og:type', content: 'website'});
-    upsertMeta('meta[property="og:url"]', {property: 'og:url', content: absoluteUrl});
-    upsertMeta('meta[name="twitter:card"]', {name: 'twitter:card', content: 'summary_large_image'});
-    upsertMeta('meta[name="twitter:title"]', {name: 'twitter:title', content: title});
-    upsertMeta('meta[name="twitter:description"]', {
-      name: 'twitter:description',
-      content: description,
-    });
-    upsertLink('link[rel="canonical"]', {rel: 'canonical', href: absoluteUrl});
-
-    if (route === '/') {
-      upsertJsonLd('person-json-ld', {
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: profile.name,
-        jobTitle: 'Software Engineer, Product Manager, and Founder',
-        description: description,
-        url: absoluteUrl,
-        image: getAbsoluteUrl('/favicon.svg'),
-        sameAs: [profile.githubUrl, profile.linkedinUrl, profile.substackUrl, profile.b2wUrl].filter(Boolean),
-        alumniOf: [
-          {
-            '@type': 'CollegeOrUniversity',
-            name: 'Columbia University',
-          },
-          {
-            '@type': 'CollegeOrUniversity',
-            name: 'The George Washington University',
-          },
-        ],
-        knowsAbout: [
-          'software engineering',
-          'product management',
-          'front end development',
-          'back end development',
-          'full stack engineering',
-          'AI products',
-          'workflow automation',
-          'computer vision',
-          'machine learning',
-        ],
-        worksFor: [
-          {
-            '@type': 'Organization',
-            name: 'B2W-ai',
-          },
-          {
-            '@type': 'Organization',
-            name: 'WSP',
-          },
-        ],
-      });
-    }
-  }, [route]);
-}
-
-function SmartLink(props: {
-  href: Route;
-  children: ReactNode;
-  className?: string;
-}) {
-  const {href, children, className} = props;
+function SmartLink(props: {href: AppRoute; className?: string; children: ReactNode; key?: string}) {
+  const {href, className, children} = props;
 
   return (
     <a
@@ -419,8 +83,7 @@ function SmartLink(props: {
         }
 
         event.preventDefault();
-        window.history.pushState({}, '', href);
-        window.dispatchEvent(new PopStateEvent('popstate'));
+        navigateTo(href);
       }}
     >
       {children}
@@ -428,20 +91,38 @@ function SmartLink(props: {
   );
 }
 
-function NativeSocialButton(props: {
-  href: string;
-  label: string;
-  title: string;
-  detail: string;
-}) {
-  const {href, label, title, detail} = props;
+function getGeneratedImageStyle(project: ProjectIndexItem, imageIndex: number) {
+  const aspectRatios = ['4 / 5', '16 / 10', '1 / 1', '5 / 3'];
+  const blurSizes = ['38%', '46%', '32%', '52%'];
+  const rotation = imageIndex % 2 === 0 ? -1.5 - imageIndex * 0.4 : 1.2 + imageIndex * 0.3;
 
+  return {
+    '--project-accent': project.accent,
+    '--project-aspect': aspectRatios[imageIndex % aspectRatios.length],
+    '--project-blur': blurSizes[imageIndex % blurSizes.length],
+    '--project-rotation': `${rotation}deg`,
+    '--project-hover-rotation': `${rotation * 0.72}deg`,
+    '--project-x': `${(imageIndex - 1.5) * 9}px`,
+    '--project-y': `${imageIndex * 8}px`,
+    '--project-hover-x': `${(imageIndex - 1.5) * 12}px`,
+    '--project-hover-y': `${imageIndex * 10}px`,
+  } as CSSProperties;
+}
+
+function GeneratedProjectImage(props: {
+  project: ProjectIndexItem;
+  imageIndex: number;
+  className?: string;
+  style?: CSSProperties;
+  key?: string;
+}) {
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="native-social-button">
-      <span className="native-social-label">{label}</span>
-      <strong className="native-social-title">{title}</strong>
-      <span className="native-social-detail">{detail}</span>
-    </a>
+    <div
+      className={`generated-project-image ${props.className ?? ''}`}
+      style={{...getGeneratedImageStyle(props.project, props.imageIndex), ...props.style}}
+      role="img"
+      aria-label={`${props.project.title} abstract preview ${props.imageIndex + 1}`}
+    />
   );
 }
 
@@ -459,6 +140,520 @@ function getPastWorkBatchSize() {
   }
 
   return 4;
+}
+
+function formatLongDate(value: string) {
+  return new Date(value).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function ViewToggle(props: {
+  current: ViewMode;
+  onChange: (view: ViewMode) => void;
+}) {
+  const options: ViewMode[] = ['index', 'grid', 'groups'];
+
+  return (
+    <div className="toggle-row" role="tablist" aria-label="Project layouts">
+      {options.map((option) => (
+        <button
+          key={option}
+          type="button"
+          className={`toggle-pill ${props.current === option ? 'is-active' : ''}`}
+          onClick={() => props.onChange(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function FilterSelect(props: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="filter-control">
+      <span>{props.label}</span>
+      <select value={props.value} onChange={(event) => props.onChange(event.target.value)}>
+        {[allLabel, ...props.options].map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function ProjectCard(props: {
+  item: ProjectIndexItem;
+  active: boolean;
+  onSelect: () => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+  key?: string;
+}) {
+  const {item, active, onSelect, onPreviewMove, onPreviewLeave} = props;
+
+  return (
+    <button
+      type="button"
+      className={`project-row ${active ? 'is-active' : ''}`}
+      onClick={onSelect}
+      onPointerMove={(event) => onPreviewMove(item, event)}
+      onPointerLeave={onPreviewLeave}
+      onBlur={onPreviewLeave}
+    >
+      <span className="project-year">{item.year}</span>
+      <strong>{item.title}</strong>
+      <span>{item.client}</span>
+      <span>{item.productType}</span>
+      <span>{item.role}</span>
+      <span>{item.scale}</span>
+    </button>
+  );
+}
+
+function ProjectIndex(props: {
+  items: ProjectIndexItem[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+}) {
+  return (
+    <div className="project-index" aria-label="Project index">
+      <div className="project-row project-row-heading" aria-hidden="true">
+        <span>Year</span>
+        <span>Project</span>
+        <span>Context</span>
+        <span>Type</span>
+        <span>Role</span>
+        <span>Scale</span>
+      </div>
+      {props.items.map((item) => (
+        <ProjectCard
+          key={item.id}
+          item={item}
+          active={props.activeId === item.id}
+          onSelect={() => props.onSelect(item.id)}
+          onPreviewMove={props.onPreviewMove}
+          onPreviewLeave={props.onPreviewLeave}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ProjectGrid(props: {
+  items: ProjectIndexItem[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+}) {
+  return (
+    <div className="project-grid" aria-label="Project grid">
+      {props.items.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          className={`project-tile ${props.activeId === item.id ? 'is-active' : ''}`}
+          onClick={() => props.onSelect(item.id)}
+          onPointerMove={(event) => props.onPreviewMove(item, event)}
+          onPointerLeave={props.onPreviewLeave}
+          onBlur={props.onPreviewLeave}
+        >
+          <span>{item.year}</span>
+          <strong>{item.title}</strong>
+          <span>{item.client}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ProjectGroups(props: {
+  items: ProjectIndexItem[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+}) {
+  const groups = Array.from(new Set(props.items.map((item) => item.scale)));
+
+  return (
+    <div className="project-groups">
+      {groups.map((group) => (
+        <section key={group} className="group-column">
+          <div className="group-heading">
+            <p className="eyebrow">{group}</p>
+            <p>{props.items.filter((item) => item.scale === group).length} projects</p>
+          </div>
+          <div className="group-list">
+            {props.items
+              .filter((item) => item.scale === group)
+              .map((item) => (
+                <ProjectCard
+                  key={item.id}
+                  item={item}
+                  active={props.activeId === item.id}
+                  onSelect={() => props.onSelect(item.id)}
+                  onPreviewMove={props.onPreviewMove}
+                  onPreviewLeave={props.onPreviewLeave}
+                />
+              ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function ProjectBoard(props: {
+  items: ProjectIndexItem[];
+  activeId: string | null;
+  viewMode: ViewMode;
+  onSelect: (id: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+}) {
+  if (props.viewMode === 'grid') {
+    return <ProjectGrid {...props} />;
+  }
+
+  if (props.viewMode === 'groups') {
+    return <ProjectGroups {...props} />;
+  }
+
+  return <ProjectIndex {...props} />;
+}
+
+function ProjectMeta(props: {item: ProjectIndexItem | null}) {
+  if (!props.item) {
+    return null;
+  }
+
+  return (
+    <section className="project-meta" aria-live="polite">
+      <p className="eyebrow">Selected</p>
+      <h2>{props.item.title}</h2>
+      <dl>
+        <div>
+          <dt>Context</dt>
+          <dd>{props.item.client}</dd>
+        </div>
+        <div>
+          <dt>Type</dt>
+          <dd>{props.item.productType}</dd>
+        </div>
+        <div>
+          <dt>Role</dt>
+          <dd>{props.item.role}</dd>
+        </div>
+        <div>
+          <dt>Scale</dt>
+          <dd>{props.item.scale}</dd>
+        </div>
+      </dl>
+    </section>
+  );
+}
+
+function ProjectExplorer(props: {
+  title: string;
+  intro: string;
+  items: ProjectIndexItem[];
+  activeId: string | null;
+  viewMode: ViewMode;
+  filters: FilterState;
+  onSelect: (id: string) => void;
+  onViewModeChange: (view: ViewMode) => void;
+  onFilterChange: (key: keyof FilterState, value: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+}) {
+  const productTypes = uniqueValues(props.items, 'productType');
+  const roles = uniqueValues(props.items, 'role');
+  const scales = uniqueValues(props.items, 'scale');
+
+  const filteredItems = props.items.filter((item) => {
+    const productTypeMatches =
+      props.filters.productType === allLabel || item.productType === props.filters.productType;
+    const roleMatches = props.filters.role === allLabel || item.role === props.filters.role;
+    const scaleMatches = props.filters.scale === allLabel || item.scale === props.filters.scale;
+    return productTypeMatches && roleMatches && scaleMatches;
+  });
+  const activeItem = filteredItems.find((item) => item.id === props.activeId) ?? filteredItems[0] ?? null;
+
+  return (
+    <section className="portfolio-section portfolio-fade-list">
+      <div className="section-header">
+        <h2>{props.title}</h2>
+        <p>{props.intro}</p>
+      </div>
+
+      <div className="control-bar">
+        <div className="filter-grid">
+          <FilterSelect
+            label="Product type"
+            value={props.filters.productType}
+            options={productTypes}
+            onChange={(value) => props.onFilterChange('productType', value)}
+          />
+          <FilterSelect
+            label="Role"
+            value={props.filters.role}
+            options={roles}
+            onChange={(value) => props.onFilterChange('role', value)}
+          />
+          <FilterSelect
+            label="Scale"
+            value={props.filters.scale}
+            options={scales}
+            onChange={(value) => props.onFilterChange('scale', value)}
+          />
+        </div>
+        <ViewToggle current={props.viewMode} onChange={props.onViewModeChange} />
+      </div>
+
+      {filteredItems.length ? (
+        <>
+          <ProjectBoard
+            items={filteredItems}
+            activeId={props.activeId}
+            viewMode={props.viewMode}
+            onSelect={props.onSelect}
+            onPreviewMove={props.onPreviewMove}
+            onPreviewLeave={props.onPreviewLeave}
+          />
+          <ProjectMeta item={activeItem} />
+        </>
+      ) : (
+        <section className="empty-state">No projects match that mix.</section>
+      )}
+    </section>
+  );
+}
+
+function PortfolioPage(props: {
+  projects: ProjectIndexItem[];
+  activeId: string | null;
+  viewMode: ViewMode;
+  filters: FilterState;
+  onSelect: (id: string) => void;
+  onViewModeChange: (view: ViewMode) => void;
+  onFilterChange: (key: keyof FilterState, value: string) => void;
+  onPreviewMove: (item: ProjectIndexItem, event: PointerEvent<HTMLElement>) => void;
+  onPreviewLeave: () => void;
+  preview: {
+    item: ProjectIndexItem | null;
+    x: number;
+    y: number;
+    visible: boolean;
+  };
+}) {
+  return (
+    <div className="portfolio-shell">
+      <section className="intro-section">
+        <div className="hero-copy">
+          <h1>{site.hero.title}</h1>
+          <p>{site.hero.intro}</p>
+        </div>
+      </section>
+
+      <ProjectExplorer
+        title="Projects"
+        intro={site.hero.detail}
+        items={props.projects}
+        activeId={props.activeId}
+        viewMode={props.viewMode}
+        filters={props.filters}
+        onSelect={props.onSelect}
+        onViewModeChange={props.onViewModeChange}
+        onFilterChange={props.onFilterChange}
+        onPreviewMove={props.onPreviewMove}
+        onPreviewLeave={props.onPreviewLeave}
+      />
+      <div
+        className={`portfolio-hover-image ${props.preview.visible && props.preview.item ? 'is-visible' : ''}`}
+        style={{left: props.preview.x, top: props.preview.y}}
+        aria-hidden="true"
+      >
+        {props.preview.item ? <img src={props.preview.item.poster} alt="" /> : null}
+      </div>
+    </div>
+  );
+}
+
+function ProjectPhotoSeries(props: {
+  projects: ProjectIndexItem[];
+  onOpenProject: (projectId: string) => void;
+  compact?: boolean;
+}) {
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+
+  useEffect(() => {
+    if (!props.projects.length) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveProjectIndex((current) => (current + 1) % props.projects.length);
+    }, 2800);
+
+    return () => window.clearInterval(intervalId);
+  }, [props.projects.length]);
+
+  if (!props.projects.length) {
+    return null;
+  }
+
+  const activeProject = props.projects[activeProjectIndex];
+  const orderedProjects = [
+    activeProject,
+    ...props.projects.filter((project) => project.id !== activeProject.id),
+  ];
+
+  return (
+    <section className={`panel project-photo-series home-fade-item ${props.compact ? 'is-compact' : ''}`}>
+      <div className="series-margin series-margin-left">
+        <p className="summary-title">{activeProject.title}</p>
+      </div>
+      <button
+        type="button"
+        className="series-image-stack"
+        onClick={() => props.onOpenProject(activeProject.id)}
+        aria-label={`Open ${activeProject.title} in projects`}
+      >
+        {orderedProjects.map((project, stackIndex) => {
+          const offset = organicStackOffsets[stackIndex % organicStackOffsets.length];
+
+          return (
+            <GeneratedProjectImage
+              key={project.id}
+              project={project}
+              imageIndex={0}
+              className={stackIndex === 0 ? 'is-front is-active' : ''}
+              style={{
+                '--project-x': `${offset.x}px`,
+                '--project-y': `${offset.y}px`,
+                '--project-hover-x': `${offset.hoverX}px`,
+                '--project-hover-y': `${offset.hoverY}px`,
+                '--project-rotation': `${offset.rotation}deg`,
+                '--project-hover-rotation': `${offset.hoverRotation}deg`,
+              } as CSSProperties}
+            />
+          );
+        })}
+      </button>
+      <div className="series-margin series-margin-right">
+        <p className="summary-title">{activeProject.client}</p>
+      </div>
+      <div className="series-projects-link">
+        <SmartLink href="/work" className="inline-link">
+          Work
+        </SmartLink>
+      </div>
+    </section>
+  );
+}
+
+function WorkProjectStack(props: {
+  projects: ProjectIndexItem[];
+  project: ProjectIndexItem;
+}) {
+  const [detail, setDetail] = useState<ProjectDetail | null>(null);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    loadProjectDetail(props.project.id).then((data) => {
+      if (active) {
+        setDetail(data);
+        setPhotoIndex(0);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [props.project.id]);
+
+  const baseGallery = detail?.gallery?.length
+    ? detail.gallery
+    : [{src: props.project.poster, alt: '', caption: props.project.teaser}];
+
+  const gallery = baseGallery.length < 4
+    ? [
+        ...baseGallery,
+        ...Array.from({length: 4 - baseGallery.length}).map((_, i) => ({
+          ...baseGallery[0],
+          caption: `${baseGallery[0].caption} (View ${i + 2})`,
+        })),
+      ]
+    : baseGallery;
+
+  const currentPhoto = gallery[photoIndex];
+
+  const handleNextPhoto = () => setPhotoIndex((i) => (i + 1) % gallery.length);
+  const handlePrevPhoto = () => setPhotoIndex((i) => (i === 0 ? gallery.length - 1 : i - 1));
+
+  return (
+    <section
+      className="work-stack-panel home-fade-item"
+      aria-label={`${props.project.title} preview stack`}
+    >
+      <div className="work-stack-copy work-stack-copy-left">
+        {detail?.headline ? <h1>{detail.headline}</h1> : <h1>{props.project.client}</h1>}
+        <div className="gallery-arrows">
+          <button type="button" className="gallery-arrow" onClick={handlePrevPhoto} disabled={gallery.length <= 1} aria-label="Previous photo">←</button>
+          <button type="button" className="gallery-arrow" onClick={handleNextPhoto} disabled={gallery.length <= 1} aria-label="Next photo">→</button>
+        </div>
+      </div>
+      <button
+        type="button"
+        className="work-stack-frame"
+        onClick={handleNextPhoto}
+        disabled={gallery.length <= 1}
+        aria-label="Next photo"
+      >
+        {gallery.map((photo, stackIndex) => {
+          const offsetIndex = (stackIndex - photoIndex + gallery.length) % gallery.length;
+          const offset = organicStackOffsets[offsetIndex % organicStackOffsets.length];
+
+          return (
+            <GeneratedProjectImage
+              key={`${photo.src}-${stackIndex}`}
+              project={props.project}
+              imageIndex={stackIndex % 4}
+              className={offsetIndex === 0 ? 'is-front is-active' : ''}
+              style={{
+                '--project-x': `${offset.x}px`,
+                '--project-y': `${offset.y}px`,
+                '--project-hover-x': `${offset.hoverX}px`,
+                '--project-hover-y': `${offset.hoverY}px`,
+                '--project-rotation': `${offset.rotation}deg`,
+                '--project-hover-rotation': `${offset.hoverRotation}deg`,
+              } as CSSProperties}
+            />
+          );
+        })}
+      </button>
+      <div className="work-stack-copy work-stack-copy-right">
+        <p className="work-stack-meta">
+          <strong>{(currentPhoto as any).title || props.project.title}</strong>
+        </p>
+        <p className="work-stack-description">{currentPhoto.caption}</p>
+      </div>
+    </section>
+  );
 }
 
 function HomePage() {
@@ -566,7 +761,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="panel">
+      <section className="panel home-social-section">
         <p className="eyebrow">Connect With Ali</p>
         <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
@@ -667,46 +862,69 @@ function HomePage() {
   );
 }
 
-function ProjectsPage(props: {repos: GitHubRepo[]; error: string; loading: boolean}) {
-  const {repos, error, loading} = props;
-  const activeRepos = repos.filter((repo) => !repo.fork).slice(0, 4);
+function WorkPage(props: {
+  projects: ProjectIndexItem[];
+  onOpenProject: (projectId: string) => void;
+}) {
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
+
+  const groups = Array.from(new Set(props.projects.map((p) => p.scale)));
+  const [activeGroup, setActiveGroup] = useState(groups[0]);
+
+  const groupProjects = props.projects.filter((p) => p.scale === activeGroup);
 
   return (
-    <section className="panel panel-first">
-      <p className="eyebrow">Projects</p>
-      <div className="embed-card">
-        <p className="micro-label">Follow</p>
-        <NativeSocialButton
-          href={profile.githubUrl}
-          label="GitHub"
-          title={`Follow @${profile.githubUsername}`}
-          detail="Open public code, activity, and repositories."
-        />
-      </div>
-      {loading ? <p className="statement">Loading project activity…</p> : null}
-      <div className="repo-list">
-        {activeRepos.map((repo) => (
-          <article key={repo.id} className="repo-row">
-            <div className="repo-topline">
-              <a href={repo.html_url} target="_blank" rel="noreferrer">
-                {repo.name}
-              </a>
-              <span>{formatUpdatedDate(repo.updated_at)}</span>
-            </div>
-            <p className="repo-copy">{repo.description || 'No description provided.'}</p>
-            <p className="repo-meta">
-              {repo.language || 'No language listed'}
-              {repo.homepage ? ' · has live link' : ''}
-              {repo.stargazers_count ? ` · ${repo.stargazers_count} stars` : ''}
-            </p>
-          </article>
-        ))}
-      </div>
-      {!loading && !activeRepos.length ? (
-        <p className="status-line">No public non-fork projects were found.</p>
-      ) : null}
-      {error ? <p className="status-line">{error}</p> : null}
-    </section>
+    <div className="work-page">
+      <section id="portfolio" className="landing-section landing-portfolio-section">
+        <div className="work-group-tabs" style={{ marginBottom: '48px', display: 'flex', gap: '24px', width: 'min(720px, calc(100% - 32px))', margin: '0 auto 48px' }}>
+          {groups.map((group) => (
+            <button 
+              key={group} 
+              type="button" 
+              className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
+              onClick={() => {
+                setActiveGroup(group);
+                setExpandedProjectId(null);
+              }}
+            >
+              {group}
+            </button>
+          ))}
+        </div>
+        
+        <div className="landing-project-strip work-accordion home-fade-list" aria-label={`${activeGroup} projects`}>
+          {groupProjects.map((project) => {
+            const isExpanded = expandedProjectId === project.id;
+
+            return (
+              <article key={project.id} className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}>
+                <button
+                  type="button"
+                  className="landing-project-row"
+                  aria-expanded={isExpanded}
+                  onClick={() => {
+                    setExpandedProjectId((current) => (current === project.id ? null : project.id));
+                  }}
+                >
+                  <span>{project.company}</span>
+                  <strong>{project.title}</strong>
+                  <span>{project.client}</span>
+                  <span>{project.productType}</span>
+                </button>
+                {isExpanded ? (
+                  <div className="work-accordion-panel">
+                    <WorkProjectStack 
+                      projects={props.projects} 
+                      project={project} 
+                    />
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -714,16 +932,19 @@ function ResumePage() {
   return (
     <>
       <section className="panel panel-first">
-        <div className="section-heading">
-          <h2>{profile.resume.summary}</h2>
-        </div>
-        <p className="statement">{profile.resume.profileSummary}</p>
-        <div className="stack-list now-list">
+        <p className="eyebrow">Resume</p>
+        <div className="stack-list now-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy">{profile.resume.summary}</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">{profile.resume.profileSummary}</p>
+          </div>
           {profile.resume.contactMethods.map((method) => (
             <div key={method.label} className="stack-item">
               <p className="micro-copy">
                 <strong>{method.label}</strong>
-                {' '}·{' '}
+                {' · '}
                 <a href={method.href} target="_blank" rel="noreferrer" className="entity-link">
                   {method.value}
                 </a>
@@ -737,33 +958,17 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="statement">
-          Ali works across revenue, product, partnerships, and technical execution, with a toolkit that spans frontend software, analytics, automation, and AI systems.
-        </p>
-        <div className="stack-list">
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              <strong>Tools</strong>
-              {' '}· {profile.resume.technicalSkills.map((group) => `${group.label}: ${group.items.join(', ')}`).join(' · ')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <p className="statement">
-          Selected experience across transit infrastructure, startup hardware, design systems, and applied R&D.
-        </p>
-        <div className="stack-list">
+        <p className="eyebrow">Experience</p>
+        <div className="stack-list now-list home-fade-list">
           {profile.resume.experience.map((item) => (
             <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
               <div className="repo-topline">
                 <div>
-                  <p className="summary-title">{item.company}</p>
-                  <p className="summary-detail">{item.title}</p>
+                  <p className="micro-copy">
+                    <strong>{item.company}</strong>
+                    {' · '}
+                    {item.title}
+                  </p>
                 </div>
                 <div className="resume-meta">
                   <span>{item.period}</span>
@@ -783,52 +988,33 @@ function ResumePage() {
       </section>
 
       <section className="panel">
-        <p className="statement">
-          The throughline is range: architecture, hardware, software, publishing, and a willingness to move toward unfamiliar but high-leverage problems.
-        </p>
-        <div className="stack-list">
-          {profile.resume.pivotEntries.map((item) => (
-            <div key={`${item.type}-${item.organization}-${item.title}`} className="stack-item">
-              <p className="micro-copy">
-                <strong>{item.organization}</strong>
-                {' '}·{' '}
-                {'href' in item && item.href ? (
-                  <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
-                    {item.title}
-                  </a>
-                ) : (
-                  item.title
-                )}
-              </p>
-              {'detail' in item && item.detail ? <p className="micro-copy">{item.detail}</p> : null}
-            </div>
-          ))}
+        <p className="eyebrow">Focus and tools</p>
+        <div className="stack-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              <strong>Tools</strong>
+              {' '}· {profile.resume.technicalSkills.map((group) => `${group.label}: ${group.items.join(', ')}`).join(' · ')}
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}.</p>
+          </div>
         </div>
       </section>
 
       <section className="panel">
-        <p className="statement">
-          Formal training began in engineering and expanded into architecture.
-        </p>
-        <div className="stack-list">
+        <p className="eyebrow">Education and recognition</p>
+        <div className="stack-list home-fade-list">
           {profile.resume.education.map((entry) => (
             <div key={entry} className="stack-item">
               <p className="micro-copy">{entry}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <p className="statement">
-          Additional signals include hands-on fabrication credentials and academic and professional recognition.
-        </p>
-        <div className="stack-list">
           <div className="stack-item">
-            <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Honors</strong> · {profile.resume.honors.join(', ')}</p>
+            <p className="micro-copy"><strong>Honors</strong> · {profile.resume.honors.join(', ')}.</p>
           </div>
         </div>
       </section>
@@ -838,151 +1024,88 @@ function ResumePage() {
 
 function WritingPage() {
   return (
-    <section className="panel panel-first">
-      <p className="eyebrow">Writing</p>
-      <div className="section-heading">
-        <h2>Published writing and case-study notes from Substack.</h2>
-      </div>
-      <div className="embed-card">
-        <p className="micro-label">Follow</p>
-        <NativeSocialButton
-          href={profile.substackUrl}
-          label="Substack"
-          title="Follow on Substack"
-          detail="Essays, case studies, and field notes."
-        />
-      </div>
-      <div className="repo-topline">
-        <p className="micro-copy">Pulled from the public feed for `@aliahmed312`.</p>
-        <a href={profile.substackUrl} target="_blank" rel="noreferrer">
-          Visit Substack
-        </a>
-      </div>
-      <div className="stack-list">
-        {substackPosts.map((post) => (
-          <article key={post.url} className="resume-block">
-            <div className="repo-topline">
-              <a href={post.url} target="_blank" rel="noreferrer" className="summary-title">
-                {post.title}
+    <div className="writing-page-layout">
+      <aside className="writing-sidebar home-fade-item">
+        <div className="sticky-sidebar">
+          <p className="eyebrow">Writing</p>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 500, margin: '8px 0 16px' }}>Notes & Essays</h2>
+          <p className="micro-copy" style={{ color: 'var(--portfolio-muted)', lineHeight: 1.6 }}>
+            {site.writingSummary}
+          </p>
+          
+          <div className="external-sources" style={{ marginTop: '48px' }}>
+            <p className="eyebrow">External Sources</p>
+            <div style={{ marginTop: '16px' }}>
+              <a href={profile.substackUrl} target="_blank" rel="noreferrer" className="entity-link">
+                Substack (@aliahmed312)
               </a>
-              <div className="resume-meta">
-                <span>{formatLongDate(post.publishedAt)}</span>
-              </div>
             </div>
-            <p className="repo-copy">{post.description}</p>
+          </div>
+        </div>
+      </aside>
+
+      <main className="writing-content home-fade-list">
+        {substackPosts.map((post) => (
+          <article key={post.url} className="writing-post-item stack-item">
+            <h3 className="post-title">
+              <a href={post.url} target="_blank" rel="noreferrer">{post.title}</a>
+            </h3>
+            <p className="post-meta">{formatLongDate(post.publishedAt)}</p>
+            {'description' in post && post.description ? (
+              <p className="post-teaser">{post.description}</p>
+            ) : null}
           </article>
         ))}
-      </div>
-    </section>
-  );
-}
-
-function WorkPage() {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  return (
-    <>
-      <section className="panel panel-first">
-        <p className="eyebrow">
-          {workIntroItems.company}, {workIntroItems.role}, {workIntroItems.project}
-        </p>
-        <div className="stack-list now-list home-fade-list">
-          <div className="stack-item">
-            <p className="micro-copy">
-              {workIntroItems.summary}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="work-main-carousel home-fade-item" style={{animationDelay: '120ms'}}>
-          {workMainCarouselImages.map((image) => (
-            <article key={image.id} className="resume-block work-image-panel">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="work-media-image"
-                style={{objectPosition: image.objectPosition}}
-              />
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="panel">
-        <button
-          type="button"
-          className="inline-link-button"
-          aria-expanded={isExpanded}
-          onClick={() => setIsExpanded((current) => !current)}
-        >
-          {isExpanded ? 'Hide more details' : 'Expand more details'}
-        </button>
-        {isExpanded ? (
-          <div className="disclosure-panel work-details-scroll">
-            <div className="work-details-stack" aria-label="Expanded project gallery">
-              {workExpandedMedia.map((item, index) => (
-                <article
-                  key={item.id}
-                  className="resume-block work-slide home-fade-item"
-                  style={{animationDelay: `${80 + index * 70}ms`}}
-                >
-                  <p className="micro-label">{item.label}</p>
-                  <p className="summary-title">{item.title}</p>
-                  <p className="repo-copy">{item.description}</p>
-                  <div className="work-media-frame">
-                    {item.type === 'image' ? (
-                      <img src={item.src} alt={item.alt} className="work-media-image" />
-                    ) : (
-                      <iframe
-                        title={item.title}
-                        srcDoc={item.demoHtml}
-                        loading="lazy"
-                        className="work-media-embed"
-                      />
-                    )}
-                  </div>
-                </article>
-              ))}
-              <article className="resume-block home-fade-item" style={{animationDelay: '260ms'}}>
-                <p className="micro-label">Case Study</p>
-                <p className="summary-title">Ali Ahmed Co, Founder, Portfolio portrait</p>
-                <p className="repo-copy">
-                  This portfolio view is designed as a restrained public wrapper around a broader body of work in AI systems,
-                  internal tools, and product direction. The goal is not to expose client internals, but to show how a project
-                  is framed visually, how interface language stays minimal, and how the same operating logic can extend from a
-                  static image to embedded product concepts and case-study storytelling.
-                </p>
-              </article>
-            </div>
-          </div>
-        ) : null}
-      </section>
-    </>
+      </main>
+    </div>
   );
 }
 
 function NotFoundPage() {
   return (
-    <section className="panel panel-first">
-      <p className="eyebrow">Page Not Found</p>
-      <p className="statement">That page does not exist in this site.</p>
-      <SmartLink href="/" className="inline-link">Back to home</SmartLink>
+    <section className="not-found-panel">
+      <p className="eyebrow">{site.notFound.eyebrow}</p>
+      <h1>{site.notFound.title}</h1>
+      <p>{site.notFound.body}</p>
+      <SmartLink href="/" className="inline-link">
+        {site.notFound.cta}
+      </SmartLink>
     </section>
   );
 }
 
 export default function App() {
-  const [route, setRoute] = useState<Route>(normalizeRoute(window.location.pathname));
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [slowLoadAnimationsDisabled, setSlowLoadAnimationsDisabled] = useState(false);
+  const [route, setRoute] = useState<AppRoute | null>(normalizeRoute(window.location.pathname));
+  const [projects, setProjects] = useState<ProjectIndexItem[]>([]);
+  const [projectError, setProjectError] = useState('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>(route ? routeDefaultView[route] : 'index');
+  const [preview, setPreview] = useState<{
+    item: ProjectIndexItem | null;
+    x: number;
+    y: number;
+    visible: boolean;
+  }>({
+    item: null,
+    x: 0,
+    y: 0,
+    visible: false,
+  });
+  const [filters, setFilters] = useState<FilterState>({
+    productType: allLabel,
+    role: allLabel,
+    scale: allLabel,
+  });
+
+  const resolvedRoute = route ?? '/';
+  useSeo(resolvedRoute, routeMeta[resolvedRoute]);
 
   useEffect(() => {
     function handlePopState() {
-      setRoute(normalizeRoute(window.location.pathname));
+      const nextRoute = normalizeRoute(window.location.pathname);
+      startTransition(() => {
+        setRoute(nextRoute);
+      });
     }
 
     window.addEventListener('popstate', handlePopState);
@@ -990,120 +1113,153 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    let timeoutId: number | undefined;
+    const nextView = route ? routeDefaultView[route] : 'index';
+    if (route === '/portfolio' || route === '/projects' || route === '/work') {
+      setViewMode(nextView);
+    }
+  }, [route]);
 
-    function disableAnimations() {
-      if (cancelled) {
-        return;
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchProjects() {
+      try {
+        setProjectError('');
+        const items = await loadProjectIndex(controller.signal);
+        setProjects(items);
+        setSelectedProjectId((current) => current ?? items[0]?.id ?? null);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+        setProjectError('Project index could not be loaded.');
       }
-
-      setSlowLoadAnimationsDisabled(true);
-      document.documentElement.classList.add('slow-load-animations');
     }
 
-    function handleLoad() {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-    }
+    void fetchProjects();
 
-    if (document.readyState === 'complete') {
+    return () => controller.abort();
+  }, []);
+
+  const filteredProjects = projects.filter((item) => {
+    const matchesProductType = filters.productType === allLabel || item.productType === filters.productType;
+    const matchesRole = filters.role === allLabel || item.role === filters.role;
+    const matchesScale = filters.scale === allLabel || item.scale === filters.scale;
+    return matchesProductType && matchesRole && matchesScale;
+  });
+
+  useEffect(() => {
+    if (!filteredProjects.length) {
       return;
     }
 
-    window.addEventListener('load', handleLoad, {once: true});
-    timeoutId = window.setTimeout(disableAnimations, 1800);
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener('load', handleLoad);
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-      document.documentElement.classList.remove('slow-load-animations');
-    };
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-
-    async function loadGitHub() {
-      try {
-        setLoading(true);
-        setError('');
-
-        const reposResponse = await fetch(
-          `https://api.github.com/users/${profile.githubUsername}/repos?sort=updated&per_page=6`,
-        );
-
-        if (!reposResponse.ok) {
-          throw new Error('GitHub request failed.');
-        }
-
-        const repoData = (await reposResponse.json()) as GitHubRepo[];
-
-        if (!active) {
-          return;
-        }
-
-        setRepos(repoData);
-      } catch (loadError) {
-        console.error(loadError);
-        if (!active) {
-          return;
-        }
-        setError('GitHub data could not be loaded right now.');
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
+    const selectionStillVisible = filteredProjects.some((item) => item.id === selectedProjectId);
+    if (!selectionStillVisible) {
+      setSelectedProjectId(filteredProjects[0].id);
     }
+  }, [filteredProjects, selectedProjectId]);
 
-    void loadGitHub();
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle('theme-work', route === '/work' || route === '/work/coffeeshop-financing/model');
-
-    return () => {
-      root.classList.remove('theme-work');
-    };
-  }, [route]);
-
-  useSeo(route);
-
-  if (route === '/work/coffeeshop-financing/model') {
-    return <CoffeeShopFinancingModelPage />;
+  function updateFilter(key: keyof FilterState, value: string) {
+    setFilters((current) => ({...current, [key]: value}));
   }
 
-  let page = <NotFoundPage />;
-  if (route === '/') {
-    page = <HomePage />;
-  } else if (route === '/projects') {
-    page = <ProjectsPage repos={repos} error={error} loading={loading} />;
-  } else if (route === '/resume') {
-    page = <ResumePage />;
-  } else if (route === '/writing') {
-    page = <WritingPage />;
-  } else if (route === '/work') {
-    page = <WorkPage />;
+  function selectProject(projectId: string) {
+    startTransition(() => {
+      setSelectedProjectId(projectId);
+    });
   }
+
+  function openProject(projectId: string) {
+    startTransition(() => {
+      setSelectedProjectId(projectId);
+      setViewMode('grid');
+      navigateTo('/work');
+    });
+  }
+
+  function movePreview(item: ProjectIndexItem, event: PointerEvent<HTMLElement>) {
+    setPreview({
+      item,
+      x: event.clientX + 24,
+      y: event.clientY + 24,
+      visible: true,
+    });
+  }
+
+  function hidePreview() {
+    setPreview((current) => ({...current, visible: false}));
+  }
+
+  const explorerProps = {
+    projects,
+    activeId: selectedProjectId,
+    viewMode,
+    filters,
+    onSelect: selectProject,
+    onViewModeChange: setViewMode,
+    onFilterChange: updateFilter,
+    onPreviewMove: movePreview,
+    onPreviewLeave: hidePreview,
+  };
+  const usesPortfolioShell = route === '/portfolio';
 
   return (
-    <div className={`site-shell ${slowLoadAnimationsDisabled ? 'slow-load-animations' : ''} ${route === '/work' ? 'site-shell--work' : ''}`}>
+    <div className={`site-shell ${usesPortfolioShell ? 'site-shell--portfolio' : ''}`}>
       <header className="topbar">
-        <SmartLink href="/" className="wordmark">{profile.name}</SmartLink>
-        <nav className="topnav" aria-label="Primary" />
+        <div className="topbar-inner">
+          <SmartLink href="/" className="wordmark">
+            {profile.name}
+          </SmartLink>
+          <nav className="topnav" aria-label="Primary">
+            {navItems.map((item) => (
+              <SmartLink
+                key={item.href}
+                href={item.href}
+                className={`topnav-link ${route === item.href ? 'is-active' : ''}`}
+              >
+                {item.label}
+              </SmartLink>
+            ))}
+            <a href={`mailto:${profile.email}`} className="topnav-link contact-link">
+              Contact
+            </a>
+          </nav>
+        </div>
       </header>
 
-      <main className="page">{page}</main>
+      <main className={usesPortfolioShell ? 'page-shell portfolio-shell' : 'page'}>
+        {projectError ? <section className="empty-state">{projectError}</section> : null}
+        {route === null ? (
+          <NotFoundPage />
+        ) : route === '/' ? (
+          <HomePage />
+        ) : route === '/portfolio' ? (
+          <PortfolioPage {...explorerProps} preview={preview} />
+        ) : route === '/projects' ? (
+          <ProjectExplorer
+            title="Projects"
+            intro="A simple project architecture that can later expand into individual pages."
+            items={projects}
+            activeId={selectedProjectId}
+            viewMode={viewMode}
+            filters={filters}
+            onSelect={selectProject}
+            onViewModeChange={setViewMode}
+            onFilterChange={updateFilter}
+            onPreviewMove={movePreview}
+            onPreviewLeave={hidePreview}
+          />
+        ) : route === '/work' ? (
+          <WorkPage
+            projects={projects}
+            onOpenProject={openProject}
+          />
+        ) : route === '/resume' ? (
+          <ResumePage />
+        ) : (
+          <WritingPage />
+        )}
+      </main>
     </div>
   );
 }

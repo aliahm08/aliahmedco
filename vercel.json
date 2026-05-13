@@ -5,6 +5,14 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/portfolio",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/portfolio/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/projects",
       "destination": "/index.html"
     },

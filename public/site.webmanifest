@@ -1,0 +1,17 @@
+{
+  "name": "Ali Ahmed Co",
+  "short_name": "Ali Ahmed Co",
+  "description": "Single-page portfolio for AI products, internal systems, hardware prototypes, and design-led product work.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#eee6da",
+  "background_color": "#eee6da",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

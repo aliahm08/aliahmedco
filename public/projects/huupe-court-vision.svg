@@ -1,0 +1,16 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#EADFD5"/>
+  <rect x="90" y="80" width="1020" height="740" rx="36" fill="#FAF3EB"/>
+  <rect x="154" y="144" width="892" height="612" rx="28" fill="#281C18"/>
+  <circle cx="328" cy="454" r="190" fill="#AE6048"/>
+  <rect x="576" y="192" width="380" height="132" rx="20" fill="#3A2823"/>
+  <rect x="576" y="360" width="380" height="132" rx="20" fill="#3A2823"/>
+  <rect x="576" y="528" width="380" height="180" rx="20" fill="#3A2823"/>
+  <text x="194" y="126" fill="#73665E" font-family="Georgia, serif" font-size="30">huupe / Connected Hardware</text>
+  <text x="202" y="286" fill="#FFF5EE" font-family="Arial, sans-serif" font-size="62" font-weight="700">Court</text>
+  <text x="202" y="358" fill="#FFF5EE" font-family="Arial, sans-serif" font-size="62" font-weight="700">Vision</text>
+  <text x="202" y="652" fill="#F8D7C7" font-family="Arial, sans-serif" font-size="26">$11M seed support</text>
+  <text x="610" y="274" fill="#F7ECE7" font-family="Arial, sans-serif" font-size="28">computer vision black zones</text>
+  <text x="610" y="442" fill="#F7ECE7" font-family="Arial, sans-serif" font-size="28">real-time 3D athlete interpretation</text>
+  <text x="610" y="622" fill="#F7ECE7" font-family="Arial, sans-serif" font-size="28">15% larger LiDAR scope</text>
+</svg>

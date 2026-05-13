@@ -1,20 +1,21 @@
-# Ali Ahmed Portfolio
+# Ali Ahmed Co
 
-Personal website for Ali Ahmed, positioned for discovery as a software engineer and product manager.
+Single-page portfolio for Ali Ahmed built with Vite and React.
 
-## What Changed
+## Architecture
 
-- Updated the on-site copy to emphasize software engineering, product management, AI products, and full-stack delivery.
-- Replaced placeholder metadata with search-focused title, description, keywords, Open Graph, and Twitter tags.
-- Added structured data through the React app so search engines can associate the site with a person profile.
-- Kept GitHub activity visible so the site reflects current engineering work instead of static resume copy.
+- `src/App.tsx`: SPA shell, client routing, portfolio states, and route-level page composition.
+- `src/content/site.ts`: central brand copy, nav items, and route metadata.
+- `src/components/Seo.tsx`: runtime head tags, canonical URLs, social tags, and JSON-LD.
+- `src/lib/projects.ts`: AJAX loaders for the project index and on-demand case-study details.
+- `public/data/projects-index.json`: lightweight project summaries for the first paint.
+- `public/data/projects/*.json`: detailed case studies fetched only when a project is selected.
 
-## Key Files
+## Marketability files
 
-- `src/content/profile.ts`: primary professional positioning, keywords, contact info, and specialties.
-- `src/App.tsx`: route content plus dynamic SEO metadata and JSON-LD.
-- `index.html`: default metadata for the initial document response.
-- `metadata.json`: app-level project description.
+- `docs/marketability-source-of-truth.md`: approved brand framing and route intent.
+- `docs/seo-route-inventory.md`: route, robots, and asset inventory.
+- `index.html`, `metadata.json`, and `public/site.webmanifest`: static metadata defaults.
 
 ## Local Development
 
@@ -30,5 +31,5 @@ npm run build
 
 ## Notes
 
-- Set `profile.siteUrl` in `src/content/profile.ts` when the final production domain is known. That will make canonical URLs and structured data point to the public domain instead of the local origin.
-- Add a real LinkedIn URL in `src/content/profile.ts` if you want that profile indexed and linked from the site.
+- Project details are loaded over fetch from static JSON so the homepage stays small.
+- The homepage is the primary experience; `/projects` and `/work` are alternate entry points into the same data.

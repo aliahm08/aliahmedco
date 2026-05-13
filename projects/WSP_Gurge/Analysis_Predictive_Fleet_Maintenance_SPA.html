@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Fleet Maintenance Case Study</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A three-tab SPA guiding users from a high-level Fleet Overview (Scatter Plot) to a detailed Component Analysis (Bar Chart) for a selected bus, and finally to a Predictive Workflows section (Regression Plot, Sunburst, Correlation Matrix). This stepped approach mirrors the analytical process in the source report (identify -> diagnose -> predict), making the data exploration intuitive and task-oriented. User interaction (clicking a bus) directly drives the transition between the first two stages. -->
+    <!-- Visualization & Content Choices: 
+    - Fleet Overview: Goal=Inform/Compare. Viz=Scatter Plot. Lib=Chart.js. Interaction=Hover for info, click to select bus. Justification=Provides a quick, high-level view of fleet health as described in the report.
+    - Component Breakdown: Goal=Compare/Organize. Viz=Horizontal Bar Chart. Lib=Chart.js. Interaction=Updates dynamically on bus selection. Justification=Clearly shows the primary failure drivers for a specific vehicle.
+    - Diagnostic Workflow: Goal=Relationships. Viz=Multi-Level Doughnut (Sunburst). Lib=Chart.js. Interaction=Hover for details. Justification=Visualizes hierarchical/sequential failure data as requested, using a Canvas-based approach.
+    - Predictive Modeling: Goal=Change/Relationships. Viz=Scatter Plot with calculated regression line. Lib=Chart.js. Interaction=Updates based on selected component. Justification=Shows trends over time/mileage.
+    - Cross-Component Analysis: Goal=Relationships. Viz=Matrix Chart (Heatmap). Lib=Chart.js. Interaction=Hover for correlation value. Justification=Excellent SVG-free alternative to a Chord Diagram for showing inter-component relationships.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #3a3a3a;
+        }
+
+        .tab {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .tab.active {
+            color: #ffffff;
+            background-color: #0077b6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-6 md:p-8">
+    <main class="max-w-7xl mx-auto bg-white rounded-2xl shadow-lg p-5 sm:p-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Predictive Fleet Maintenance</h1>
+            <p class="mt-2 text-lg text-gray-500">An interactive journey from fleet-wide analysis to component-level
+                prediction.</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-gray-200 mb-8">
+            <div class="flex space-x-2 sm:space-x-4 bg-gray-100 p-1.5 rounded-lg">
+                <button data-tab="overview"
+                    class="tab active text-sm sm:text-base font-medium py-2 px-4 sm:px-6 rounded-md">1. Fleet
+                    Overview</button>
+                <button data-tab="breakdown" id="breakdown-tab"
+                    class="tab text-sm sm:text-base font-medium py-2 px-4 sm:px-6 rounded-md text-gray-500 cursor-not-allowed">2.
+                    Component Breakdown</button>
+                <button data-tab="workflows" id="workflows-tab"
+                    class="tab text-sm sm:text-base font-medium py-2 px-4 sm:px-6 rounded-md text-gray-500 cursor-not-allowed">3.
+                    Predictive Workflows</button>
+            </div>
+        </nav>
+
+        <section id="content">
+            <!-- Tab 1: Fleet Overview -->
+            <div id="overview" class="tab-content active">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-700">Fleet Health Scatter Plot</h2>
+                    <p class="mt-1 text-gray-500 max-w-3xl mx-auto">This chart provides a "10,000-foot view" of the
+                        entire fleet. Each point is a bus, plotted by its reliability (MDBF) and usage (Mileage). Click
+                        a point to select a bus and unlock the next step.</p>
+                </div>
+                <div class="chart-container h-[60vh] max-h-[500px]">
+                    <canvas id="fleetScatterChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Tab 2: Bus-by-Bus Breakdown -->
+            <div id="breakdown" class="tab-content">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-700">Component Failure Analysis for <span
+                            id="selected-bus-id" class="text-blue-600">...</span></h2>
+                    <p class="mt-1 text-gray-500 max-w-3xl mx-auto">This chart pinpoints why the selected bus is
+                        underperforming by showing which of its systems are responsible for the most failures. Use this
+                        to focus maintenance efforts.</p>
+                </div>
+                <div class="chart-container h-[60vh] max-h-[500px]">
+                    <canvas id="componentBarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Tab 3: Predictive Workflows -->
+            <div id="workflows" class="tab-content">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-700">Predictive & Diagnostic Workflows</h2>
+                    <p class="mt-1 text-gray-500 max-w-4xl mx-auto">Explore advanced visualizations built from
+                        historical data. These tools help predict future failures and understand complex relationships
+                        between components.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 text-center mb-2">Diagnostic Assistant</h3>
+                        <p class="text-sm text-center text-gray-500 mb-4">This sunburst chart shows which failures
+                            typically follow an initial component failure, helping technicians perform preventative
+                            checks.</p>
+                        <div class="chart-container h-[40vh] max-h-[350px]">
+                            <canvas id="diagnosticSunburstChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 text-center mb-2">Predictive Failure Modeling
+                        </h3>
+                        <p class="text-sm text-center text-gray-500 mb-4">This plot models brake pad failures against
+                            mileage, with a regression line showing the trend to help predict when replacements are
+                            needed.</p>
+                        <div class="chart-container h-[40vh] max-h-[350px]">
+                            <canvas id="predictiveScatterChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 mt-8">
+                        <h3 class="text-xl font-semibold text-gray-700 text-center mb-2">Cross-Component Failure
+                            Correlation</h3>
+                        <p class="text-sm text-center text-gray-500 mb-4">This matrix shows the correlation between
+                            failures in different systems. Darker squares indicate a stronger relationship, revealing
+                            hidden dependencies.</p>
+                        <div class="chart-container h-[50vh] max-h-[450px]">
+                            <canvas id="correlationMatrixChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const state = {
+                selectedBus: null,
+                activeTab: 'overview'
+            };
+
+            const TABS = document.querySelectorAll('.tab');
+            const TAB_CONTENT = document.querySelectorAll('.tab-content');
+
+            function switchTab(tabId) {
+                state.activeTab = tabId;
+                TABS.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabId);
+                });
+                TAB_CONTENT.forEach(content => {
+                    content.classList.toggle('active', content.id === tabId);
+                });
+            }
+
+            TABS.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    if (!tab.classList.contains('cursor-not-allowed')) {
+                        switchTab(tab.dataset.tab);
+                    }
+                });
+            });
+
+            // Data Generation
+            const COMPONENTS = ['Engine', 'Brakes', 'HVAC', 'Transmission', 'Electrical', 'Suspension'];
+            const TOTAL_BUSES = 200;
+            const fleetData = [];
+            for (let i = 0; i < TOTAL_BUSES; i++) {
+                const mileage = 5000 + Math.random() * 250000;
+                const mdbf = 12000 - Math.pow(mileage / 30, 1.1) * (0.8 + Math.random() * 0.4);
+                const componentFailures = {};
+                let totalFailures = 0;
+                COMPONENTS.forEach(c => {
+                    const failures = Math.floor(Math.random() * (25 - mdbf / 1000) * (mileage / 50000));
+                    componentFailures[c] = Math.max(0, failures);
+                    totalFailures += componentFailures[c];
+                });
+                fleetData.push({
+                    id: `BUS-${100 + i}`,
+                    x: mileage,
+                    y: Math.max(500, mdbf),
+                    componentFailures,
+                    totalFailures
+                });
+            }
+
+            const chartInstances = {};
+
+            // --- Chart 1: Fleet Overview Scatter ---
+            function createFleetScatterChart() {
+                const ctx = document.getElementById('fleetScatterChart').getContext('2d');
+                if (chartInstances.fleetScatter) chartInstances.fleetScatter.destroy();
+                chartInstances.fleetScatter = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Bus Performance',
+                            data: fleetData,
+                            backgroundColor: fleetData.map(d => `rgba(0, 119, 182, ${Math.max(0.1, d.y / 12000)})`),
+                            borderColor: 'rgba(0, 119, 182, 0.7)',
+                            borderWidth: 1,
+                            pointRadius: 5,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Total Mileage', font: { size: 14 } },
+                                beginAtZero: true,
+                                ticks: { callback: value => `${value / 1000}k mi` }
+                            },
+                            y: {
+                                title: { display: true, text: 'Mean Distance Between Failures (MDBF)', font: { size: 14 } },
+                                beginAtZero: true,
+                                ticks: { callback: value => `${value / 1000}k mi` }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const d = context.raw;
+                                        return `${d.id}: MDBF ${Math.round(d.y).toLocaleString()} mi, Mileage ${Math.round(d.x).toLocaleString()} mi`;
+                                    }
+                                }
+                            }
+                        },
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                state.selectedBus = fleetData[index];
+                                document.getElementById('selected-bus-id').textContent = state.selectedBus.id;
+
+                                const breakdownTab = document.getElementById('breakdown-tab');
+                                breakdownTab.classList.remove('cursor-not-allowed', 'text-gray-500');
+                                const workflowsTab = document.getElementById('workflows-tab');
+                                workflowsTab.classList.remove('cursor-not-allowed', 'text-gray-500');
+
+                                createComponentBarChart(state.selectedBus);
+                                switchTab('breakdown');
+                                createPredictiveCharts();
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Chart 2: Component Breakdown Bar ---
+            function createComponentBarChart(busData) {
+                const ctx = document.getElementById('componentBarChart').getContext('2d');
+                if (chartInstances.componentBar) chartInstances.componentBar.destroy();
+
+                const sortedComponents = Object.entries(busData.componentFailures).sort(([, a], [, b]) => b - a);
+
+                chartInstances.componentBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedComponents.map(c => c[0]),
+                        datasets: [{
+                            label: 'Number of Failures',
+                            data: sortedComponents.map(c => c[1]),
+                            backgroundColor: 'rgba(0, 119, 182, 0.6)',
+                            borderColor: 'rgba(0, 119, 182, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { x: { title: { display: true, text: 'Total Failures' } } },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+
+            // --- Chart 3: Predictive Workflow Charts ---
+            function createPredictiveCharts() {
+                // Diagnostic Sunburst (as multi-level doughnut)
+                const sunburstCtx = document.getElementById('diagnosticSunburstChart').getContext('2d');
+                if (chartInstances.sunburst) chartInstances.sunburst.destroy();
+                chartInstances.sunburst = new Chart(sunburstCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Alternator -> Wiring', 'Alternator -> Battery', 'AC Comp. -> Blower', 'AC Comp. -> Other'],
+                        datasets: [
+                            {
+                                label: 'Initial Failure',
+                                data: [100, 100],
+                                backgroundColor: ['#0077b6', '#00b4d8']
+                            },
+                            {
+                                label: 'Subsequent Failure',
+                                data: [60, 40, 75, 25],
+                                backgroundColor: ['#90e0ef', '#caf0f8', '#90e0ef', '#caf0f8']
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top' }, tooltip: { enabled: true } }
+                    }
+                });
+
+                // Predictive Scatter with Regression
+                const predScatterCtx = document.getElementById('predictiveScatterChart').getContext('2d');
+                if (chartInstances.predScatter) chartInstances.predScatter.destroy();
+                const brakeData = Array.from({ length: 50 }, () => ({
+                    x: 20000 + Math.random() * 100000,
+                    y: 1 + Math.random() * 5 + (20000 + Math.random() * 100000) / 20000
+                }));
+                const sumX = brakeData.reduce((acc, p) => acc + p.x, 0);
+                const sumY = brakeData.reduce((acc, p) => acc + p.y, 0);
+                const sumXY = brakeData.reduce((acc, p) => acc + p.x * p.y, 0);
+                const sumX2 = brakeData.reduce((acc, p) => acc + p.x * p.x, 0);
+                const n = brakeData.length;
+                const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                const b = (sumY - m * sumX) / n;
+
+                chartInstances.predScatter = new Chart(predScatterCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Brake Pad Failures',
+                            data: brakeData,
+                            backgroundColor: 'rgba(0, 119, 182, 0.6)'
+                        }, {
+                            type: 'line',
+                            label: 'Trendline',
+                            data: [{ x: 0, y: b }, { x: 120000, y: m * 120000 + b }],
+                            borderColor: '#fb8500',
+                            borderWidth: 2,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { x: { title: { display: true, text: 'Mileage' } }, y: { title: { display: true, text: 'Failures' } } }
+                    }
+                });
+
+                // Correlation Matrix
+                const matrixCtx = document.getElementById('correlationMatrixChart').getContext('2d');
+                if (chartInstances.matrix) chartInstances.matrix.destroy();
+                const matrixData = {
+                    labels: COMPONENTS,
+                    datasets: COMPONENTS.map((c1, i) => ({
+                        label: c1,
+                        data: COMPONENTS.map((c2, j) => (i === j ? 1 : Math.random() * 0.8)),
+                        borderWidth: 1,
+                        width: ({ chart }) => (chart.chartArea || {}).width / COMPONENTS.length - 1,
+                        height: ({ chart }) => (chart.chartArea || {}).height / COMPONENTS.length - 1,
+                    }))
+                };
+                chartInstances.matrix = new Chart(matrixCtx, {
+                    type: 'matrix',
+                    data: matrixData,
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    title: () => '',
+                                    label: c => `${c.dataset.label} / ${c.chart.data.labels[c.dataIndex]}: ${c.raw.v.toFixed(2)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { type: 'category', labels: COMPONENTS, grid: { display: false } },
+                            y: { type: 'category', labels: COMPONENTS, grid: { display: false }, offset: true }
+                        },
+                    },
+                });
+            }
+
+            // Initial chart creation
+            createFleetScatterChart();
+        });
+    </script>
+</body>
+
+</html>
