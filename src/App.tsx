@@ -877,7 +877,7 @@ function WorkPage(props: {
   return (
     <div className="work-page">
       <section id="portfolio" className="landing-section landing-portfolio-section">
-        <div className="work-group-tabs" style={{ marginBottom: '48px', display: 'flex', gap: '24px', width: 'min(720px, calc(100% - 32px))', margin: '0 auto 48px' }}>
+        <div className="work-group-tabs">
           {groups.map((group) => (
             <button 
               key={group} 
