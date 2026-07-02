@@ -2597,6 +2597,11 @@ body:has(.portfolio-shell) {
     height: 1px;
     background-color: var(--portfolio-line);
   }
+
+  /* Remove accordion top rule */
+  .work-accordion {
+    border-top: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
