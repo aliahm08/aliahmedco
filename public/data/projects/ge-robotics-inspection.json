@@ -29,24 +29,27 @@
       "value": "LiDAR/Optical"
     }
   ],
-  "headline": "Detailed view of Inspection Crawlers at GE Robotics",
-  "challenge": "The primary challenge was to scale operations and improve technical outcomes at GE Robotics.",
-  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "headline": "Robotics work where mechanical design, sensing, and computer vision had to survive extreme inspection conditions.",
+  "challenge": "Pipeline inspection required a hardware system that could gather useful LiDAR and optical information without destructive testing.",
+  "outcome": "Ali's robotics work connected hardware design and computer vision integration for inspection environments where reliability and legibility mattered.",
   "bullets": [
-    "Led the technical architecture and prototyping phases.",
-    "Iterated rapidly with cross-functional teams.",
-    "Shipped the final product ahead of schedule."
+    "Contributed robotics hardware design for non-destructive pipeline inspection.",
+    "Worked across LiDAR, optical sensing, and computer vision integration.",
+    "Helped frame extreme-environment inspection as a product and sensing problem, not just a mechanical one."
   ],
   "capabilities": [
-    "Robotics",
-    "Computer Vision",
-    "Hardware"
+    "Robotics hardware",
+    "Computer vision integration",
+    "Sensor systems",
+    "Inspection workflows"
   ],
   "gallery": [
     {
       "src": "/projects/ge-robotics-inspection.svg",
       "alt": "Inspection Crawlers",
-      "caption": "Robotics hardware design and computer vision integration for non-destructive pipeline inspection."
+      "title": "Inspection Sensor System",
+      "label": "Robotics + Computer Vision",
+      "caption": "Ali's GE work demonstrates the mechanical and computer-vision range behind later AI hardware and operations projects."
     }
   ],
   "company": "GE"

@@ -47,7 +47,9 @@
     {
       "src": "/projects/wsp-reporting-ops.svg",
       "alt": "Poster for WSP Reporting Ops.",
-      "caption": "Reporting treated like a stack of snapshots with fewer moving parts."
+      "title": "Automated Reporting Layer",
+      "label": "Clustering + Workflow Automation",
+      "caption": "Ali automated 12 reporting workflows and improved report completeness by 25% through clustering and checkpoint analysis."
     }
   ],
   "company": "WSP"

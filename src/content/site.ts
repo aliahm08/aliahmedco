@@ -19,12 +19,12 @@ export const site = {
     eyebrow: 'Portfolio and professional site',
     title: 'Ali Ahmed Co',
     intro:
-      'A minimal professional site for Ali Ahmed across AI products, operational software, analytics systems, and technical design work.',
+      'Ali Ahmed builds AI products, operational software, analytics systems, and technical prototypes for teams that need strategy and execution in the same person.',
     detail:
-      'Browse the index, filter the work, regroup the projects, and open details only when useful.',
+      'Selected work across WSP, NASA, Autodesk, huupe, and other technical organizations, organized around what Ali actually shipped, analyzed, prototyped, and made legible for stakeholders.',
   },
   about:
-    'The site is intentionally light: a clear landing page, one project index, a small filter set, and enough structure to grow into full project pages later.',
+    'This portfolio is built for hiring conversations: proof of product judgment, engineering range, analytics depth, and the ability to move between executives, operators, designers, and technical teams.',
   resumeSummary:
     'Operator working across AI, infrastructure, design, and product with experience spanning enterprise software, venture-backed startups, and federal programs.',
   writingSummary:
@@ -66,7 +66,7 @@ export const routeMeta: Record<AppRoute, RouteMeta> = {
   '/work': {
     title: 'Work | Ali Ahmed Co',
     description:
-      'Selected work and projects from Ali Ahmed across AI systems, analytics, product design, and technical operations.',
+      'Selected work from Ali Ahmed showing AI product development, analytics systems, hardware prototyping, and technical storytelling across WSP, NASA, Autodesk, huupe, and more.',
     canonicalPath: '/work',
   },
   '/resume': {

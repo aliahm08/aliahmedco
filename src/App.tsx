@@ -114,17 +114,27 @@ function getGeneratedImageStyle(project: ProjectIndexItem, imageIndex: number) {
 function GeneratedProjectImage(props: {
   project: ProjectIndexItem;
   imageIndex: number;
+  imageSrc?: string;
+  ariaLabel?: string;
   className?: string;
   style?: CSSProperties;
   key?: string;
 }) {
+  const hasUploadedImage = Boolean(
+    props.imageSrc && props.imageSrc.startsWith('/project-media/'),
+  );
+
   return (
     <div
-      className={`generated-project-image ${props.className ?? ''}`}
+      className={`generated-project-image ${hasUploadedImage ? 'has-uploaded-photo' : ''} ${props.className ?? ''}`}
       style={{...getGeneratedImageStyle(props.project, props.imageIndex), ...props.style}}
       role="img"
-      aria-label={`${props.project.title} abstract preview ${props.imageIndex + 1}`}
-    />
+      aria-label={props.ariaLabel ?? `${props.project.title} abstract preview ${props.imageIndex + 1}`}
+    >
+      {hasUploadedImage ? (
+        <img className="generated-project-image-photo" src={props.imageSrc} alt="" aria-hidden="true" />
+      ) : null}
+    </div>
   );
 }
 
@@ -592,15 +602,7 @@ function WorkProjectStack(props: {
     ? detail.gallery
     : [{src: props.project.poster, alt: '', caption: props.project.teaser}];
 
-  const gallery = baseGallery.length < 4
-    ? [
-        ...baseGallery,
-        ...Array.from({length: 4 - baseGallery.length}).map((_, i) => ({
-          ...baseGallery[0],
-          caption: `${baseGallery[0].caption} (View ${i + 2})`,
-        })),
-      ]
-    : baseGallery;
+  const gallery = baseGallery;
 
   const currentPhoto = gallery[photoIndex];
 
@@ -613,7 +615,7 @@ function WorkProjectStack(props: {
       aria-label={`${props.project.title} preview stack`}
     >
       <div className="work-stack-copy work-stack-copy-left">
-        {detail?.headline ? <h1>{detail.headline}</h1> : <h1>{props.project.client}</h1>}
+        <h1>{(currentPhoto as any).title || detail?.headline || props.project.client}</h1>
         <div className="gallery-arrows">
           <button type="button" className="gallery-arrow" onClick={handlePrevPhoto} disabled={gallery.length <= 1} aria-label="Previous photo">←</button>
           <button type="button" className="gallery-arrow" onClick={handleNextPhoto} disabled={gallery.length <= 1} aria-label="Next photo">→</button>
@@ -635,6 +637,8 @@ function WorkProjectStack(props: {
               key={`${photo.src}-${stackIndex}`}
               project={props.project}
               imageIndex={stackIndex % 4}
+              imageSrc={photo.src}
+              ariaLabel={photo.alt || `${props.project.title} photo ${stackIndex + 1}`}
               className={offsetIndex === 0 ? 'is-front is-active' : ''}
               style={{
                 '--project-x': `${offset.x}px`,
@@ -650,7 +654,7 @@ function WorkProjectStack(props: {
       </button>
       <div className="work-stack-copy work-stack-copy-right">
         <p className="work-stack-meta">
-          <strong>{(currentPhoto as any).title || props.project.title}</strong>
+          <strong>{(currentPhoto as any).label || `${props.project.role} / ${props.project.productType}`}</strong>
         </p>
         <p className="work-stack-description">{currentPhoto.caption}</p>
         {props.project.tags.length ? (
@@ -665,79 +669,31 @@ function WorkProjectStack(props: {
   );
 }
 
-function HomePage() {
+function HomePage(props: {
+  projects: ProjectIndexItem[];
+  onOpenProject: (projectId: string) => void;
+}) {
   const latestPublication = substackPosts[0];
-  const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
-  const [visiblePastWorkCount, setVisiblePastWorkCount] = useState(0);
+
   type PivotEntry = (typeof profile.resume.pivotEntries)[number];
-  function isPastWork(item: PivotEntry): item is Extract<PivotEntry, {type: 'Past Work'}> {
-    return item.type === 'Past Work';
+
+  function isAcademic(item: PivotEntry): item is Extract<PivotEntry, {type: 'Academic'}> {
+    return item.type === 'Academic';
   }
 
-  function isPreludeEntry(
-    item: PivotEntry,
-  ): item is Exclude<PivotEntry, {type: 'Past Work'}> {
-    return item.type !== 'Past Work';
+  function isWriting(item: PivotEntry): boolean {
+    return item.type === 'Article' || item.type === 'Publication';
   }
 
   const pivotEntries = profile.resume.pivotEntries;
-  const pivotPrelude = pivotEntries.filter(isPreludeEntry) as unknown as PivotEntry[];
-  const pivotPastWork = pivotEntries.filter(isPastWork) as unknown as PivotEntry[];
-
-  useEffect(() => {
-    if (!isPastWorkExpanded) {
-      setVisiblePastWorkCount(0);
-      return;
-    }
-
-    setVisiblePastWorkCount(getPastWorkBatchSize());
-  }, [isPastWorkExpanded]);
-
-  useEffect(() => {
-    if (!isPastWorkExpanded) {
-      return;
-    }
-
-    function handleResize() {
-      setVisiblePastWorkCount((current) => Math.max(current, getPastWorkBatchSize()));
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isPastWorkExpanded]);
-
-  useEffect(() => {
-    if (!isPastWorkExpanded || visiblePastWorkCount >= pivotPastWork.length) {
-      return;
-    }
-
-    const sentinel = document.getElementById('past-work-sentinel');
-    if (!sentinel) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (!entry?.isIntersecting) {
-          return;
-        }
-
-        setVisiblePastWorkCount((current) =>
-          Math.min(current + getPastWorkBatchSize(), pivotPastWork.length),
-        );
-      },
-      {rootMargin: '0px 0px 18% 0px'},
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [isPastWorkExpanded, pivotPastWork.length, visiblePastWorkCount]);
+  const pivotAcademic = pivotEntries.filter(isAcademic) as unknown as PivotEntry[];
+  const pivotWriting = pivotEntries.filter(isWriting) as unknown as PivotEntry[];
+  const top3Projects = props.projects.slice(0, 3);
 
   return (
     <>
       <section className="panel panel-first">
-        <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
+        <p className="eyebrow">WORK</p>
         <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
@@ -755,24 +711,54 @@ function HomePage() {
               , Senior Consultant.
             </p>
           </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
-                Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
-              </a>
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              Email: <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            </p>
+          {top3Projects.map((project) => (
+            <div key={project.id} className="stack-item">
+              <p className="micro-copy">
+                <strong>{project.company}</strong>
+                {', '}
+                <button
+                  type="button"
+                  className="entity-link"
+                  style={{
+                    border: 0,
+                    padding: 0,
+                    background: 'none',
+                    font: 'inherit',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => props.onOpenProject(project.id)}
+                >
+                  {project.title}
+                </button>
+                {'. '}
+                <span>{project.teaser}</span>
+              </p>
+            </div>
+          ))}
+          <div className="stack-item" style={{marginTop: '16px'}}>
+            <SmartLink href="/work" className="inline-link">
+              work
+            </SmartLink>
           </div>
         </div>
       </section>
 
-      <section className="panel home-social-section">
-        <p className="eyebrow">Connect With Ali</p>
+      <section className="panel">
+        <p className="eyebrow">RESUME</p>
         <div className="stack-list now-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy" style={{lineHeight: 1.6, marginBottom: '12px'}}>
+              {profile.resume.profileSummary}
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              Email:{' '}
+              <a href={`mailto:${profile.email}`} className="entity-link">
+                {profile.email}
+              </a>
+            </p>
+          </div>
           <div className="stack-item">
             <p className="micro-copy">
               GitHub:{' '}
@@ -789,6 +775,24 @@ function HomePage() {
               </a>
             </p>
           </div>
+          <div className="stack-item" style={{marginTop: '16px'}}>
+            <SmartLink href="/resume" className="inline-link">
+              resume
+            </SmartLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">WRITING</p>
+        <div className="stack-list now-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy">
+              <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
+                Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
+              </a>
+            </p>
+          </div>
           <div className="stack-item">
             <p className="micro-copy">
               Substack:{' '}
@@ -797,75 +801,28 @@ function HomePage() {
               </a>
             </p>
           </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <button
-          type="button"
-          className="inline-link-button"
-          aria-expanded={isPastWorkExpanded}
-          onClick={() => setIsPastWorkExpanded((current) => !current)}
-        >
-          {isPastWorkExpanded ? 'Hide Past Work' : 'Expand Past Work'}
-        </button>
-        {isPastWorkExpanded ? (
-          <div className="disclosure-panel">
-            <div className="stack-list now-list">
-              {pivotPrelude.map((item, index) => (
-                <div
-                  key={`${item.type}-${item.organization}-${item.title}`}
-                  className="stack-item home-fade-item"
-                  style={{animationDelay: `${80 + index * 70}ms`}}
-                >
-                  <p className="micro-copy">
-                    {item.type === 'Academic' ? (
-                      <>
-                        <strong>{item.organization}</strong>
-                        {', '}
-                        {item.title}
-                      </>
-                    ) : item.type === 'Article' || item.type === 'Publication' ? (
-                      <>
-                        {'href' in item && item.href ? (
-                          <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
-                            {item.title}
-                          </a>
-                        ) : (
-                          item.title
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <strong>{item.organization}</strong>
-                        {', '}
-                        {item.title}
-                      </>
-                    )}
-                  </p>
-                </div>
-              ))}
-              {pivotPastWork.slice(0, visiblePastWorkCount).map((item, index) => (
-                <div
-                  key={`${item.type}-${item.organization}-${item.title}`}
-                  className="stack-item home-fade-item past-work-item"
-                  style={{animationDelay: `${180 + index * 70}ms`}}
-                >
-                  <p className="micro-copy">
-                    <strong>{item.organization}</strong>
-                    {', '}
+          {pivotWriting.map((item) => (
+            <div
+              key={`${item.organization}-${item.title}`}
+              className="stack-item"
+            >
+              <p className="micro-copy">
+                {'href' in item && item.href ? (
+                  <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
                     {item.title}
-                  </p>
-                </div>
-              ))}
+                  </a>
+                ) : (
+                  item.title
+                )}
+              </p>
             </div>
-            {visiblePastWorkCount < pivotPastWork.length ? (
-              <div id="past-work-sentinel" className="scroll-reveal-cue">
-                <p className="micro-copy">Scroll to reveal more.</p>
-              </div>
-            ) : null}
+          ))}
+          <div className="stack-item" style={{marginTop: '16px'}}>
+            <SmartLink href="/writing" className="inline-link">
+              writing
+            </SmartLink>
           </div>
-        ) : null}
+        </div>
       </section>
     </>
   );
@@ -1171,149 +1128,221 @@ function WorkPage(props: {
 }
 
 function ResumePage() {
+  const resumeStats = [
+    {value: '$220M', label: 'enterprise project portfolio'},
+    {value: '86%', label: 'safety risk model accuracy'},
+    {value: '$11M', label: 'seed raise supported at huupe'},
+    {value: '1,500', label: 'growth copy tests managed'},
+  ];
+  const resumeIntro =
+    'Ali turns ambiguous technical programs into clear product decisions. His work spans WSP enterprise delivery, Huupe growth, Autodesk R&D, and NASA systems prototyping, with $220M in managed project scope and hands-on execution across AI, robotics, spatial computing, and built-environment technology.';
+  const leadExperience = profile.resume.experience.slice(0, 6);
+  const earlierExperience = profile.resume.experience.slice(6);
+  const resumeSections = [
+    {id: 'resume-overview', label: 'Overview'},
+    {id: 'resume-proof', label: 'Proof'},
+    {id: 'resume-experience', label: 'Experience'},
+    {id: 'resume-capabilities', label: 'Capabilities'},
+    {id: 'resume-foundation', label: 'Foundation'},
+  ];
+  const [activeResumeSection, setActiveResumeSection] = useState(resumeSections[0].id);
+
+  useEffect(() => {
+    const sectionElements = resumeSections
+      .map((section) => document.getElementById(section.id))
+      .filter((element): element is HTMLElement => Boolean(element));
+
+    if (!sectionElements.length) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleSection?.target.id) {
+          setActiveResumeSection(visibleSection.target.id);
+        }
+      },
+      {
+        rootMargin: '-28% 0px -42% 0px',
+        threshold: [0.2, 0.45, 0.7],
+      },
+    );
+
+    sectionElements.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <>
-      <section className="panel panel-first">
-        <p className="eyebrow">Resume</p>
-        <div className="stack-list now-list">
-          <div className="stack-item">
-            <p className="micro-copy">{profile.resume.summary}</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">{profile.resume.profileSummary}</p>
-          </div>
-          {profile.resume.contactMethods.map((method) => (
-            <div key={method.label} className="stack-item">
-              <p className="micro-copy">
-                <strong>{method.label}</strong>
-                {' · '}
-                <a href={method.href} target="_blank" rel="noreferrer" className="entity-link">
-                  {method.value}
-                </a>
-              </p>
-            </div>
-          ))}
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Location</strong> · {profile.location}</p>
-          </div>
+    <div className="resume-page">
+      <nav className="resume-section-nav" aria-label="Resume sections">
+        {resumeSections.map((section, index) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            aria-current={activeResumeSection === section.id ? 'step' : undefined}
+          >
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            {section.label}
+          </a>
+        ))}
+      </nav>
+
+      <section id="resume-overview" className="resume-hero resume-snap-section panel-first">
+        <div className="resume-hero-copy">
+          <p className="eyebrow">Resume</p>
+          <h1>AI product operator with engineering range.</h1>
+          <p>{resumeIntro}</p>
         </div>
+        <aside className="resume-contact-card" aria-label="Contact details">
+          <p className="summary-title">{profile.name}</p>
+          <p className="micro-copy">{profile.headline}</p>
+          <div className="resume-contact-list">
+            {profile.resume.contactMethods.map((method) => (
+              <a key={method.label} href={method.href} target="_blank" rel="noreferrer">
+                <span>{method.label}</span>
+                <strong>{method.value}</strong>
+              </a>
+            ))}
+            <div>
+              <span>Location</span>
+              <strong>{profile.location}</strong>
+            </div>
+          </div>
+        </aside>
       </section>
 
-      <section className="panel">
-        <p className="eyebrow">Experience</p>
-        <div className="stack-list now-list">
-          {profile.resume.experience.map((item) => (
-            <article key={`${item.company}-${item.title}-${item.period}`} className="stack-item">
-              <div className="repo-topline">
-                <div>
-                  <p className="micro-copy">
-                    <strong>{item.company}</strong>
-                    {' · '}
-                    {item.title}
-                  </p>
-                </div>
-                <div className="resume-meta">
-                  <span>{item.period}</span>
-                  {'location' in item && item.location ? <span>{item.location}</span> : null}
-                </div>
-              </div>
-              {item.bullets.length ? (
-                <ul className="bullet-list">
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet} className="micro-copy">{bullet}</li>
-                  ))}
-                </ul>
-              ) : null}
+      <section id="resume-proof" className="resume-snap-section resume-proof-section" aria-label="Career proof points">
+        <div className="resume-section-heading">
+          <p className="eyebrow">Proof</p>
+          <h2>Signals a hiring manager can evaluate quickly.</h2>
+        </div>
+        <div className="resume-proof-grid">
+          {resumeStats.map((stat) => (
+            <article key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="panel">
-        <p className="eyebrow">Focus and tools</p>
-        <div className="stack-list">
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Focus</strong> · {profile.resume.focusAreas.join(', ')}.</p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              <strong>Tools</strong>
-              {' '}· {profile.resume.technicalSkills.map((group) => `${group.label}: ${group.items.join(', ')}`).join(' · ')}
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Certifications</strong> · {profile.resume.certifications.join(', ')}.</p>
-          </div>
+      <section id="resume-experience" className="resume-section resume-snap-section">
+        <div className="resume-section-heading">
+          <p className="eyebrow">Experience</p>
+          <h2>Recent work with measurable operating leverage.</h2>
+        </div>
+        <div className="resume-role-grid">
+          {leadExperience.map((item) => (
+            <article key={`${item.company}-${item.title}-${item.period}`} className="resume-role">
+              <div className="resume-role-meta">
+                <span>{item.period}</span>
+                {'location' in item && item.location ? <span>{item.location}</span> : null}
+              </div>
+              <div className="resume-role-body">
+                <p className="resume-role-company">{item.company}</p>
+                <h3>{item.title}</h3>
+                {item.bullets.length ? (
+                  <p>{item.bullets[0]}</p>
+                ) : null}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="panel">
-        <p className="eyebrow">Education and recognition</p>
-        <div className="stack-list">
-          {profile.resume.education.map((entry) => (
-            <div key={entry} className="stack-item">
-              <p className="micro-copy">{entry}</p>
+      <section id="resume-capabilities" className="resume-section resume-systems-section resume-snap-section">
+        <div className="resume-section-heading">
+          <p className="eyebrow">Capabilities</p>
+          <h2>Product judgment backed by technical execution.</h2>
+        </div>
+        <div className="resume-capability-grid">
+          <article>
+            <h3>Focus</h3>
+            <div className="resume-chip-list">
+              {profile.resume.focusAreas.map((area) => (
+                <span key={area}>{area}</span>
+              ))}
             </div>
-          ))}
-          <div className="stack-item">
-            <p className="micro-copy"><strong>Honors</strong> · {profile.resume.honors.join(', ')}.</p>
-          </div>
+          </article>
+          <article>
+            <h3>Technical Toolkit</h3>
+            <div className="resume-skill-groups">
+              {profile.resume.technicalSkills.map((group) => (
+                <div key={group.label}>
+                  <strong>{group.label}</strong>
+                  <p>{group.items.join(', ')}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+          <article>
+            <h3>Credentials</h3>
+            <p>{profile.resume.certifications.join(', ')}</p>
+          </article>
         </div>
       </section>
-    </>
+
+      <section id="resume-foundation" className="resume-section resume-education-section resume-snap-section">
+        <div className="resume-section-heading">
+          <p className="eyebrow">Foundation</p>
+          <h2>Architecture, engineering, and earlier innovation work.</h2>
+        </div>
+        <div className="resume-foundation-grid">
+          <article>
+            <h3>Education</h3>
+            {profile.resume.education.map((entry) => (
+              <p key={entry}>{entry}</p>
+            ))}
+          </article>
+          <article>
+            <h3>Recognition</h3>
+            <p>{profile.resume.honors.join(', ')}</p>
+          </article>
+          <article>
+            <h3>Earlier Roles</h3>
+            <div className="resume-earlier-list">
+              {earlierExperience.map((item) => (
+                <p key={`${item.company}-${item.title}`}>
+                  <strong>{item.company}</strong>
+                  {' / '}
+                  {item.title}
+                  {' / '}
+                  <span>{item.period}</span>
+                </p>
+              ))}
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
   );
 }
 
 function WritingPage() {
-  const [activePostUrl, setActivePostUrl] = useState(substackPosts[0]?.url ?? null);
-
   return (
     <section className="writing-archive">
-      <div className="writing-archive-header">
-        <p className="eyebrow">Writing</p>
-        <p className="micro-copy">{site.writingSummary}</p>
-      </div>
       <div className="writing-row-list">
-        {substackPosts.map((post) => {
-          const isActive = activePostUrl === post.url;
-
-          return (
-            <article key={post.url} className={`writing-row-item ${isActive ? 'is-active' : ''}`}>
-              <button
-                type="button"
-                className="writing-row-trigger"
-                aria-expanded={isActive}
-                onClick={() => setActivePostUrl(isActive ? null : post.url)}
-              >
-                <span>{formatLongDate(post.publishedAt)}</span>
-                <strong>
-                  {post.title}
-                  <span className="accordion-indicator" aria-hidden="true">
-                    {isActive ? 'x' : '+'}
-                  </span>
-                </strong>
-              </button>
-              <AnimatePresence initial={false}>
-                {isActive ? (
-                  <motion.div
-                    className="writing-row-panel"
-                    initial={{height: 0, opacity: 0}}
-                    animate={{height: 'auto', opacity: 1}}
-                    exit={{height: 0, opacity: 0}}
-                    transition={{duration: 0.28, ease: 'easeOut'}}
-                  >
-                    {'description' in post && post.description ? (
-                      <p className="post-teaser">{post.description}</p>
-                    ) : null}
-                    <a href={post.url} target="_blank" rel="noreferrer" className="inline-link">
-                      Read on Substack
-                    </a>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
-            </article>
-          );
-        })}
+        {substackPosts.map((post) => (
+          <article key={post.url} className="writing-row-item">
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noreferrer"
+              className="writing-row-trigger"
+              style={{textDecoration: 'none'}}
+            >
+              <span>{formatLongDate(post.publishedAt)}</span>
+              <strong>
+                {post.title}
+              </strong>
+            </a>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -1382,6 +1411,18 @@ export default function App() {
       document.body.classList.add('work-page-active');
     } else {
       document.body.classList.remove('work-page-active');
+    }
+
+    if (route === '/resume') {
+      document.body.classList.add('resume-page-active');
+    } else {
+      document.body.classList.remove('resume-page-active');
+    }
+
+    if (route === '/writing') {
+      document.body.classList.add('writing-page-active');
+    } else {
+      document.body.classList.remove('writing-page-active');
     }
   }, [route]);
 
@@ -1507,7 +1548,7 @@ export default function App() {
         {route === null ? (
           <NotFoundPage />
         ) : route === '/' ? (
-          <HomePage />
+          <HomePage projects={projects} onOpenProject={openProject} />
         ) : route === '/portfolio' ? (
           <PortfolioPage {...explorerProps} preview={preview} />
         ) : route === '/projects' ? (

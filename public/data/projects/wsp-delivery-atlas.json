@@ -48,7 +48,9 @@
     {
       "src": "/projects/wsp-delivery-atlas.svg",
       "alt": "Poster for WSP Delivery Atlas.",
-      "caption": "Grouped operations made to look like a clean contact sheet instead of a dashboard pileup."
+      "title": "AI-Ready Delivery Map",
+      "label": "Operations + Taxonomy Design",
+      "caption": "Ali tracked 14 resources, improved delivery speed by 80%, and prepared taxonomy patterns for a SharePoint AI agent workflow."
     }
   ],
   "company": "WSP"

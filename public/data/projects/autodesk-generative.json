@@ -29,24 +29,48 @@
       "value": "UX Patterns"
     }
   ],
-  "headline": "Detailed view of Generative Workflows at Autodesk",
-  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Autodesk.",
-  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "headline": "Applied research that turned generative design from an abstract capability into workflows people could evaluate.",
+  "challenge": "Generative design research needed product language, manufacturing context, and interface patterns clear enough for internal teams to test.",
+  "outcome": "Ali helped shape research reviews, exhibit storytelling, and interaction studies that made topology optimization and advanced manufacturing workflows easier to understand.",
   "bullets": [
-    "Led the technical architecture and prototyping phases.",
-    "Iterated rapidly with cross-functional teams.",
-    "Shipped the final product ahead of schedule."
+    "Translated generative design research into critique-ready workflow concepts.",
+    "Connected manufacturing constraints with interface patterns that could support internal beta adoption.",
+    "Used exhibit and kiosk studies to make advanced design tooling easier for non-specialist stakeholders to evaluate."
   ],
   "capabilities": [
-    "Generative Design",
-    "Manufacturing",
-    "Research"
+    "Generative design research",
+    "Manufacturing workflows",
+    "Prototype storytelling",
+    "Interface critique"
   ],
   "gallery": [
     {
-      "src": "/projects/autodesk-generative.svg",
-      "alt": "Generative Workflows",
-      "caption": "Applied research into generative design tools for advanced manufacturing."
+      "src": "/project-media/autodesk-generative/autodesk-show1.png",
+      "alt": "Generative Workflows image 1",
+      "title": "Research Review",
+      "label": "Generative Design Research",
+      "caption": "Ali used critique sessions to translate generative design research into product and manufacturing decisions."
+    },
+    {
+      "src": "/project-media/autodesk-generative/autodesk-exhibit-show1.png",
+      "alt": "Generative Workflows image 2",
+      "title": "Exhibit Storyboard",
+      "label": "Advanced Manufacturing Story",
+      "caption": "The exhibit framing made advanced manufacturing concepts understandable beyond the engineering team."
+    },
+    {
+      "src": "/project-media/autodesk-generative/autodesk-know1.png",
+      "alt": "Generative Workflows image 3",
+      "title": "Workflow Critique",
+      "label": "UX + Fabrication Logic",
+      "caption": "Ali helped bridge research, UX, and fabrication logic so the workflow could be judged as a usable product path."
+    },
+    {
+      "src": "/project-media/autodesk-generative/autodesk-kiosk-know1.png",
+      "alt": "Generative Workflows image 4",
+      "title": "Kiosk Interaction Study",
+      "label": "Demo Interaction Model",
+      "caption": "The kiosk study turned technical capability into a tangible interaction model for demos and review."
     }
   ],
   "company": "Autodesk"

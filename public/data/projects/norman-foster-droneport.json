@@ -29,24 +29,48 @@
       "value": "Medical Delivery"
     }
   ],
-  "headline": "Detailed view of Droneport at Norman Foster Foundation",
-  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Norman Foster Foundation.",
-  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "headline": "A global infrastructure concept where design engineering had to connect material logic, social need, and delivery systems.",
+  "challenge": "The Droneport concept needed a credible structural and material story for scalable medical delivery infrastructure in emerging economies.",
+  "outcome": "Ali contributed design engineering and prototype thinking within a research context tied to Norman Foster Foundation, MIT Media Lab, and global housing and logistics questions.",
   "bullets": [
-    "Led the technical architecture and prototyping phases.",
-    "Iterated rapidly with cross-functional teams.",
-    "Shipped the final product ahead of schedule."
+    "Collaborated on future-city and housing research tied to Lord Norman Foster and MIT Media Lab.",
+    "Explored structural prototyping and earth-brick material systems for drone-enabled medical delivery infrastructure.",
+    "Selected as one of ten global designers for the initiative."
   ],
   "capabilities": [
-    "Architecture",
-    "Fabrication",
-    "Logistics"
+    "Design engineering",
+    "Structural prototyping",
+    "Material systems",
+    "Infrastructure storytelling"
   ],
   "gallery": [
     {
-      "src": "/projects/norman-foster-droneport.svg",
-      "alt": "Droneport",
-      "caption": "Structural prototyping and material research for scalable drone infrastructure in emerging economies."
+      "src": "/project-media/norman-foster-droneport/norman-foster-foundation-hero.jpg",
+      "alt": "Droneport image 1",
+      "title": "Foundation Review",
+      "label": "Model-Based Design Review",
+      "caption": "Ali worked through model-based review to connect architectural ambition with practical infrastructure logic."
+    },
+    {
+      "src": "/project-media/norman-foster-droneport/nff-show5.jpg",
+      "alt": "Droneport image 2",
+      "title": "Prototype in Gallery",
+      "label": "Material + Delivery System",
+      "caption": "The physical prototype communicates how structure, material, and medical delivery could become one system."
+    },
+    {
+      "src": "/project-media/norman-foster-droneport/nff-flow.png",
+      "alt": "Droneport image 3",
+      "title": "Structural Flow Study",
+      "label": "Fabrication + Logistics Reasoning",
+      "caption": "Ali's value sits in the bridge between spatial concept, fabrication constraints, and logistics reasoning."
+    },
+    {
+      "src": "/project-media/norman-foster-droneport/20260111-1431-architectural-umbrella-shelter-remix-01keq8mh1yesxvp5f55eyq47vb.png",
+      "alt": "Droneport image 4",
+      "title": "Shelter Concept Extension",
+      "label": "Infrastructure System Extension",
+      "caption": "The extension studies show how the same design logic can be adapted into broader shelter and infrastructure systems."
     }
   ],
   "company": "Norman Foster"

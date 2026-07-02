@@ -46,9 +46,32 @@
   ],
   "gallery": [
     {
-      "src": "/projects/nasa-helmet-hud.svg",
-      "alt": "Poster for NASA Helmet HUD.",
-      "caption": "A federal R&D project rendered like a pinned mission still."
+      "src": "/project-media/nasa-helmet-hud/nasa-hero.jpg",
+      "alt": "Helmet HUD image 1",
+      "title": "Suit Systems Integration",
+      "label": "EVA Hardware Systems",
+      "caption": "Ali worked across materials testing, helmet interface concepts, and embodied hardware constraints for future EVA systems."
+    },
+    {
+      "src": "/project-media/nasa-helmet-hud/nasa-show4.png",
+      "alt": "Helmet HUD image 2",
+      "title": "Helmet HUD Vision",
+      "label": "Computer Vision Interface",
+      "caption": "The work connected computer vision model training with helmet heads-up display concepts for object recognition."
+    },
+    {
+      "src": "/project-media/nasa-helmet-hud/nasa-know1.png",
+      "alt": "Helmet HUD image 3",
+      "title": "Interface Logic Study",
+      "label": "Recognition Behavior Design",
+      "caption": "Ali translated technical recognition behavior into a form stakeholders could evaluate alongside physical suit design."
+    },
+    {
+      "src": "/project-media/nasa-helmet-hud/nasa-know2.png",
+      "alt": "Helmet HUD image 4",
+      "title": "Recognition Systems Brief",
+      "label": "R&D Decision Surface",
+      "caption": "The brief ties AI perception, prototyping, and hardware systems thinking into one R&D decision surface."
     }
   ],
   "company": "NASA"

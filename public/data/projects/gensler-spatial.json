@@ -29,24 +29,27 @@
       "value": "Dashboards"
     }
   ],
-  "headline": "Detailed view of Spatial Analytics at Gensler",
-  "challenge": "The primary challenge was to scale operations and improve technical outcomes at Gensler.",
-  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "headline": "Spatial analytics work that turned workplace design questions into data-backed operating choices.",
+  "challenge": "Large workplace environments needed utilization analysis that could connect architectural thinking with measurable decision support.",
+  "outcome": "Ali brought computational design and analytics together to support spatial dashboards for 100k+ sqft workplace environments.",
   "bullets": [
-    "Led the technical architecture and prototyping phases.",
-    "Iterated rapidly with cross-functional teams.",
-    "Shipped the final product ahead of schedule."
+    "Applied computational design methods to large-scale workplace utilization questions.",
+    "Connected spatial analysis with dashboard outputs that stakeholders could use for planning decisions.",
+    "Built early experience translating architecture, analytics, and operational strategy into one workflow."
   ],
   "capabilities": [
-    "Computational Design",
-    "Analytics",
-    "Architecture"
+    "Computational design",
+    "Spatial analytics",
+    "Dashboard thinking",
+    "Workplace strategy"
   ],
   "gallery": [
     {
       "src": "/projects/gensler-spatial.svg",
       "alt": "Spatial Analytics",
-      "caption": "Data-driven spatial analysis tools for optimizing large-scale workplace environments."
+      "title": "Workplace Utilization Model",
+      "label": "Computational Design Analytics",
+      "caption": "Ali's Gensler work shows the analytical foundation behind his later product and operations systems."
     }
   ],
   "company": "Gensler"

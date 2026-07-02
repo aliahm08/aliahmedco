@@ -46,9 +46,18 @@
   ],
   "gallery": [
     {
-      "src": "/projects/huupe-court-vision.svg",
-      "alt": "Poster for huupe Court Vision.",
-      "caption": "A startup hardware case study framed like a glossy sports proof print."
+      "src": "/project-media/huupe-court-vision/huupe-show2.png",
+      "alt": "Court Vision image 1",
+      "title": "Live Court Validation",
+      "label": "Computer Vision Field Test",
+      "caption": "Ali tested computer vision coverage against real athlete movement so product decisions were grounded in court behavior."
+    },
+    {
+      "src": "/project-media/huupe-court-vision/huupe.webp",
+      "alt": "Court Vision image 2",
+      "title": "Connected Backboard Demo",
+      "label": "Investor-Ready Hardware Story",
+      "caption": "The demo made the AI hardware story legible for founders, investors, and technical product planning."
     }
   ],
   "company": "huupe"

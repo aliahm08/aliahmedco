@@ -29,24 +29,27 @@
       "value": "High"
     }
   ],
-  "headline": "Detailed view of Replicator Ecosystem at MakerBot",
-  "challenge": "The primary challenge was to scale operations and improve technical outcomes at MakerBot.",
-  "outcome": "Delivered a comprehensive solution that met the metrics and exceeded stakeholder expectations.",
+  "headline": "Product design work in desktop fabrication, where hardware decisions shaped the user’s whole making workflow.",
+  "challenge": "The Replicator ecosystem needed mechanical and product design decisions that could support a high-volume prosumer 3D printing market.",
+  "outcome": "Ali contributed product design and mechanical engineering judgment to a hardware and software ecosystem for next-generation desktop 3D printing.",
   "bullets": [
-    "Led the technical architecture and prototyping phases.",
-    "Iterated rapidly with cross-functional teams.",
-    "Shipped the final product ahead of schedule."
+    "Worked on product design and mechanical engineering for desktop 3D printing hardware.",
+    "Connected fabrication constraints with the user experience of a prosumer hardware ecosystem.",
+    "Built early product instincts around physical systems, software adjacency, and high-volume hardware expectations."
   ],
   "capabilities": [
-    "3D Printing",
-    "Product Design",
-    "Hardware"
+    "Hardware product design",
+    "Mechanical engineering",
+    "3D printing workflows",
+    "Fabrication systems"
   ],
   "gallery": [
     {
       "src": "/projects/makerbot-replicator.svg",
       "alt": "Replicator Ecosystem",
-      "caption": "Product design and mechanical engineering for the next generation of desktop 3D printing."
+      "title": "Desktop Fabrication Workflow",
+      "label": "Mechanical Product Design",
+      "caption": "Ali's MakerBot work anchors his portfolio in physical product design, mechanical systems, and maker-facing tools."
     }
   ],
   "company": "MakerBot"

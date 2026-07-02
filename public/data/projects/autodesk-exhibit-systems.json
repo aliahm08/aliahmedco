@@ -47,7 +47,9 @@
     {
       "src": "/projects/autodesk-exhibit-systems.svg",
       "alt": "Poster for Autodesk Exhibit Systems.",
-      "caption": "A prototype experience framed like a museum placard with better taste."
+      "title": "Executive Prototype Demo",
+      "label": "Robotics-Driven UX Demo",
+      "caption": "Ali presented software functionality inside a $4M development effort and tested robotics-driven UX environments for senior review."
     }
   ],
   "company": "Autodesk"

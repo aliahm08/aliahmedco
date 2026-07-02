@@ -46,9 +46,32 @@
   ],
   "gallery": [
     {
-      "src": "/projects/wsp-signal-engine.svg",
-      "alt": "Poster for WSP Signal Engine.",
-      "caption": "Internal review surface designed like a pinned operating snapshot."
+      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-55-40-pm.png",
+      "alt": "Signal Engine image 1",
+      "title": "Operational Command Center",
+      "label": "TypeScript Product Surface",
+      "caption": "Ali designed this internal TypeScript surface to turn noisy safety signals into reviewable operating decisions."
+    },
+    {
+      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-48-49-pm.png",
+      "alt": "Signal Engine image 2",
+      "title": "Risk Signal Prioritization",
+      "label": "Safety Analytics UX",
+      "caption": "The interface frames critical alerts, response latency, and safety KPIs around faster team review."
+    },
+    {
+      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-48-03-pm.png",
+      "alt": "Signal Engine image 3",
+      "title": "Analyst Review Queue",
+      "label": "Python + Product Logic",
+      "caption": "Ali paired product framing with Python analysis so teams could compare queue depth, severity, and follow-up logic."
+    },
+    {
+      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-42-54-pm.png",
+      "alt": "Signal Engine image 4",
+      "title": "Recall Triage Workflow",
+      "label": "Renewal-Supporting Insight",
+      "caption": "The recall workflow supported $600k in renewals by making operational insight easier to defend."
     }
   ],
   "company": "WSP"
