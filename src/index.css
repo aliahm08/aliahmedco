@@ -1133,7 +1133,7 @@ body.writing-page-active .site-footer {
   text-align: left;
 }
 .work-accordion-item {
-  border-bottom: 1px solid var(--portfolio-line);
+  border-bottom: 1px solid color-mix(in srgb, var(--portfolio-line) 30%, transparent);
 }
 
 .work-accordion-item.is-active {
@@ -2569,12 +2569,13 @@ body:has(.portfolio-shell) {
     margin: 0 auto;
     grid-template-columns: 3fr 8fr 3fr;
     position: relative;
-    border-bottom: 1px solid var(--portfolio-line);
+    border-bottom: 1px solid color-mix(in srgb, var(--portfolio-line) 30%, transparent);
   }
   
   .work-accordion-item.is-active .landing-project-row {
     width: min(720px, calc(100% - 32px));
     margin: 0 auto;
+    border-top: 1px solid var(--portfolio-line);
     border-bottom: 0;
   }
   
