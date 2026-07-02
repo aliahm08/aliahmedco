@@ -1,0 +1,216 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ali Ahmed" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation "Primary" [ref=e7]:
+        - link "Work" [ref=e8] [cursor=pointer]:
+          - /url: /work
+        - link "Resume" [ref=e9] [cursor=pointer]:
+          - /url: /resume
+        - link "Writing" [ref=e10] [cursor=pointer]:
+          - /url: /writing
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:aliahm1208@gmail.com
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - paragraph [ref=e16]: Resume
+          - heading "AI product operator with engineering range." [level=1] [ref=e17]
+          - paragraph [ref=e18]: Ali has built his career at the intersection of engineering, architecture, and innovation. Across roles at WSP (consulting), Huupe (VC-backed), Autodesk, and NASA, he has managed $220M worth of organization-wide enterprise enhancement projects from technical design and analysis through product strategy and implementation. His experience includes product development, project evaluation, cross-functional coordination, and helping turn complex opportunities into clear decisions and actionable plans.
+        - complementary "Contact details" [ref=e19]:
+          - paragraph [ref=e20]: Ali Ahmed
+          - paragraph [ref=e21]: Founder and CEO at B2W-ai | Senior Data Analyst at WSP | Columbia M.Arch 2023
+          - generic [ref=e22]:
+            - link "Email aliahm1208@gmail.com" [ref=e23] [cursor=pointer]:
+              - /url: mailto:aliahm1208@gmail.com
+              - generic [ref=e24]: Email
+              - strong [ref=e25]: aliahm1208@gmail.com
+            - link "LinkedIn linkedin.com/in/aliahmed-co" [ref=e26] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+              - generic [ref=e27]: LinkedIn
+              - strong [ref=e28]: linkedin.com/in/aliahmed-co
+            - generic [ref=e29]:
+              - generic [ref=e30]: Location
+              - strong [ref=e31]: Washington, District of Columbia
+      - region "Career proof points" [ref=e32]:
+        - article [ref=e33]:
+          - strong [ref=e34]: $220M
+          - generic [ref=e35]: enterprise project portfolio
+        - article [ref=e36]:
+          - strong [ref=e37]: 86%
+          - generic [ref=e38]: safety risk model accuracy
+        - article [ref=e39]:
+          - strong [ref=e40]: $11M
+          - generic [ref=e41]: seed raise supported at huupe
+        - article [ref=e42]:
+          - strong [ref=e43]: 1,500
+          - generic [ref=e44]: growth copy tests managed
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: Experience
+          - heading "Recent work with measurable operating leverage." [level=2] [ref=e48]
+        - generic [ref=e49]:
+          - article [ref=e50]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: September 2024 - December 2025
+              - generic [ref=e53]: Washington, D.C.
+            - generic [ref=e54]:
+              - paragraph [ref=e55]: WSP
+              - heading "Senior Analyst" [level=3] [ref=e56]
+              - list [ref=e57]:
+                - listitem [ref=e58]: Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.
+                - listitem [ref=e59]: Developed a machine learning workflow in Python that identified potential recalls with 79% success and supported $600k in renewals.
+          - article [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: September 2023 - September 2024
+              - generic [ref=e63]: Washington, D.C.
+            - generic [ref=e64]:
+              - paragraph [ref=e65]: WSP
+              - heading "Analyst" [level=3] [ref=e66]
+              - list [ref=e67]:
+                - listitem [ref=e68]: Tracked 14 resources through agile delivery to support safety risk training and improve project delivery speed by 80%.
+                - listitem [ref=e69]: Researched system data models and taxonomy cleanup patterns to support a SharePoint AI agent workflow.
+          - article [ref=e70]:
+            - generic [ref=e71]:
+              - generic [ref=e72]: September 2022 - September 2023
+              - generic [ref=e73]: Washington, D.C.
+            - generic [ref=e74]:
+              - paragraph [ref=e75]: WSP
+              - heading "Junior Analyst" [level=3] [ref=e76]
+              - list [ref=e77]:
+                - listitem [ref=e78]: Automated 12 reporting workflows using clustering and operational checkpoint analysis.
+                - listitem [ref=e79]: Expanded report completeness by 25% to support more proactive operational measures.
+          - article [ref=e80]:
+            - generic [ref=e82]: 2021 - 2022
+            - generic [ref=e83]:
+              - paragraph [ref=e84]: LaunchGood
+              - heading "Design Manager" [level=3] [ref=e85]
+              - list [ref=e86]:
+                - listitem [ref=e87]: Managed design systems to create unity between UX and customer engagement design processes.
+                - listitem [ref=e88]: Met with design teams weekly to ensure consistency in Notion documentation with Figma embeds.
+                - listitem [ref=e89]: Oversaw KPI development for brand performance using 1,500 copywriting A/B tests with Notion AI and Python.
+          - article [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]: 2019 - 2022
+              - generic [ref=e93]: New York, New York, United States
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: huupe
+              - heading "Hardware Engineer" [level=3] [ref=e96]
+              - list [ref=e97]:
+                - listitem [ref=e98]: Designed computer vision workflows to assess vision black zones and improve 3D scope by 15% for LiDAR integration.
+                - listitem [ref=e99]: Rendered 3D elements in a real-time engine to interpret athlete movement for AI-powered sporting goods.
+                - listitem [ref=e100]: Supported founders with technical briefs and design renderings that helped close $11M in seed funding.
+          - article [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]: 2019 - 2020
+              - generic [ref=e104]: Madrid, Community of Madrid, Spain
+            - generic [ref=e105]:
+              - paragraph [ref=e106]: Norman Foster Foundation
+              - heading "Architectural Designer" [level=3] [ref=e107]
+              - list [ref=e108]:
+                - listitem [ref=e109]: Collaborated with Lord Norman Foster and MIT Media Lab on diagnosing slum dwelling worldwide for a sustainable alternative.
+                - listitem [ref=e110]: Selected as one of ten global designers for the initiative.
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - paragraph [ref=e113]: Capabilities
+          - heading "Product judgment backed by technical execution." [level=2] [ref=e114]
+        - generic [ref=e115]:
+          - article [ref=e116]:
+            - heading "Focus" [level=3] [ref=e117]
+            - generic [ref=e118]:
+              - generic [ref=e119]: Sales
+              - generic [ref=e120]: Revenue engine
+              - generic [ref=e121]: Product management
+              - generic [ref=e122]: M&A
+              - generic [ref=e123]: Financial modeling
+              - generic [ref=e124]: Business development
+              - generic [ref=e125]: Partnerships
+              - generic [ref=e126]: Negotiations
+              - generic [ref=e127]: AI SaaS
+              - generic [ref=e128]: LLM optimization
+              - generic [ref=e129]: Marketing
+              - generic [ref=e130]: Design
+          - article [ref=e131]:
+            - heading "Technical Toolkit" [level=3] [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - strong [ref=e135]: Programming
+                - paragraph [ref=e136]: JavaScript, TypeScript, Node.js, React
+              - generic [ref=e137]:
+                - strong [ref=e138]: Data analytics
+                - paragraph [ref=e139]: Python, NumPy, Pandas, TensorFlow, Tableau
+              - generic [ref=e140]:
+                - strong [ref=e141]: AI tools
+                - paragraph [ref=e142]: Cursor, Codex, Antigravity, MCP, CLIs
+              - generic [ref=e143]:
+                - strong [ref=e144]: Infrastructure
+                - paragraph [ref=e145]: AWS, Vercel, Next.js, Supabase
+          - article [ref=e146]:
+            - heading "Credentials" [level=3] [ref=e147]
+            - paragraph [ref=e148]: Sketchbook Pro, Fortus FDM, Objet 3D Printing, Fusion 360, CNC, Laser Cutter, Metal & Wood, Shop Trained, AutoCAD
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - paragraph [ref=e151]: Foundation
+          - heading "Architecture, engineering, and earlier innovation work." [level=2] [ref=e152]
+        - generic [ref=e153]:
+          - article [ref=e154]:
+            - heading "Education" [level=3] [ref=e155]
+            - paragraph [ref=e156]: Master of Architecture (leave of absence), Columbia University
+            - paragraph [ref=e157]: Bachelor of Science, Mechanical Engineering, The George Washington University
+            - paragraph [ref=e158]: High School Diploma, American School of Doha
+            - paragraph [ref=e159]: High School, American Community School of Abu Dhabi
+          - article [ref=e160]:
+            - heading "Recognition" [level=3] [ref=e161]
+            - paragraph [ref=e162]: Featured on Engineering.com, GW University & Alumni Scholarship Award, Booz Allen Hamilton University Scholar, GW New Venture Competition Semi-Finalist, Dean's List
+          - article [ref=e163]:
+            - heading "Earlier Roles" [level=3] [ref=e164]
+            - generic [ref=e165]:
+              - paragraph [ref=e166]:
+                - strong [ref=e167]: NASA
+                - text: / Space Suit Engineer / 2018 - 2019
+              - paragraph [ref=e168]:
+                - strong [ref=e169]: Autodesk
+                - text: / AR Exhibits Engineer / 2017
+              - paragraph [ref=e170]:
+                - strong [ref=e171]: Bragi
+                - text: / Design Engineer / 2016 - 2017
+              - paragraph [ref=e172]:
+                - strong [ref=e173]: Autodesk
+                - text: / Applied Innovation Engineer / 2016
+  - contentinfo "Site footer" [ref=e174]:
+    - generic [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - paragraph [ref=e178]: Contact
+          - link "aliahm1208@gmail.com" [ref=e179] [cursor=pointer]:
+            - /url: mailto:aliahm1208@gmail.com
+          - paragraph [ref=e180]: DC and NYC
+        - navigation "Navigate" [ref=e181]:
+          - paragraph [ref=e182]: Navigate
+          - generic [ref=e183]:
+            - link "Home" [ref=e184] [cursor=pointer]:
+              - /url: /
+            - link "Work" [ref=e185] [cursor=pointer]:
+              - /url: /work
+            - link "Resume" [ref=e186] [cursor=pointer]:
+              - /url: /resume
+            - link "Writing" [ref=e187] [cursor=pointer]:
+              - /url: /writing
+        - region "Connect" [ref=e188]:
+          - paragraph [ref=e189]: Connect
+          - generic [ref=e190]:
+            - link "LinkedIn" [ref=e191] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/aliahmed-co
+            - link "GitHub" [ref=e192] [cursor=pointer]:
+              - /url: https://github.com/aliahm08
+            - link "Substack" [ref=e193] [cursor=pointer]:
+              - /url: https://aliahmed312.substack.com
+            - link "B2W-ai" [ref=e194] [cursor=pointer]:
+              - /url: https://b2w-ai-com.vercel.app/
+      - generic [ref=e195]:
+        - paragraph [ref=e196]: © 2026 Ali Ahmed Co.
+        - paragraph [ref=e197]:
+          - link "Back to home" [ref=e198] [cursor=pointer]:
+            - /url: /
