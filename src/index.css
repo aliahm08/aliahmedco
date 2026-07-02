@@ -2594,11 +2594,23 @@ body:has(.portfolio-shell) {
     text-align: right;
   }
   
-  /* Center active panel content */
+  /* Center active panel content and float layout */
   .work-accordion-panel {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    border-bottom: 0;
+  }
+  
+  .work-accordion-panel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: min(720px, calc(100% - 32px));
-    margin: 0 auto;
-    border-bottom: 1px solid var(--portfolio-line);
+    height: 1px;
+    background-color: var(--portfolio-line);
   }
 }
 
