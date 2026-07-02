@@ -1093,14 +1093,9 @@ function WorkPage(props: {
                 >
                   <span>{project.company}</span>
                   <strong>
-                    {project.title}
+                    {project.client}
                   </strong>
-                  <span>{project.client}</span>
-                  <span>{project.productType}</span>
                   <span>{project.role}</span>
-                  <span className="accordion-indicator" aria-hidden="true">
-                    +
-                  </span>
                 </button>
                 <AnimatePresence initial={false} mode="wait">
                   {isExpanded ? (

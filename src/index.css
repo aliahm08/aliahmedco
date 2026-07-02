@@ -1075,7 +1075,7 @@ body.writing-page-active .site-footer {
 }
 
 .landing-project-row {
-  grid-template-columns: 3fr 7fr 4fr 4fr 3fr auto;
+  grid-template-columns: 3fr 8fr 3fr;
   align-items: baseline;
   cursor: pointer;
   padding: 16px 16px;
@@ -1133,32 +1133,7 @@ body.writing-page-active .site-footer {
   text-align: left;
 }
 .work-accordion-item {
-  border-bottom: 0;
-}
-
-@media (min-width: 769px) {
-  .landing-project-row {
-    padding-bottom: 0;
-  }
-  .landing-project-row > * {
-    padding-bottom: 16px;
-  }
-  .landing-project-row > *:nth-child(3),
-  .landing-project-row > *:nth-child(4) {
-    border-bottom: 1px solid var(--portfolio-line);
-  }
-  .work-accordion-panel {
-    position: relative;
-  }
-  .work-accordion-panel::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: calc(10 / 21 * 100%);
-    right: calc(3.5 / 21 * 100%);
-    height: 1px;
-    background-color: var(--portfolio-line);
-  }
+  border-bottom: 1px solid var(--portfolio-line);
 }
 
 .work-accordion-item.is-active {
@@ -1178,10 +1153,7 @@ body.writing-page-active .site-footer {
 
 .work-accordion-item.is-active .landing-project-row > span:nth-of-type(1),
 .work-accordion-item.is-active .landing-project-row > strong,
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(3),
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(4),
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(5),
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(6) {
+.work-accordion-item.is-active .landing-project-row > span:nth-of-type(2) {
   color: #bf4c3b;
 }
 
@@ -2585,6 +2557,48 @@ body:has(.portfolio-shell) {
 
   .resume-proof-section .resume-section-heading {
     top: 48px;
+  }
+
+  /* Work page desktop margins and ruled lines */
+  .work-accordion-item {
+    border-bottom: 0;
+  }
+  
+  .landing-project-row {
+    width: min(720px, calc(100% - 32px));
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    position: relative;
+    border-bottom: 1px solid var(--portfolio-line);
+  }
+  
+  .work-accordion-item.is-active .landing-project-row {
+    width: min(720px, calc(100% - 32px));
+    margin: 0 auto;
+    border-bottom: 0;
+  }
+  
+  /* Pin Company to left margin */
+  .landing-project-row > span:nth-of-type(1) {
+    position: absolute;
+    left: -160px;
+    width: 120px;
+    text-align: left;
+  }
+  
+  /* Pin Role to right margin */
+  .landing-project-row > span:nth-of-type(2) {
+    position: absolute;
+    right: -200px;
+    width: 160px;
+    text-align: right;
+  }
+  
+  /* Center active panel content */
+  .work-accordion-panel {
+    width: min(720px, calc(100% - 32px));
+    margin: 0 auto;
+    border-bottom: 1px solid var(--portfolio-line);
   }
 }
 
