@@ -5,7 +5,7 @@
   "year": "2024-2025",
   "location": "Washington, D.C.",
   "teaser": "Internal analytics tooling for emerging safety risks and recall detection.",
-  "productType": "Internal Tool",
+  "productType": "Dashboard",
   "role": "Product + Engineering",
   "scale": "Enterprise",
   "poster": "/projects/wsp-signal-engine.svg",

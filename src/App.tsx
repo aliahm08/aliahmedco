@@ -615,7 +615,7 @@ function WorkProjectStack(props: {
       aria-label={`${props.project.title} preview stack`}
     >
       <div className="work-stack-copy work-stack-copy-left">
-        <h1>{(currentPhoto as any).title || detail?.headline || props.project.client}</h1>
+        <h1>{props.project.company} {props.project.client} {props.project.productType}</h1>
         <div className="gallery-arrows">
           <button type="button" className="gallery-arrow" onClick={handlePrevPhoto} disabled={gallery.length <= 1} aria-label="Previous photo">←</button>
           <button type="button" className="gallery-arrow" onClick={handleNextPhoto} disabled={gallery.length <= 1} aria-label="Next photo">→</button>
@@ -1091,11 +1091,9 @@ function WorkPage(props: {
                     projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
                   }}
                 >
-                  <span>{project.company}</span>
-                  <strong>
-                    {project.client}
-                  </strong>
-                  <span>{project.role}</span>
+                  <span className="project-details-unified">
+                    {project.company} {project.client} {project.productType}
+                  </span>
                 </button>
                 <AnimatePresence initial={false} mode="wait">
                   {isExpanded ? (
