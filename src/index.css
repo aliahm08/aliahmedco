@@ -945,6 +945,15 @@ body.writing-page-active .site-footer {
   text-wrap: balance;
 }
 
+.slant-highlight {
+  display: inline-block;
+  transform: rotate(-6deg);
+  font-style: italic;
+  font-weight: 600;
+  color: #bf4c3b;
+  transform-origin: center;
+}
+
 .landing-portfolio-section {
   border-top: 0;
 }

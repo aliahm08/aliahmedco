@@ -1025,18 +1025,35 @@ function WorkPage(props: {
     return () => observer.disconnect();
   }, [groupProjects, manualProjectId, expandedProjectId]);
 
-  const heroWords = "Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts at a 10x\u00a0Value.".split(" ");
+  const heroWords = [
+    "Hire", "Ali", "to", "Test", "Products,", 
+    "Conceptualize", "Projects,", "and", "Launch", 
+    "Concepts", "at", "a", "10×", "Value."
+  ];
 
-  const titleContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        ease: "easeInOut"
-      }
+  const delays: number[] = [];
+  let currentDelay = 0;
+  for (let i = 0; i < heroWords.length; i++) {
+    delays.push(currentDelay);
+    const word = heroWords[i];
+    let stepDelay = 0.08; // Base delay
+    if (word.endsWith(',')) {
+      stepDelay = 0.38; // Longer pause at commas
+    } else if (word.endsWith('.')) {
+      stepDelay = 0.65; // Even longer pause at period
     }
-  };
+    currentDelay += stepDelay;
+  }
+  const totalDuration = currentDelay;
+
+  useEffect(() => {
+    if (stage === 'hero') {
+      const timer = setTimeout(() => {
+        setStage('content');
+      }, (totalDuration + 0.45) * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [stage, totalDuration]);
 
   const wordVariants = {
     hidden: { opacity: 0, y: 8 },
@@ -1067,22 +1084,53 @@ function WorkPage(props: {
       <div className="work-hero">
         <motion.h1
           className="work-hero-title"
-          variants={titleContainerVariants}
           initial="hidden"
           animate="visible"
-          onAnimationComplete={() => {
-            setStage('content');
-          }}
         >
-          {heroWords.map((word, idx) => (
-            <motion.span
-              key={idx}
-              variants={wordVariants}
-              style={{ display: 'inline-block', marginRight: '0.24em' }}
-            >
-              {word}
-            </motion.span>
-          ))}
+          {heroWords.map((word, idx) => {
+            const isSlant = word === "10×";
+            const isValue = word === "Value.";
+
+            if (isSlant) {
+              return (
+                <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
+                  <motion.span
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
+                    className="slant-highlight"
+                  >
+                    10×
+                  </motion.span>
+                  {" "}
+                  <motion.span
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.45, delay: delays[idx + 1], ease: "easeOut" }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    Value.
+                  </motion.span>
+                </span>
+              );
+            }
+
+            if (isValue) {
+              return null;
+            }
+
+            return (
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
+                style={{ display: 'inline-block', marginRight: '0.24em' }}
+              >
+                {word}
+              </motion.span>
+            );
+          })}
         </motion.h1>
       </div>
 
