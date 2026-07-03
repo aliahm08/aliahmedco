@@ -615,18 +615,32 @@ function WorkProjectStack(props: {
       aria-label={`${props.project.title} preview stack`}
     >
       <div className="work-stack-copy work-stack-copy-left">
-        <h1>{props.project.company} {props.project.client} {props.project.productType}</h1>
-        <div className="gallery-arrows">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+        >
+          <h1>{props.project.company} {props.project.client} {props.project.productType}</h1>
+        </motion.div>
+        <motion.div
+          className="gallery-arrows"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.35, delay: 0.6, ease: 'easeOut' }}
+        >
           <button type="button" className="gallery-arrow" onClick={handlePrevPhoto} disabled={gallery.length <= 1} aria-label="Previous photo">←</button>
           <button type="button" className="gallery-arrow" onClick={handleNextPhoto} disabled={gallery.length <= 1} aria-label="Next photo">→</button>
-        </div>
+        </motion.div>
       </div>
-      <button
+      <motion.button
         type="button"
         className="work-stack-frame"
         onClick={handleNextPhoto}
         disabled={gallery.length <= 1}
         aria-label="Next photo"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.28, ease: 'easeOut' }}
       >
         {gallery.map((photo, stackIndex) => {
           const offsetIndex = (stackIndex - photoIndex + gallery.length) % gallery.length;
@@ -651,8 +665,13 @@ function WorkProjectStack(props: {
             />
           );
         })}
-      </button>
-      <div className="work-stack-copy work-stack-copy-right">
+      </motion.button>
+      <motion.div
+        className="work-stack-copy work-stack-copy-right"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.28, ease: 'easeOut' }}
+      >
         <p className="work-stack-meta">
           <strong>{(currentPhoto as any).label || `${props.project.role} / ${props.project.productType}`}</strong>
         </p>
@@ -664,7 +683,7 @@ function WorkProjectStack(props: {
             ))}
           </ul>
         ) : null}
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -1091,9 +1110,21 @@ function WorkPage(props: {
                     projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
                   }}
                 >
-                  <span className="project-details-unified">
-                    {project.company} {project.client} {project.productType}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    {!isExpanded ? (
+                      <motion.div
+                        key="collapsed-details"
+                        className="project-row-details-grid"
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                      >
+                        <span>{project.company}</span>
+                        <strong>{project.client}</strong>
+                        <span>{project.productType}</span>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </button>
                 <AnimatePresence initial={false} mode="wait">
                   {isExpanded ? (

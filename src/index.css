@@ -1083,7 +1083,12 @@ body.writing-page-active .site-footer {
   border-radius: 4px;
   transition: color 0.2s ease;
 }
-
+.project-row-details-grid {
+  display: grid;
+  grid-template-columns: 3fr 8fr 3fr;
+  width: 100%;
+  align-items: baseline;
+}
 .accordion-indicator {
   display: inline-flex;
   align-items: center;
@@ -1114,12 +1119,16 @@ body.writing-page-active .site-footer {
 
   .landing-project-row {
     grid-template-columns: 1fr;
-    row-gap: 8px;
-    column-gap: 16px;
     padding: 16px 8px;
   }
-  
-  .landing-project-row > span:nth-of-type(1) {
+
+  .project-row-details-grid {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    column-gap: 16px;
+  }
+
+  .project-row-details-grid > span:nth-of-type(1) {
     font-size: 11px;
     opacity: 0.7;
   }
@@ -2567,11 +2576,11 @@ body:has(.portfolio-shell) {
     border-bottom: 0;
   }
 
-  .project-details-unified {
-    position: absolute;
-    right: calc(100% + 80px);
-    width: 320px;
-    text-align: left;
+  .project-row-details-grid {
+    display: grid;
+    grid-template-columns: 3fr 8fr 3fr;
+    width: 100%;
+    align-items: baseline;
   }
   
   /* Center active panel content and float layout */
