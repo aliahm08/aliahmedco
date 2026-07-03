@@ -928,6 +928,22 @@ body.writing-page-active .site-footer {
   width: calc(100% + 32px);
 }
 
+.work-hero {
+  width: min(720px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 0 0 56px;
+  text-align: left;
+}
+
+.work-hero-title {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--portfolio-foreground);
+  margin: 0;
+}
+
 .work-filter-section {
   display: grid;
   gap: 32px;

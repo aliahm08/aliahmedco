@@ -1022,6 +1022,11 @@ function WorkPage(props: {
 
   return (
     <div className="work-page">
+      <div className="work-hero home-fade-item">
+        <h1 className="work-hero-title">
+          Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts for a 10x Value.
+        </h1>
+      </div>
       <section id="portfolio" className="landing-section landing-portfolio-section">
         <div className="work-filter-section">
           <div className="work-filter-grid">
