@@ -1162,13 +1162,8 @@ body.writing-page-active .site-footer {
   border-bottom: 0;
 }
 
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(1),
-.work-accordion-item.is-active .landing-project-row > strong,
-.work-accordion-item.is-active .landing-project-row > span:nth-of-type(2) {
-  color: #bf4c3b;
-}
-
-.work-accordion-item.is-active .landing-project-row strong {
+.work-accordion-item.is-active .project-row-details-grid span,
+.work-accordion-item.is-active .project-row-details-grid strong {
   color: #bf4c3b;
 }
 

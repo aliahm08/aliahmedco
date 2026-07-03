@@ -1149,21 +1149,11 @@ function WorkPage(props: {
                     projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
                   }}
                 >
-                  <AnimatePresence mode="wait">
-                    {!isExpanded ? (
-                      <motion.div
-                        key="collapsed-details"
-                        className="project-row-details-grid"
-                        initial={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15, ease: 'easeOut' }}
-                      >
-                        <span>{project.company}</span>
-                        <strong>{project.client}</strong>
-                        <span>{project.productType}</span>
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
+                  <div className="project-row-details-grid">
+                    <span>{project.company}</span>
+                    <strong>{project.client}</strong>
+                    <span>{project.productType}</span>
+                  </div>
                 </button>
                 <AnimatePresence initial={false} mode="wait">
                   {isExpanded ? (
