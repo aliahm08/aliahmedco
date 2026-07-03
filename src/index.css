@@ -2606,6 +2606,11 @@ body:has(.portfolio-shell) {
   .work-accordion {
     border-top: 0;
   }
+
+  .work-stack-panel {
+    grid-template-columns: 0.65fr 1.25fr 0.9fr;
+    gap: 56px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
