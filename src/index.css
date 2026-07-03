@@ -2585,22 +2585,11 @@ body:has(.portfolio-shell) {
   
   /* Center active panel content and float layout */
   .work-accordion-panel {
-    width: 100%;
-    margin: 0;
-    position: relative;
-    border-bottom: 0;
-    overflow: visible;
-  }
-  
-  .work-accordion-panel::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: min(720px, calc(100% - 32px));
-    height: 1px;
-    background-color: var(--portfolio-line);
+    margin: 0 auto;
+    border-bottom: 1px solid var(--portfolio-line);
+    position: relative;
+    overflow: visible;
   }
   
   /* Remove accordion top rule */
@@ -2609,10 +2598,27 @@ body:has(.portfolio-shell) {
   }
 
   .work-stack-panel {
-    grid-template-columns: 0.72fr 1.15fr 1.1fr;
-    gap: 64px;
+    grid-template-columns: 1fr;
+    gap: 0;
     position: relative;
     width: 100%;
+  }
+
+  /* Shift title and details outside confines of header edges (720px) */
+  .work-stack-copy-left {
+    position: absolute;
+    right: calc(100% + 40px);
+    width: 240px;
+    text-align: left;
+    top: 8px;
+  }
+
+  .work-stack-copy-right {
+    position: absolute;
+    left: calc(100% + 40px);
+    width: 240px;
+    text-align: left;
+    top: 8px;
   }
 }
 
