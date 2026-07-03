@@ -742,7 +742,7 @@ body.writing-page-active .site-footer {
 
 .work-stack-frame:hover .generated-project-image {
   transform:
-    translate3d(var(--project-hover-x), var(--project-hover-y), 0)
+    translate3d(calc(-50% + var(--project-hover-x)), calc(-50% + var(--project-hover-y)), 0)
     rotate(var(--project-hover-rotation));
 }
 
@@ -843,6 +843,8 @@ body.writing-page-active .site-footer {
 
 .generated-project-image {
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: min(100%, 360px);
   aspect-ratio: var(--project-aspect);
   overflow: hidden;
@@ -854,7 +856,7 @@ body.writing-page-active .site-footer {
     linear-gradient(135deg, color-mix(in srgb, var(--project-accent) 18%, #f6f0e6 82%), #26231f);
   filter: saturate(0.88) contrast(1.05);
   transform:
-    translate3d(var(--project-x), var(--project-y), 0)
+    translate3d(calc(-50% + var(--project-x)), calc(-50% + var(--project-y)), 0)
     rotate(var(--project-rotation));
   transition:
     opacity 420ms ease,
@@ -905,7 +907,7 @@ body.writing-page-active .site-footer {
 .series-image-stack:hover .generated-project-image,
 .series-image-stack:focus-visible .generated-project-image {
   transform:
-    translate3d(var(--project-hover-x), var(--project-hover-y), 0)
+    translate3d(calc(-50% + var(--project-hover-x)), calc(-50% + var(--project-hover-y)), 0)
     rotate(var(--project-hover-rotation));
 }
 
