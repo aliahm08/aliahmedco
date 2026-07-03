@@ -642,50 +642,69 @@ function WorkProjectStack(props: {
             )}
           </h1>
         </motion.div>
-        <motion.div
-          className="gallery-arrows"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, delay: 0.6, ease: 'easeOut' }}
-        >
-          <button type="button" className="gallery-arrow" onClick={handlePrevPhoto} disabled={gallery.length <= 1} aria-label="Previous photo">←</button>
-          <button type="button" className="gallery-arrow" onClick={handleNextPhoto} disabled={gallery.length <= 1} aria-label="Next photo">→</button>
-        </motion.div>
       </div>
-      <motion.button
-        type="button"
+      <motion.div
         className="work-stack-frame"
-        onClick={handleNextPhoto}
-        disabled={gallery.length <= 1}
-        aria-label="Next photo"
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.28, ease: 'easeOut' }}
       >
-        {gallery.map((photo, stackIndex) => {
-          const offsetIndex = (stackIndex - photoIndex + gallery.length) % gallery.length;
-          const offset = organicStackOffsets[offsetIndex % organicStackOffsets.length];
+        <div
+          className="gallery-images-container"
+          onClick={handleNextPhoto}
+          style={{ cursor: gallery.length > 1 ? 'pointer' : 'default', width: '100%', height: '100%', position: 'relative' }}
+        >
+          {gallery.map((photo, stackIndex) => {
+            const offsetIndex = (stackIndex - photoIndex + gallery.length) % gallery.length;
+            const offset = organicStackOffsets[offsetIndex % organicStackOffsets.length];
 
-          return (
-            <GeneratedProjectImage
-              key={`${photo.src}-${stackIndex}`}
-              project={props.project}
-              imageIndex={stackIndex % 4}
-              imageSrc={photo.src}
-              ariaLabel={photo.alt || `${props.project.title} photo ${stackIndex + 1}`}
-              className={offsetIndex === 0 ? 'is-front is-active' : ''}
-              style={{
-                '--project-x': `${offset.x}px`,
-                '--project-y': `${offset.y}px`,
-                '--project-hover-x': `${offset.hoverX}px`,
-                '--project-hover-y': `${offset.hoverY}px`,
-                '--project-rotation': `${offset.rotation}deg`,
-                '--project-hover-rotation': `${offset.hoverRotation}deg`,
-              } as CSSProperties}
-            />
-          );
-        })}
-      </motion.button>
+            return (
+              <GeneratedProjectImage
+                key={`${photo.src}-${stackIndex}`}
+                project={props.project}
+                imageIndex={stackIndex % 4}
+                imageSrc={photo.src}
+                ariaLabel={photo.alt || `${props.project.title} photo ${stackIndex + 1}`}
+                className={offsetIndex === 0 ? 'is-front is-active' : ''}
+                style={{
+                  '--project-x': `${offset.x}px`,
+                  '--project-y': `${offset.y}px`,
+                  '--project-hover-x': `${offset.hoverX}px`,
+                  '--project-hover-y': `${offset.hoverY}px`,
+                  '--project-rotation': `${offset.rotation}deg`,
+                  '--project-hover-rotation': `${offset.hoverRotation}deg`,
+                } as CSSProperties}
+              />
+            );
+          })}
+        </div>
+        {gallery.length > 1 && (
+          <>
+            <button
+              type="button"
+              className="gallery-nav-arrow gallery-nav-arrow-left"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevPhoto();
+              }}
+              aria-label="Previous photo"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              className="gallery-nav-arrow gallery-nav-arrow-right"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextPhoto();
+              }}
+              aria-label="Next photo"
+            >
+              →
+            </button>
+          </>
+        )}
+      </motion.div>
       <motion.div
         className="work-stack-copy work-stack-copy-right"
         initial={{ opacity: 0 }}

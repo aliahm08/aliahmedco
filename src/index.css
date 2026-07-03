@@ -2604,10 +2604,9 @@ body:has(.portfolio-shell) {
     width: 100%;
   }
 
-  /* Shift title and details outside confines of header edges (720px) */
   .work-stack-copy-left {
     position: absolute;
-    right: calc(100% + 40px);
+    right: calc(100% + 24px);
     width: 240px;
     text-align: left;
     top: 50%;
@@ -2621,6 +2620,44 @@ body:has(.portfolio-shell) {
     text-align: left;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  /* Sleek overlay navigation arrows inside gallery frame */
+  .gallery-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: color-mix(in srgb, var(--portfolio-bg) 80%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--portfolio-line);
+    color: var(--portfolio-foreground);
+    font-size: 0.95rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    opacity: 0.6;
+  }
+
+  .gallery-nav-arrow:hover {
+    opacity: 1;
+    background: var(--portfolio-bg);
+    color: #bf4c3b;
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  .gallery-nav-arrow-left {
+    left: 12px;
+  }
+
+  .gallery-nav-arrow-right {
+    right: 12px;
   }
 }
 
