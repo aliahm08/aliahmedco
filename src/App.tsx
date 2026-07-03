@@ -1028,7 +1028,7 @@ function WorkPage(props: {
   const heroWords = [
     "Hire", "Ali", "to", "Test", "Products,", 
     "Conceptualize", "Projects,", "and", "Launch", 
-    "Concepts", "at", "a", "10x", "Value."
+    "Concepts", "at", "10x."
   ];
 
   const delays: number[] = [];
@@ -1088,34 +1088,34 @@ function WorkPage(props: {
           animate="visible"
         >
           {heroWords.map((word, idx) => {
-            const isSlant = word === "10x";
-            const isValue = word === "Value.";
+            const isAt = word === "at";
+            const isTenX = word === "10x.";
 
-            if (isSlant) {
+            if (isAt) {
               return (
                 <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
-                    className="slant-highlight"
+                    style={{ display: 'inline-block' }}
                   >
-                    10x
+                    at
                   </motion.span>
                   {" "}
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: delays[idx + 1], ease: "easeOut" }}
-                    style={{ display: 'inline-block' }}
+                    className="slant-highlight"
                   >
-                    Value.
+                    10x.
                   </motion.span>
                 </span>
               );
             }
 
-            if (isValue) {
+            if (isTenX) {
               return null;
             }
 
