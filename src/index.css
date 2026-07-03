@@ -736,6 +736,24 @@ body.writing-page-active .site-footer {
   cursor: pointer;
 }
 
+.work-stack-frame::before,
+.work-stack-frame::after {
+  content: '';
+  position: absolute;
+  top: 18%;
+  bottom: 18%;
+  width: 1px;
+  background-color: var(--portfolio-line);
+}
+
+.work-stack-frame::before {
+  left: -16px;
+}
+
+.work-stack-frame::after {
+  right: -16px;
+}
+
 .work-stack-frame:disabled {
   cursor: default;
 }
@@ -2304,6 +2322,11 @@ body:has(.portfolio-shell) {
 
   .work-stack-frame {
     min-height: 340px;
+  }
+
+  .work-stack-frame::before,
+  .work-stack-frame::after {
+    display: none;
   }
 
   .resume-hero,
