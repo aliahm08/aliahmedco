@@ -2589,6 +2589,7 @@ body:has(.portfolio-shell) {
     margin: 0 auto;
     border-bottom: 1px solid var(--portfolio-line);
     position: relative;
+    overflow: visible;
   }
   
   /* Remove accordion top rule */
