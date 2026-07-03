@@ -1089,10 +1089,6 @@ body.writing-page-active .site-footer {
   width: 100%;
   align-items: baseline;
 }
-.project-row-details-grid > span:nth-of-type(1),
-.project-row-details-grid > span:nth-of-type(2) {
-  text-align: center;
-}
 .accordion-indicator {
   display: inline-flex;
   align-items: center;
@@ -2614,7 +2610,8 @@ body:has(.portfolio-shell) {
     right: calc(100% + 40px);
     width: 240px;
     text-align: left;
-    top: 8px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .work-stack-copy-right {
@@ -2622,7 +2619,8 @@ body:has(.portfolio-shell) {
     left: calc(100% + 40px);
     width: 240px;
     text-align: left;
-    top: 8px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
