@@ -620,7 +620,11 @@ function WorkProjectStack(props: {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: 'easeOut' }}
         >
-          <h1>{props.project.company} {props.project.client} {props.project.productType}</h1>
+          <h1>
+            {props.project.company}{' '}
+            <span style={{ color: 'var(--portfolio-accent)' }}>{props.project.client}</span>{' '}
+            {props.project.productType}
+          </h1>
         </motion.div>
         <motion.div
           className="gallery-arrows"
