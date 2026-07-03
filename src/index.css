@@ -1089,6 +1089,10 @@ body.writing-page-active .site-footer {
   width: 100%;
   align-items: baseline;
 }
+.project-row-details-grid > span:nth-of-type(1),
+.project-row-details-grid > span:nth-of-type(2) {
+  text-align: center;
+}
 .accordion-indicator {
   display: inline-flex;
   align-items: center;
