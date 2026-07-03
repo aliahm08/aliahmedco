@@ -736,7 +736,6 @@ body.writing-page-active .site-footer {
   cursor: pointer;
 }
 
-
 .work-stack-frame:disabled {
   cursor: default;
 }
@@ -1205,25 +1204,6 @@ body.writing-page-active .site-footer {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 32px;
-  position: relative;
-}
-
-.work-accordion-panel .work-stack-panel::before,
-.work-accordion-panel .work-stack-panel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 48px;
-  width: 1px;
-  background-color: var(--portfolio-line);
-}
-
-.work-accordion-panel .work-stack-panel::before {
-  left: 32px;
-}
-
-.work-accordion-panel .work-stack-panel::after {
-  right: 32px;
 }
 
 .gallery-arrows {
@@ -2324,11 +2304,6 @@ body:has(.portfolio-shell) {
 
   .work-stack-frame {
     min-height: 340px;
-  }
-
-  .work-accordion-panel .work-stack-panel::before,
-  .work-accordion-panel .work-stack-panel::after {
-    display: none;
   }
 
   .resume-hero,
