@@ -622,7 +622,7 @@ function WorkProjectStack(props: {
         >
           <h1>
             {props.project.company}{' '}
-            <span style={{ color: 'var(--portfolio-accent)' }}>{props.project.client}</span>{' '}
+            <span style={{ color: '#bf4c3b' }}>{props.project.client}</span>{' '}
             {props.project.productType}
           </h1>
         </motion.div>
