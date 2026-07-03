@@ -2608,8 +2608,8 @@ body:has(.portfolio-shell) {
   }
 
   .work-stack-panel {
-    grid-template-columns: 0.65fr 1.25fr 0.9fr;
-    gap: 56px;
+    grid-template-columns: 0.65fr 1.15fr 1.1fr;
+    gap: 64px;
   }
 }
 
