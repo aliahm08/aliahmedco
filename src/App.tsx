@@ -1024,7 +1024,7 @@ function WorkPage(props: {
     <div className="work-page">
       <div className="work-hero home-fade-item">
         <h1 className="work-hero-title">
-          Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts for a 10x Value.
+          Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts at a 10x{"\u00a0"}Value.
         </h1>
       </div>
       <section id="portfolio" className="landing-section landing-portfolio-section">

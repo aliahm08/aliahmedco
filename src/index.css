@@ -942,6 +942,11 @@ body.writing-page-active .site-footer {
   letter-spacing: -0.02em;
   color: var(--portfolio-foreground);
   margin: 0;
+  text-wrap: balance;
+}
+
+.landing-portfolio-section {
+  border-top: 0;
 }
 
 .work-filter-section {
