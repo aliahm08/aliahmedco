@@ -1,14 +1,14 @@
 {
-  "id": "nasa-helmet-hud",
-  "title": "Helmet HUD",
+  "id": "nasa-testing",
+  "title": "Self Enabled Harness (SEH)",
   "client": "Space Suits",
   "year": "2018-2019",
   "location": "Houston",
   "teaser": "Computer vision, soft-goods hardware, and materials testing for future EVA systems.",
-  "productType": "Space Suit HUD",
+  "productType": "Testing",
   "role": "Engineer",
   "scale": "Federal",
-  "poster": "/projects/nasa-helmet-hud.svg",
+  "poster": "/projects/nasa-testing.svg",
   "accent": "#456b88",
   "tags": [
     "Computer Vision",
@@ -30,6 +30,7 @@
       "value": "Mars suit"
     }
   ],
+  "company": "NASA",
   "headline": "An R&D prototype where object recognition and physical prototyping had to share the same future-facing brief.",
   "challenge": "Spacesuit work demanded equal comfort with materials testing, interface concepts, and embodied hardware prototyping.",
   "outcome": "Ali contributed across materials, helmet HUD recognition concepts, and soft-goods mechanisms for self-egress in a Mars suit cockpit context.",
@@ -46,33 +47,32 @@
   ],
   "gallery": [
     {
-      "src": "/project-media/nasa-helmet-hud/nasa-hero.jpg",
+      "src": "/project-media/nasa-testing/nasa-hero.jpg",
       "alt": "Helmet HUD image 1",
       "title": "Suit Systems Integration",
       "label": "EVA Hardware Systems",
       "caption": "Ali worked across materials testing, helmet interface concepts, and embodied hardware constraints for future EVA systems."
     },
     {
-      "src": "/project-media/nasa-helmet-hud/nasa-show4.png",
+      "src": "/project-media/nasa-testing/nasa-show4.png",
       "alt": "Helmet HUD image 2",
       "title": "Helmet HUD Vision",
       "label": "Computer Vision Interface",
       "caption": "The work connected computer vision model training with helmet heads-up display concepts for object recognition."
     },
     {
-      "src": "/project-media/nasa-helmet-hud/nasa-know1.png",
+      "src": "/project-media/nasa-testing/nasa-know1.png",
       "alt": "Helmet HUD image 3",
       "title": "Interface Logic Study",
       "label": "Recognition Behavior Design",
       "caption": "Ali translated technical recognition behavior into a form stakeholders could evaluate alongside physical suit design."
     },
     {
-      "src": "/project-media/nasa-helmet-hud/nasa-know2.png",
+      "src": "/project-media/nasa-testing/nasa-know2.png",
       "alt": "Helmet HUD image 4",
       "title": "Recognition Systems Brief",
       "label": "R&D Decision Surface",
       "caption": "The brief ties AI perception, prototyping, and hardware systems thinking into one R&D decision surface."
     }
-  ],
-  "company": "NASA"
+  ]
 }

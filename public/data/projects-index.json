@@ -1,15 +1,16 @@
 [
   {
-    "id": "wsp-signal-engine",
-    "title": "Signal Engine",
+    "id": "washington-dc-metro-ai-platform",
+    "title": "Automated Reporting Tools",
+    "company": "Washington DC Metro",
     "client": "Safety Risk Management",
     "year": "2024-2025",
     "location": "Washington, D.C.",
     "teaser": "Internal analytics tooling for emerging safety risks and recall detection.",
-    "productType": "Dashboard",
+    "productType": "AI Platform",
     "role": "Product + Engineering",
     "scale": "Enterprise",
-    "poster": "/projects/wsp-signal-engine.svg",
+    "poster": "/projects/washington-dc-metro-ai-platform.svg",
     "accent": "#c86f31",
     "tags": [
       "TypeScript",
@@ -30,88 +31,20 @@
         "label": "Renewals",
         "value": "$600k"
       }
-    ],
-    "company": "WSP"
+    ]
   },
   {
-    "id": "wsp-delivery-atlas",
-    "title": "Delivery Atlas",
-    "client": "Project Management Group",
-    "year": "2023-2024",
-    "location": "Washington, D.C.",
-    "teaser": "Resource tracking and taxonomy cleanup work for AI-assisted delivery operations.",
-    "productType": "Tracking System",
-    "role": "Analyst + Delivery",
-    "scale": "Enterprise",
-    "poster": "/projects/wsp-delivery-atlas.svg",
-    "accent": "#4f7c72",
-    "tags": [
-      "Agile",
-      "Taxonomy",
-      "SharePoint",
-      "Operations"
-    ],
-    "metrics": [
-      {
-        "label": "Resources tracked",
-        "value": "14"
-      },
-      {
-        "label": "Delivery speed",
-        "value": "+80%"
-      },
-      {
-        "label": "Workflow",
-        "value": "AI agent-ready"
-      }
-    ],
-    "company": "WSP"
-  },
-  {
-    "id": "wsp-reporting-ops",
-    "title": "Reporting Ops",
-    "client": "Data Analytics Group",
-    "year": "2022-2023",
-    "location": "Washington, D.C.",
-    "teaser": "Reporting automations and clustering-led checkpoint analysis for operations teams.",
-    "productType": "Reporting Automation",
-    "role": "Analytics + Systems",
-    "scale": "Enterprise",
-    "poster": "/projects/wsp-reporting-ops.svg",
-    "accent": "#7b5e57",
-    "tags": [
-      "Automation",
-      "Clustering",
-      "Reporting",
-      "Ops"
-    ],
-    "metrics": [
-      {
-        "label": "Workflows automated",
-        "value": "12"
-      },
-      {
-        "label": "Completeness",
-        "value": "+25%"
-      },
-      {
-        "label": "Mode",
-        "value": "Operational"
-      }
-    ],
-    "company": "WSP"
-  },
-  {
-    "id": "launchgood-design-loop",
-    "title": "Design Loop",
-    "client": "Growth",
+    "id": "launchgood-operations-system",
+    "title": "SKFG",
+    "company": "LaunchGood",
+    "client": "Design",
     "year": "2021-2022",
     "location": "Remote",
     "teaser": "Design systems, experimentation, and brand KPI instrumentation across growth surfaces.",
-    "productType": "Design System",
+    "productType": "Operations System",
     "role": "Design Management",
     "scale": "Scale-up",
-    "poster": "/projects/launchgood-design-loop.svg",
+    "poster": "/projects/launchgood-operations-system.svg",
     "accent": "#1f6e62",
     "tags": [
       "Figma",
@@ -132,20 +65,20 @@
         "label": "Focus",
         "value": "Brand KPIs"
       }
-    ],
-    "company": "LaunchGood"
+    ]
   },
   {
-    "id": "huupe-court-vision",
-    "title": "Court Vision",
+    "id": "huupe-product-concept",
+    "title": "Concept Design",
+    "company": "huupe",
     "client": "Hardware",
     "year": "2019-2022",
     "location": "New York City",
     "teaser": "Computer vision and real-time 3D work for an AI-powered sports hardware product.",
-    "productType": "Connected Hardware",
+    "productType": "Product Concept",
     "role": "Hardware + Product",
     "scale": "Startup",
-    "poster": "/projects/huupe-court-vision.svg",
+    "poster": "/projects/huupe-product-concept.svg",
     "accent": "#ae6048",
     "tags": [
       "Computer Vision",
@@ -166,20 +99,20 @@
         "label": "Stack",
         "value": "CV + RT3D"
       }
-    ],
-    "company": "huupe"
+    ]
   },
   {
-    "id": "nasa-helmet-hud",
-    "title": "Helmet HUD",
+    "id": "nasa-testing",
+    "title": "Self Enabled Harness (SEH)",
+    "company": "NASA",
     "client": "Space Suits",
     "year": "2018-2019",
     "location": "Houston",
     "teaser": "Computer vision, soft-goods hardware, and materials testing for future EVA systems.",
-    "productType": "Space Suit HUD",
+    "productType": "Testing",
     "role": "Engineer",
     "scale": "Federal",
-    "poster": "/projects/nasa-helmet-hud.svg",
+    "poster": "/projects/nasa-testing.svg",
     "accent": "#456b88",
     "tags": [
       "Computer Vision",
@@ -200,20 +133,20 @@
         "label": "Context",
         "value": "Mars suit"
       }
-    ],
-    "company": "NASA"
+    ]
   },
   {
-    "id": "autodesk-exhibit-systems",
-    "title": "Exhibit Systems",
+    "id": "autodesk-intelligent-wayfinding",
+    "title": "Way at Pier 9",
+    "company": "Autodesk",
     "client": "Exhibits",
     "year": "2016-2017",
     "location": "San Francisco",
     "teaser": "Advanced software demos, robotics-driven UX studies, and immersive product storytelling.",
-    "productType": "Robotic Exhibit",
+    "productType": "Intelligent Wayfinding",
     "role": "Innovation Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/autodesk-exhibit-systems.svg",
+    "poster": "/projects/autodesk-intelligent-wayfinding.svg",
     "accent": "#8d6842",
     "tags": [
       "Robotics",
@@ -234,20 +167,20 @@
         "label": "Audience",
         "value": "CEO"
       }
-    ],
-    "company": "Autodesk"
+    ]
   },
   {
-    "id": "bragi-dash",
-    "title": "The Dash",
-    "client": "Hardware",
+    "id": "bragi-smart-devices",
+    "title": "Wireless Headphones & AR Glasses",
+    "company": "Bragi",
+    "client": "Design",
     "year": "2015-2016",
     "location": "Munich",
     "teaser": "Product design and engineering for the world's first truly wireless smart earphones.",
-    "productType": "Smart Earphones",
+    "productType": "Smart Devices",
     "role": "Product Engineering",
     "scale": "Startup",
-    "poster": "/projects/bragi-dash.svg",
+    "poster": "/projects/bragi-smart-devices.svg",
     "accent": "#2f3136",
     "tags": [
       "Hardware",
@@ -267,20 +200,20 @@
         "label": "Category",
         "value": "Hearables"
       }
-    ],
-    "company": "Bragi"
+    ]
   },
   {
-    "id": "autodesk-generative",
-    "title": "Generative Workflows",
-    "client": "Research",
+    "id": "autodesk-applied-innovation",
+    "title": "Octopod",
+    "company": "Autodesk",
+    "client": "Office of CTO",
     "year": "2017",
     "location": "San Francisco",
     "teaser": "Applied research into generative design tools for advanced manufacturing.",
-    "productType": "Generative Design App",
+    "productType": "Applied Innovation",
     "role": "Innovation Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/autodesk-generative.svg",
+    "poster": "/projects/autodesk-applied-innovation.svg",
     "accent": "#0696d7",
     "tags": [
       "Generative Design",
@@ -300,20 +233,20 @@
         "label": "Outcome",
         "value": "UX Patterns"
       }
-    ],
-    "company": "Autodesk"
+    ]
   },
   {
-    "id": "norman-foster-droneport",
-    "title": "Droneport",
-    "client": "Infrastructure",
+    "id": "norman-foster-digitalx-workshop",
+    "title": "Sky (MIT & Norman Foster)",
+    "company": "Norman Foster Foundation",
+    "client": "Architecture",
     "year": "2016",
     "location": "Madrid",
     "teaser": "Structural prototyping and material research for scalable drone infrastructure in emerging economies.",
-    "productType": "Droneport Prototype",
+    "productType": "DigitalX Workshop",
     "role": "Design Engineering",
-    "scale": "Scale-up",
-    "poster": "/projects/norman-foster-droneport.svg",
+    "scale": "Non-profit",
+    "poster": "/projects/norman-foster-digitalx-workshop.svg",
     "accent": "#bf4c3b",
     "tags": [
       "Architecture",
@@ -333,20 +266,20 @@
         "label": "Goal",
         "value": "Medical Delivery"
       }
-    ],
-    "company": "Norman Foster"
+    ]
   },
   {
-    "id": "ge-robotics-inspection",
-    "title": "Inspection Crawlers",
+    "id": "ge-design-for-robotics",
+    "title": "Quarc",
+    "company": "GE",
     "client": "Robotics",
     "year": "2018",
     "location": "New York",
     "teaser": "Robotics hardware design and computer vision integration for non-destructive pipeline inspection.",
-    "productType": "Inspection Crawler",
+    "productType": "Design for Robotics",
     "role": "Robotics Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/ge-robotics-inspection.svg",
+    "poster": "/projects/ge-design-for-robotics.svg",
     "accent": "#005e9d",
     "tags": [
       "Robotics",
@@ -366,20 +299,20 @@
         "label": "Sensor",
         "value": "LiDAR/Optical"
       }
-    ],
-    "company": "GE"
+    ]
   },
   {
-    "id": "makerbot-replicator",
-    "title": "Replicator Ecosystem",
-    "client": "Product Design",
+    "id": "makerbot-promotion",
+    "title": "Vikasa",
+    "company": "MakerBot",
+    "client": "Public Relations",
     "year": "2014",
     "location": "Brooklyn",
     "teaser": "Product design and mechanical engineering for the next generation of desktop 3D printing.",
-    "productType": "3D Printer",
+    "productType": "Promotion",
     "role": "Product Design",
     "scale": "Scale-up",
-    "poster": "/projects/makerbot-replicator.svg",
+    "poster": "/projects/makerbot-promotion.svg",
     "accent": "#e62e2e",
     "tags": [
       "3D Printing",
@@ -399,20 +332,20 @@
         "label": "Volume",
         "value": "High"
       }
-    ],
-    "company": "MakerBot"
+    ]
   },
   {
-    "id": "gensler-spatial",
-    "title": "Spatial Analytics",
-    "client": "Data Analytics",
+    "id": "gensler-chargedup-solar",
+    "title": "Marisol",
+    "company": "Gensler",
+    "client": "Sustainability",
     "year": "2015",
     "location": "Global",
     "teaser": "Data-driven spatial analysis tools for optimizing large-scale workplace environments.",
-    "productType": "Spatial Analytics Tool",
+    "productType": "ChargedUp Solar",
     "role": "Computational Designer",
     "scale": "Enterprise",
-    "poster": "/projects/gensler-spatial.svg",
+    "poster": "/projects/gensler-chargedup-solar.svg",
     "accent": "#ff3b30",
     "tags": [
       "Computational Design",
@@ -432,7 +365,6 @@
         "label": "Output",
         "value": "Dashboards"
       }
-    ],
-    "company": "Gensler"
+    ]
   }
 ]

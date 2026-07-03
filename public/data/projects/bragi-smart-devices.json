@@ -1,14 +1,14 @@
 {
-  "id": "bragi-dash",
-  "title": "The Dash",
-  "client": "Hardware",
+  "id": "bragi-smart-devices",
+  "title": "Wireless Headphones & AR Glasses",
+  "client": "Design",
   "year": "2015-2016",
   "location": "Munich",
   "teaser": "Product design and engineering for the world's first truly wireless smart earphones.",
-  "productType": "Smart Earphones",
+  "productType": "Smart Devices",
   "role": "Product Engineering",
   "scale": "Startup",
-  "poster": "/projects/bragi-dash.svg",
+  "poster": "/projects/bragi-smart-devices.svg",
   "accent": "#2f3136",
   "tags": [
     "Hardware",
@@ -29,6 +29,7 @@
       "value": "Hearables"
     }
   ],
+  "company": "Bragi",
   "headline": "Early product engineering for a wearable category that had to feel credible before the market was obvious.",
   "challenge": "The Dash needed product and engineering clarity around miniaturized hardware, sensors, and a new consumer interaction model.",
   "outcome": "Ali contributed product design and engineering support to a hearables product that translated 27 sensors and $3.3M+ in funding momentum into a tangible hardware story.",
@@ -45,12 +46,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/bragi-dash.svg",
+      "src": "/projects/bragi-smart-devices.svg",
       "alt": "The Dash",
       "title": "Wearable Product Proof",
       "label": "Hardware Product Design",
       "caption": "Ali's work at Bragi sits at the product-design edge of hardware, sensors, and a new hearables category."
     }
-  ],
-  "company": "Bragi"
+  ]
 }

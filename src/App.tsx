@@ -621,25 +621,7 @@ function WorkProjectStack(props: {
           transition={{ duration: 0.45, ease: 'easeOut' }}
         >
           <h1>
-            {props.project.scale === 'Scale-up' ? (
-              <>
-                {props.project.productType}{' '}
-                <span style={{ color: '#bf4c3b' }}>{props.project.client}</span>{' '}
-                {props.project.company}
-              </>
-            ) : props.project.scale === 'Startup' ? (
-              <>
-                {props.project.productType}{' '}
-                {props.project.company}{' '}
-                <span style={{ color: '#bf4c3b' }}>{props.project.client}</span>
-              </>
-            ) : (
-              <>
-                {props.project.company}{' '}
-                <span style={{ color: '#bf4c3b' }}>{props.project.client}</span>{' '}
-                {props.project.productType}
-              </>
-            )}
+            {props.project.title}
           </h1>
         </motion.div>
       </div>

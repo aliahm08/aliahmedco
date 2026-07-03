@@ -1,14 +1,14 @@
 {
-  "id": "gensler-spatial",
-  "title": "Spatial Analytics",
-  "client": "Data Analytics",
+  "id": "gensler-chargedup-solar",
+  "title": "Marisol",
+  "client": "Sustainability",
   "year": "2015",
   "location": "Global",
   "teaser": "Data-driven spatial analysis tools for optimizing large-scale workplace environments.",
-  "productType": "Spatial Analytics Tool",
+  "productType": "ChargedUp Solar",
   "role": "Computational Designer",
   "scale": "Enterprise",
-  "poster": "/projects/gensler-spatial.svg",
+  "poster": "/projects/gensler-chargedup-solar.svg",
   "accent": "#ff3b30",
   "tags": [
     "Computational Design",
@@ -29,6 +29,7 @@
       "value": "Dashboards"
     }
   ],
+  "company": "Gensler",
   "headline": "Spatial analytics work that turned workplace design questions into data-backed operating choices.",
   "challenge": "Large workplace environments needed utilization analysis that could connect architectural thinking with measurable decision support.",
   "outcome": "Ali brought computational design and analytics together to support spatial dashboards for 100k+ sqft workplace environments.",
@@ -45,12 +46,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/gensler-spatial.svg",
+      "src": "/projects/gensler-chargedup-solar.svg",
       "alt": "Spatial Analytics",
       "title": "Workplace Utilization Model",
       "label": "Computational Design Analytics",
       "caption": "Ali's Gensler work shows the analytical foundation behind his later product and operations systems."
     }
-  ],
-  "company": "Gensler"
+  ]
 }

@@ -1,14 +1,14 @@
 {
-  "id": "ge-robotics-inspection",
-  "title": "Inspection Crawlers",
+  "id": "ge-design-for-robotics",
+  "title": "Quarc",
   "client": "Robotics",
   "year": "2018",
   "location": "New York",
   "teaser": "Robotics hardware design and computer vision integration for non-destructive pipeline inspection.",
-  "productType": "Inspection Crawler",
+  "productType": "Design for Robotics",
   "role": "Robotics Engineer",
   "scale": "Enterprise",
-  "poster": "/projects/ge-robotics-inspection.svg",
+  "poster": "/projects/ge-design-for-robotics.svg",
   "accent": "#005e9d",
   "tags": [
     "Robotics",
@@ -29,6 +29,7 @@
       "value": "LiDAR/Optical"
     }
   ],
+  "company": "GE",
   "headline": "Robotics work where mechanical design, sensing, and computer vision had to survive extreme inspection conditions.",
   "challenge": "Pipeline inspection required a hardware system that could gather useful LiDAR and optical information without destructive testing.",
   "outcome": "Ali's robotics work connected hardware design and computer vision integration for inspection environments where reliability and legibility mattered.",
@@ -45,12 +46,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/ge-robotics-inspection.svg",
+      "src": "/projects/ge-design-for-robotics.svg",
       "alt": "Inspection Crawlers",
       "title": "Inspection Sensor System",
       "label": "Robotics + Computer Vision",
       "caption": "Ali's GE work demonstrates the mechanical and computer-vision range behind later AI hardware and operations projects."
     }
-  ],
-  "company": "GE"
+  ]
 }

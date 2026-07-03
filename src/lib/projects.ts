@@ -27,11 +27,11 @@ export type ProjectDetail = ProjectIndexItem & {
 const indexPath = '/data/projects-index.json';
 const detailPath = (projectId: string) => `/data/projects/${projectId}.json`;
 const uploadedMediaProjectIds = new Set([
-  'autodesk-generative',
-  'huupe-court-vision',
-  'nasa-helmet-hud',
-  'norman-foster-droneport',
-  'wsp-signal-engine',
+  'autodesk-applied-innovation',
+  'huupe-product-concept',
+  'nasa-testing',
+  'norman-foster-digitalx-workshop',
+  'washington-dc-metro-ai-platform',
 ]);
 
 export function hasUploadedProjectMedia(projectId: string) {

@@ -1,14 +1,14 @@
 {
-  "id": "launchgood-design-loop",
-  "title": "Design Loop",
-  "client": "Growth",
+  "id": "launchgood-operations-system",
+  "title": "SKFG",
+  "client": "Design",
   "year": "2021-2022",
   "location": "Remote",
   "teaser": "Design systems, experimentation, and brand KPI instrumentation across growth surfaces.",
-  "productType": "Design System",
+  "productType": "Operations System",
   "role": "Design Management",
   "scale": "Scale-up",
-  "poster": "/projects/launchgood-design-loop.svg",
+  "poster": "/projects/launchgood-operations-system.svg",
   "accent": "#1f6e62",
   "tags": [
     "Figma",
@@ -30,6 +30,7 @@
       "value": "Brand KPIs"
     }
   ],
+  "company": "LaunchGood",
   "headline": "A system for keeping design, documentation, and experimentation pointed at the same brand problem.",
   "challenge": "Growth work was spread across UX, customer engagement, and brand surfaces that could drift apart without strong system governance.",
   "outcome": "Ali managed the design system, tightened documentation loops, and paired experimentation with KPI tracking across a large body of copy and creative tests.",
@@ -46,12 +47,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/launchgood-design-loop.svg",
+      "src": "/projects/launchgood-operations-system.svg",
       "alt": "Poster for LaunchGood Design Loop.",
       "title": "Growth Experiment System",
       "label": "Design Systems + KPI Testing",
       "caption": "Ali managed design systems, weekly documentation loops, and KPI development across 1,500 copywriting A/B tests."
     }
-  ],
-  "company": "LaunchGood"
+  ]
 }

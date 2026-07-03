@@ -1,14 +1,14 @@
 {
-  "id": "autodesk-exhibit-systems",
-  "title": "Exhibit Systems",
+  "id": "autodesk-intelligent-wayfinding",
+  "title": "Way at Pier 9",
   "client": "Exhibits",
   "year": "2016-2017",
   "location": "San Francisco",
   "teaser": "Advanced software demos, robotics-driven UX studies, and immersive product storytelling.",
-  "productType": "Robotic Exhibit",
+  "productType": "Intelligent Wayfinding",
   "role": "Innovation Engineer",
   "scale": "Enterprise",
-  "poster": "/projects/autodesk-exhibit-systems.svg",
+  "poster": "/projects/autodesk-intelligent-wayfinding.svg",
   "accent": "#8d6842",
   "tags": [
     "Robotics",
@@ -30,6 +30,7 @@
       "value": "CEO"
     }
   ],
+  "company": "Autodesk",
   "headline": "Executive-facing prototypes that made advanced product ideas feel concrete before they were mainstream.",
   "challenge": "The work needed to prove technical ambition and experience quality in the same room, often for senior leadership.",
   "outcome": "Ali helped shape demo systems and test environments that connected robotics, fabrication, simulation, and immersive storytelling.",
@@ -45,12 +46,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/autodesk-exhibit-systems.svg",
+      "src": "/projects/autodesk-intelligent-wayfinding.svg",
       "alt": "Poster for Autodesk Exhibit Systems.",
       "title": "Executive Prototype Demo",
       "label": "Robotics-Driven UX Demo",
       "caption": "Ali presented software functionality inside a $4M development effort and tested robotics-driven UX environments for senior review."
     }
-  ],
-  "company": "Autodesk"
+  ]
 }

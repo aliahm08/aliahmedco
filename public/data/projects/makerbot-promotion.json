@@ -1,14 +1,14 @@
 {
-  "id": "makerbot-replicator",
-  "title": "Replicator Ecosystem",
-  "client": "Product Design",
+  "id": "makerbot-promotion",
+  "title": "Vikasa",
+  "client": "Public Relations",
   "year": "2014",
   "location": "Brooklyn",
   "teaser": "Product design and mechanical engineering for the next generation of desktop 3D printing.",
-  "productType": "3D Printer",
+  "productType": "Promotion",
   "role": "Product Design",
   "scale": "Scale-up",
-  "poster": "/projects/makerbot-replicator.svg",
+  "poster": "/projects/makerbot-promotion.svg",
   "accent": "#e62e2e",
   "tags": [
     "3D Printing",
@@ -29,6 +29,7 @@
       "value": "High"
     }
   ],
+  "company": "MakerBot",
   "headline": "Product design work in desktop fabrication, where hardware decisions shaped the user’s whole making workflow.",
   "challenge": "The Replicator ecosystem needed mechanical and product design decisions that could support a high-volume prosumer 3D printing market.",
   "outcome": "Ali contributed product design and mechanical engineering judgment to a hardware and software ecosystem for next-generation desktop 3D printing.",
@@ -45,12 +46,11 @@
   ],
   "gallery": [
     {
-      "src": "/projects/makerbot-replicator.svg",
+      "src": "/projects/makerbot-promotion.svg",
       "alt": "Replicator Ecosystem",
       "title": "Desktop Fabrication Workflow",
       "label": "Mechanical Product Design",
       "caption": "Ali's MakerBot work anchors his portfolio in physical product design, mechanical systems, and maker-facing tools."
     }
-  ],
-  "company": "MakerBot"
+  ]
 }

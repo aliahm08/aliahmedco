@@ -1,14 +1,14 @@
 {
-  "id": "huupe-court-vision",
-  "title": "Court Vision",
+  "id": "huupe-product-concept",
+  "title": "Concept Design",
   "client": "Hardware",
   "year": "2019-2022",
   "location": "New York City",
   "teaser": "Computer vision and real-time 3D work for an AI-powered sports hardware product.",
-  "productType": "Connected Hardware",
+  "productType": "Product Concept",
   "role": "Hardware + Product",
   "scale": "Startup",
-  "poster": "/projects/huupe-court-vision.svg",
+  "poster": "/projects/huupe-product-concept.svg",
   "accent": "#ae6048",
   "tags": [
     "Computer Vision",
@@ -30,6 +30,7 @@
       "value": "CV + RT3D"
     }
   ],
+  "company": "huupe",
   "headline": "A hardware story where computer vision, rendering, and fundraising all needed to reinforce each other.",
   "challenge": "The product had to be technically credible, visually legible, and investor-ready at the same time.",
   "outcome": "Ali improved computer vision coverage, built real-time visual interpretation layers, and produced technical material that helped the company close seed funding.",
@@ -46,19 +47,18 @@
   ],
   "gallery": [
     {
-      "src": "/project-media/huupe-court-vision/huupe-show2.png",
+      "src": "/project-media/huupe-product-concept/huupe-show2.png",
       "alt": "Court Vision image 1",
       "title": "Live Court Validation",
       "label": "Computer Vision Field Test",
       "caption": "Ali tested computer vision coverage against real athlete movement so product decisions were grounded in court behavior."
     },
     {
-      "src": "/project-media/huupe-court-vision/huupe.webp",
+      "src": "/project-media/huupe-product-concept/huupe.webp",
       "alt": "Court Vision image 2",
       "title": "Connected Backboard Demo",
       "label": "Investor-Ready Hardware Story",
       "caption": "The demo made the AI hardware story legible for founders, investors, and technical product planning."
     }
-  ],
-  "company": "huupe"
+  ]
 }

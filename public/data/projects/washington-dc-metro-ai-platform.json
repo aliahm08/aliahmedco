@@ -1,14 +1,14 @@
 {
-  "id": "wsp-signal-engine",
-  "title": "Signal Engine",
+  "id": "washington-dc-metro-ai-platform",
+  "title": "Automated Reporting Tools",
   "client": "Safety Risk Management",
   "year": "2024-2025",
   "location": "Washington, D.C.",
   "teaser": "Internal analytics tooling for emerging safety risks and recall detection.",
-  "productType": "Dashboard",
+  "productType": "AI Platform",
   "role": "Product + Engineering",
   "scale": "Enterprise",
-  "poster": "/projects/wsp-signal-engine.svg",
+  "poster": "/projects/washington-dc-metro-ai-platform.svg",
   "accent": "#c86f31",
   "tags": [
     "TypeScript",
@@ -30,6 +30,7 @@
       "value": "$600k"
     }
   ],
+  "company": "Washington DC Metro",
   "headline": "A compact internal product that turned murky safety signals into reviewable decisions.",
   "challenge": "WSP needed a legible way to spot emerging safety risks and possible recalls without forcing teams through a slow reporting loop.",
   "outcome": "Ali built the interface and workflow logic around TypeScript, Codex, and Python-based analysis so teams could move from noise to action faster while supporting renewal conversations.",
@@ -46,33 +47,32 @@
   ],
   "gallery": [
     {
-      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-55-40-pm.png",
+      "src": "/project-media/washington-dc-metro-ai-platform/chatgpt-image-jan-22-2026-at-12-55-40-pm.png",
       "alt": "Signal Engine image 1",
       "title": "Operational Command Center",
       "label": "TypeScript Product Surface",
       "caption": "Ali designed this internal TypeScript surface to turn noisy safety signals into reviewable operating decisions."
     },
     {
-      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-48-49-pm.png",
+      "src": "/project-media/washington-dc-metro-ai-platform/chatgpt-image-jan-22-2026-at-12-48-49-pm.png",
       "alt": "Signal Engine image 2",
       "title": "Risk Signal Prioritization",
       "label": "Safety Analytics UX",
       "caption": "The interface frames critical alerts, response latency, and safety KPIs around faster team review."
     },
     {
-      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-48-03-pm.png",
+      "src": "/project-media/washington-dc-metro-ai-platform/chatgpt-image-jan-22-2026-at-12-48-03-pm.png",
       "alt": "Signal Engine image 3",
       "title": "Analyst Review Queue",
       "label": "Python + Product Logic",
       "caption": "Ali paired product framing with Python analysis so teams could compare queue depth, severity, and follow-up logic."
     },
     {
-      "src": "/project-media/wsp-signal-engine/chatgpt-image-jan-22-2026-at-12-42-54-pm.png",
+      "src": "/project-media/washington-dc-metro-ai-platform/chatgpt-image-jan-22-2026-at-12-42-54-pm.png",
       "alt": "Signal Engine image 4",
       "title": "Recall Triage Workflow",
       "label": "Renewal-Supporting Insight",
       "caption": "The recall workflow supported $600k in renewals by making operational insight easier to defend."
     }
-  ],
-  "company": "WSP"
+  ]
 }
