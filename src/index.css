@@ -947,11 +947,8 @@ body.writing-page-active .site-footer {
 
 .slant-highlight {
   display: inline-block;
-  transform: rotate(-6deg);
-  font-style: italic;
-  font-weight: 600;
+  font-weight: 300;
   color: #bf4c3b;
-  transform-origin: center;
 }
 
 .landing-portfolio-section {
