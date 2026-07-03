@@ -1028,7 +1028,7 @@ function WorkPage(props: {
   const heroWords = [
     "Hire", "Ali", "to", "Test", "Products,", 
     "Conceptualize", "Projects,", "and", "Launch", 
-    "Concepts", "at", "a", "10×", "Value."
+    "Concepts", "at", "a", "10x", "Value."
   ];
 
   const delays: number[] = [];
@@ -1088,7 +1088,7 @@ function WorkPage(props: {
           animate="visible"
         >
           {heroWords.map((word, idx) => {
-            const isSlant = word === "10×";
+            const isSlant = word === "10x";
             const isValue = word === "Value.";
 
             if (isSlant) {
@@ -1096,16 +1096,16 @@ function WorkPage(props: {
                 <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
-                    animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
                     className="slant-highlight"
                   >
-                    10×
+                    10x
                   </motion.span>
                   {" "}
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
-                    animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: delays[idx + 1], ease: "easeOut" }}
                     style={{ display: 'inline-block' }}
                   >
@@ -1123,7 +1123,7 @@ function WorkPage(props: {
               <motion.span
                 key={idx}
                 initial={{ opacity: 0, y: 8 }}
-                animate={stage === 'hero' ? { opacity: 1, y: 0 } : {}}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
                 style={{ display: 'inline-block', marginRight: '0.24em' }}
               >
