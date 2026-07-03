@@ -894,7 +894,8 @@ function WorkPage(props: {
   const [roleFilter, setRoleFilter] = useState(allLabel);
   const [activeGroup, setActiveGroup] = useState('All');
   const [openFilter, setOpenFilter] = useState<'product' | 'role' | null>(null);
-  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(props.projects[0]?.id ?? null);
+  const [stage, setStage] = useState<'hero' | 'content' | 'open'>('hero');
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
   const [manualProjectId, setManualProjectId] = useState<string | null>(null);
   const projectRefs = useRef<Record<string, HTMLElement | null>>({});
   const pendingOpenRef = useRef<number | null>(null);
@@ -960,6 +961,10 @@ function WorkPage(props: {
   };
 
   useEffect(() => {
+    if (stage !== 'open') {
+      return;
+    }
+
     if (!groupProjects.length) {
       setExpandedProjectId(null);
       return;
@@ -969,10 +974,10 @@ function WorkPage(props: {
       setManualProjectId(null);
     }
 
-    if (!pendingOpenRef.current && !groupProjects.some((project) => project.id === activeProjectId)) {
+    if (!pendingOpenRef.current && (!activeProjectId || !groupProjects.some((project) => project.id === activeProjectId))) {
       setExpandedProjectId(groupProjects[0].id);
     }
-  }, [activeProjectId, groupProjects, manualProjectId]);
+  }, [stage, activeProjectId, groupProjects, manualProjectId]);
 
   useEffect(() => {
     setManualProjectId(null);
@@ -1020,167 +1025,235 @@ function WorkPage(props: {
     return () => observer.disconnect();
   }, [groupProjects, manualProjectId, expandedProjectId]);
 
+  const heroWords = "Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts at a 10x\u00a0Value.".split(" ");
+
+  const titleContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 8 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeInOut"
+      }
+    }
+  };
+
   return (
     <div className="work-page">
-      <div className="work-hero home-fade-item">
-        <h1 className="work-hero-title">
-          Hire Ali to Test Products, Conceptualize Projects, and Launch Concepts at a 10x{"\u00a0"}Value.
-        </h1>
+      <div className="work-hero">
+        <motion.h1
+          className="work-hero-title"
+          variants={titleContainerVariants}
+          initial="hidden"
+          animate="visible"
+          onAnimationComplete={() => {
+            setStage('content');
+          }}
+        >
+          {heroWords.map((word, idx) => (
+            <motion.span
+              key={idx}
+              variants={wordVariants}
+              style={{ display: 'inline-block', marginRight: '0.24em' }}
+            >
+              {word}
+            </motion.span>
+          ))}
+        </motion.h1>
       </div>
-      <section id="portfolio" className="landing-section landing-portfolio-section">
-        <div className="work-filter-section">
-          <div className="work-filter-grid">
-            <div className="work-filter-dropdown">
-              <button
-                type="button"
-                className={`work-filter-trigger ${openFilter === 'product' ? 'is-open' : ''}`}
-                aria-expanded={openFilter === 'product'}
-                aria-controls="work-product-filter"
-                onClick={() => setOpenFilter((current) => (current === 'product' ? null : 'product'))}
-              >
-                {productFilterLabel}
-                <span aria-hidden="true">+</span>
-              </button>
-              <AnimatePresence initial={false}>
-                {openFilter === 'product' ? (
-                  <motion.div
-                    id="work-product-filter"
-                    className="work-filter-menu"
-                    initial={{height: 0, opacity: 0}}
-                    animate={{height: 'auto', opacity: 1}}
-                    exit={{height: 0, opacity: 0}}
-                    transition={{duration: 0.22, ease: 'easeInOut'}}
-                  >
-                    {[allLabel, ...productTypes].map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        className={`work-filter-option ${productTypeFilter === type ? 'is-active' : ''}`}
-                        onClick={() => {
-                          setProductTypeFilter(type);
-                          setOpenFilter(null);
-                        }}
-                      >
-                        {type === allLabel ? 'All Products' : type}
-                      </button>
-                    ))}
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
-            </div>
 
-            <div className="work-filter-dropdown">
-              <button
-                type="button"
-                className={`work-filter-trigger ${openFilter === 'role' ? 'is-open' : ''}`}
-                aria-expanded={openFilter === 'role'}
-                aria-controls="work-role-filter"
-                onClick={() => setOpenFilter((current) => (current === 'role' ? null : 'role'))}
-              >
-                {roleFilterLabel}
-                <span aria-hidden="true">+</span>
-              </button>
-              <AnimatePresence initial={false}>
-                {openFilter === 'role' ? (
-                  <motion.div
-                    id="work-role-filter"
-                    className="work-filter-menu"
-                    initial={{height: 0, opacity: 0}}
-                    animate={{height: 'auto', opacity: 1}}
-                    exit={{height: 0, opacity: 0}}
-                    transition={{duration: 0.22, ease: 'easeInOut'}}
-                  >
-                    {[allLabel, ...roles].map((role) => (
-                      <button
-                        key={role}
-                        type="button"
-                        className={`work-filter-option ${roleFilter === role ? 'is-active' : ''}`}
-                        onClick={() => {
-                          setRoleFilter(role);
-                          setOpenFilter(null);
-                        }}
-                      >
-                        {role === allLabel ? 'All Roles' : role}
-                      </button>
-                    ))}
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          <div className="work-group-tabs">
-            {groups.map((group) => (
-                <button
-                  key={group}
-                  type="button"
-                  className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
-                  onClick={() => setActiveGroup(group)}
-                >
-                  {group}
-                </button>
-              ))}
-          </div>
-        </div>
-
-        <div className="landing-project-strip work-accordion" aria-label={`${activeGroup} projects`}>
-          {!groupProjects.length ? (
-            <p className="micro-copy empty-state">No projects match those filters.</p>
-          ) : null}
-          {groupProjects.map((project) => {
-            const isExpanded = activeProjectId === project.id;
-
-            return (
-              <article
-                key={project.id}
-                id={`project-accordion-${project.id}`}
-                data-project-id={project.id}
-                ref={(element) => {
-                  projectRefs.current[project.id] = element;
-                }}
-                className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
-              >
+      <motion.div
+        variants={contentVariants}
+        initial="hidden"
+        animate={stage !== 'hero' ? 'visible' : 'hidden'}
+        onAnimationComplete={() => {
+          if (stage === 'content') {
+            setTimeout(() => {
+              setStage('open');
+            }, 600);
+          }
+        }}
+        style={{ width: '100%' }}
+      >
+        <section id="portfolio" className="landing-section landing-portfolio-section">
+          <div className="work-filter-section">
+            <div className="work-filter-grid">
+              <div className="work-filter-dropdown">
                 <button
                   type="button"
-                  className="landing-project-row"
-                  aria-expanded={isExpanded}
-                  onClick={() => {
-                    if (isExpanded) {
-                      props.onOpenProject(project.id);
-                      return;
-                    }
-
-                    openProjectTray(project.id, 'click');
-                    projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
-                  }}
+                  className={`work-filter-trigger ${openFilter === 'product' ? 'is-open' : ''}`}
+                  aria-expanded={openFilter === 'product'}
+                  aria-controls="work-product-filter"
+                  onClick={() => setOpenFilter((current) => (current === 'product' ? null : 'product'))}
                 >
-                  <div className="project-row-details-grid">
-                    <span>{project.company}</span>
-                    <strong>{project.client}</strong>
-                    <span>{project.productType}</span>
-                  </div>
+                  {productFilterLabel}
+                  <span aria-hidden="true">+</span>
                 </button>
-                <AnimatePresence initial={false} mode="wait">
-                  {isExpanded ? (
+                <AnimatePresence initial={false}>
+                  {openFilter === 'product' ? (
                     <motion.div
-                      className="work-accordion-panel"
+                      id="work-product-filter"
+                      className="work-filter-menu"
                       initial={{height: 0, opacity: 0}}
                       animate={{height: 'auto', opacity: 1}}
                       exit={{height: 0, opacity: 0}}
-                      transition={{duration: 0.34, ease: 'easeInOut'}}
+                      transition={{duration: 0.22, ease: 'easeInOut'}}
                     >
-                      <WorkProjectStack
-                        projects={props.projects}
-                        project={project}
-                      />
+                      {[allLabel, ...productTypes].map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          className={`work-filter-option ${productTypeFilter === type ? 'is-active' : ''}`}
+                          onClick={() => {
+                            setProductTypeFilter(type);
+                            setOpenFilter(null);
+                          }}
+                        >
+                          {type === allLabel ? 'All Products' : type}
+                        </button>
+                      ))}
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+              </div>
+
+              <div className="work-filter-dropdown">
+                <button
+                  type="button"
+                  className={`work-filter-trigger ${openFilter === 'role' ? 'is-open' : ''}`}
+                  aria-expanded={openFilter === 'role'}
+                  aria-controls="work-role-filter"
+                  onClick={() => setOpenFilter((current) => (current === 'role' ? null : 'role'))}
+                >
+                  {roleFilterLabel}
+                  <span aria-hidden="true">+</span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {openFilter === 'role' ? (
+                    <motion.div
+                      id="work-role-filter"
+                      className="work-filter-menu"
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
+                      transition={{duration: 0.22, ease: 'easeInOut'}}
+                    >
+                      {[allLabel, ...roles].map((role) => (
+                        <button
+                          key={role}
+                          type="button"
+                          className={`work-filter-option ${roleFilter === role ? 'is-active' : ''}`}
+                          onClick={() => {
+                            setRoleFilter(role);
+                            setOpenFilter(null);
+                          }}
+                        >
+                          {role === allLabel ? 'All Roles' : role}
+                        </button>
+                      ))}
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
+              </div>
+
+              <div className="work-group-tabs">
+                {groups.map((group) => (
+                    <button
+                      key={group}
+                      type="button"
+                      className={`eyebrow work-group-tab ${activeGroup === group ? 'is-active' : ''}`}
+                      onClick={() => setActiveGroup(group)}
+                    >
+                      {group}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="landing-project-strip work-accordion" aria-label={`${activeGroup} projects`}>
+            {!groupProjects.length ? (
+              <p className="micro-copy empty-state">No projects match those filters.</p>
+            ) : null}
+            {groupProjects.map((project) => {
+              const isExpanded = activeProjectId === project.id;
+
+              return (
+                <article
+                  key={project.id}
+                  id={`project-accordion-${project.id}`}
+                  data-project-id={project.id}
+                  ref={(element) => {
+                    projectRefs.current[project.id] = element;
+                  }}
+                  className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="landing-project-row"
+                    aria-expanded={isExpanded}
+                    onClick={() => {
+                      if (isExpanded) {
+                        props.onOpenProject(project.id);
+                        return;
+                      }
+
+                      openProjectTray(project.id, 'click');
+                      projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    }}
+                  >
+                    <div className="project-row-details-grid">
+                      <span>{project.company}</span>
+                      <strong>{project.client}</strong>
+                      <span>{project.productType}</span>
+                    </div>
+                  </button>
+                  <AnimatePresence initial={false} mode="wait">
+                    {isExpanded ? (
+                      <motion.div
+                        className="work-accordion-panel"
+                        initial={{height: 0, opacity: 0}}
+                        animate={{height: 'auto', opacity: 1}}
+                        exit={{height: 0, opacity: 0}}
+                        transition={{duration: 0.34, ease: 'easeInOut'}}
+                      >
+                        <WorkProjectStack
+                          projects={props.projects}
+                          project={project}
+                        />
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </motion.div>
     </div>
   );
 }
