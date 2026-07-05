@@ -213,6 +213,10 @@ textarea {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .home-links-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .page,
@@ -1872,6 +1876,12 @@ body.writing-page-active .site-footer {
 
 .bullet-list li {
   line-height: 1.7;
+}
+
+.home-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .native-social-button {

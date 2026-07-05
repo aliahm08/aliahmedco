@@ -709,38 +709,37 @@ function WorkProjectStack(props: {
   );
 }
 
-function HomePage(props: {
-  projects: ProjectIndexItem[];
-  onOpenProject: (projectId: string) => void;
+function NativeSocialButton(props: {
+  href: string;
+  label: string;
+  title: string;
+  detail: string;
 }) {
+  const {href, label, title, detail} = props;
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className="native-social-button">
+      <span className="native-social-label">{label}</span>
+      <strong className="native-social-title">{title}</strong>
+      <span className="native-social-detail">{detail}</span>
+    </a>
+  );
+}
+
+function HomePage() {
   const latestPublication = substackPosts[0];
-
-  type PivotEntry = (typeof profile.resume.pivotEntries)[number];
-
-  function isAcademic(item: PivotEntry): item is Extract<PivotEntry, {type: 'Academic'}> {
-    return item.type === 'Academic';
-  }
-
-  function isWriting(item: PivotEntry): boolean {
-    return item.type === 'Article' || item.type === 'Publication';
-  }
-
-  const pivotEntries = profile.resume.pivotEntries;
-  const pivotAcademic = pivotEntries.filter(isAcademic) as unknown as PivotEntry[];
-  const pivotWriting = pivotEntries.filter(isWriting) as unknown as PivotEntry[];
-  const top3Projects = props.projects.slice(0, 3);
 
   return (
     <>
       <section className="panel panel-first">
-        <p className="eyebrow">WORK</p>
-        <div className="stack-list now-list home-fade-list">
+        <p className="eyebrow">NOW</p>
+        <div className="stack-list now-list">
           <div className="stack-item">
             <p className="micro-copy">
               <a href={profile.b2wUrl} target="_blank" rel="noreferrer" className="entity-link">
                 B2W-ai
               </a>
-              , Founder & CEO.
+              , Founder and CEO, building AI systems for architecture, construction, and engineering.
             </p>
           </div>
           <div className="stack-item">
@@ -748,120 +747,45 @@ function HomePage(props: {
               <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
                 WSP
               </a>
-              , Senior Consultant.
+              {' '}Senior Data Analyst, architected transit data systems and improved data freshness by 80%.
             </p>
           </div>
-          {top3Projects.map((project) => (
-            <div key={project.id} className="stack-item">
-              <p className="micro-copy">
-                <strong>{project.company}</strong>
-                {', '}
-                <button
-                  type="button"
-                  className="entity-link"
-                  style={{
-                    border: 0,
-                    padding: 0,
-                    background: 'none',
-                    font: 'inherit',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => props.onOpenProject(project.id)}
-                >
-                  {project.title}
-                </button>
-                {'. '}
-                <span>{project.teaser}</span>
-              </p>
-            </div>
-          ))}
-          <div className="stack-item" style={{marginTop: '16px'}}>
-            <SmartLink href="/work" className="inline-link">
-              work
-            </SmartLink>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <p className="eyebrow">RESUME</p>
-        <div className="stack-list now-list home-fade-list">
-          <div className="stack-item">
-            <p className="micro-copy" style={{lineHeight: 1.6, marginBottom: '12px'}}>
-              {profile.resume.profileSummary}
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              Email:{' '}
-              <a href={`mailto:${profile.email}`} className="entity-link">
-                {profile.email}
-              </a>
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              GitHub:{' '}
-              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
-                @{profile.githubUsername}
-              </a>
-            </p>
-          </div>
-          <div className="stack-item">
-            <p className="micro-copy">
-              LinkedIn:{' '}
-              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" className="entity-link">
-                Ali Ahmed
-              </a>
-            </p>
-          </div>
-          <div className="stack-item" style={{marginTop: '16px'}}>
-            <SmartLink href="/resume" className="inline-link">
-              resume
-            </SmartLink>
-          </div>
-        </div>
-      </section>
-
-      <section className="panel">
-        <p className="eyebrow">WRITING</p>
-        <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
               <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
-                Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
+                Rebuilding Washington D.C.&apos;s MetroBus Fleet Overhaul Program with AI
               </a>
             </p>
           </div>
           <div className="stack-item">
             <p className="micro-copy">
-              Substack:{' '}
-              <a href={profile.substackUrl} target="_blank" rel="noreferrer" className="entity-link">
-                @aliahmed312
-              </a>
+              Email: <a href={`mailto:${profile.email}`}>{profile.email}</a>
             </p>
           </div>
-          {pivotWriting.map((item) => (
-            <div
-              key={`${item.organization}-${item.title}`}
-              className="stack-item"
-            >
-              <p className="micro-copy">
-                {'href' in item && item.href ? (
-                  <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
-                    {item.title}
-                  </a>
-                ) : (
-                  item.title
-                )}
-              </p>
-            </div>
-          ))}
-          <div className="stack-item" style={{marginTop: '16px'}}>
-            <SmartLink href="/writing" className="inline-link">
-              writing
-            </SmartLink>
-          </div>
+        </div>
+      </section>
+
+      <section className="panel">
+        <p className="eyebrow">Links</p>
+        <div className="home-links-grid">
+          <NativeSocialButton
+            href={profile.githubUrl}
+            label="GitHub"
+            title={`@${profile.githubUsername}`}
+            detail="Code, repositories, and current activity."
+          />
+          <NativeSocialButton
+            href={profile.linkedinUrl}
+            label="LinkedIn"
+            title="Ali Ahmed"
+            detail="Professional history, network, and updates."
+          />
+          <NativeSocialButton
+            href={profile.substackUrl}
+            label="Substack"
+            title="@aliahmed312"
+            detail="Essays, case studies, and field notes."
+          />
         </div>
       </section>
     </>
@@ -1709,7 +1633,7 @@ export default function App() {
         {route === null ? (
           <NotFoundPage />
         ) : route === '/' ? (
-          <HomePage projects={projects} onOpenProject={openProject} />
+          <HomePage />
         ) : route === '/portfolio' ? (
           <PortfolioPage {...explorerProps} preview={preview} />
         ) : route === '/projects' ? (
