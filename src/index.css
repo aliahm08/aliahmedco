@@ -214,9 +214,6 @@ textarea {
     align-items: flex-start;
   }
 
-  .home-links-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .page,
@@ -501,7 +498,7 @@ body.resume-page-active {
   --cream: #11100e;
   --charcoal: #f5efe6;
   --muted: rgba(245, 239, 230, 0.68);
-  --link: #f2b36d;
+  --link: #bf4c3b;
   --line: rgba(245, 239, 230, 0.18);
   --surface: rgba(255, 255, 255, 0.055);
   --surface-strong: rgba(255, 255, 255, 0.095);
@@ -515,7 +512,7 @@ body.resume-page-active {
 }
 
 body.resume-page-active .site-shell {
-  width: min(720px, calc(100% - 32px));
+  width: min(960px, calc(100% - 48px));
 }
 
 body.resume-page-active .topbar {
@@ -1568,22 +1565,21 @@ body.writing-page-active .site-footer {
 
 .resume-page {
   display: grid;
-  gap: 0;
+  gap: 48px;
   position: relative;
 }
 
 .resume-snap-section {
-  min-height: calc(100vh - 132px);
   display: grid;
-  align-items: center;
-  padding: 48px 0;
+  align-items: start;
+  padding: 0;
 }
 
 .resume-section-nav {
   position: fixed;
   z-index: 45;
   top: 50%;
-  right: max(24px, calc((100vw - 720px) / 2 - 200px));
+  right: max(24px, calc((100vw - 960px) / 2 - 200px));
   display: grid;
   gap: 8px;
   transform: translateY(-50%);
@@ -1620,10 +1616,20 @@ body.writing-page-active .site-footer {
 
 .resume-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.64fr) minmax(260px, 0.36fr);
-  gap: 42px;
+  gap: 32px;
   align-items: start;
-  padding-top: 16px;
+  padding: 0 0 16px;
+}
+
+.resume-hero-title {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--portfolio-ink);
+  margin: 0;
+  text-wrap: balance;
+  max-width: min(720px, 100%);
 }
 
 .resume-hero-copy {
@@ -1640,8 +1646,9 @@ body.writing-page-active .site-footer {
 }
 
 .resume-hero-copy h1 {
-  max-width: 12ch;
-  font-size: clamp(2.35rem, 5vw, 3.25rem);
+  max-width: none;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
 }
 
 .resume-hero-copy p:not(.eyebrow) {
@@ -1656,6 +1663,15 @@ body.writing-page-active .site-footer {
   display: grid;
   gap: 18px;
   padding: 18px 0 0;
+  border-top: 1px solid var(--portfolio-line);
+}
+
+.resume-hero-contact {
+  display: grid;
+  grid-template-columns: minmax(0, 0.5fr) minmax(260px, 0.5fr);
+  gap: 42px;
+  align-items: start;
+  padding-top: 32px;
   border-top: 1px solid var(--portfolio-line);
 }
 
@@ -1876,12 +1892,6 @@ body.writing-page-active .site-footer {
 
 .bullet-list li {
   line-height: 1.7;
-}
-
-.home-links-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
 }
 
 .native-social-button {
@@ -2317,6 +2327,7 @@ body:has(.portfolio-shell) {
   }
 
   .resume-hero,
+  .resume-hero-contact,
   .resume-proof-section,
   .resume-section,
   .resume-role {
@@ -2420,12 +2431,11 @@ body:has(.portfolio-shell) {
   }
 
   .resume-page {
-    gap: 40px;
+    gap: 32px;
   }
 
   .resume-snap-section {
-    min-height: calc(100vh - 110px);
-    padding: 28px 0 76px;
+    padding: 0 0 20px;
   }
 
   .resume-hero {
@@ -2486,8 +2496,9 @@ body:has(.portfolio-shell) {
     scrollbar-width: thin;
   }
 
-  .resume-hero-copy h1 {
-    font-size: clamp(2.35rem, 12vw, 3.4rem);
+  .resume-hero-copy h1,
+  .resume-hero-title {
+    font-size: clamp(1.6rem, 6vw, 2.25rem);
   }
 
   .work-accordion {

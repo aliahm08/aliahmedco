@@ -709,37 +709,86 @@ function WorkProjectStack(props: {
   );
 }
 
-function NativeSocialButton(props: {
-  href: string;
-  label: string;
-  title: string;
-  detail: string;
-}) {
-  const {href, label, title, detail} = props;
-
-  return (
-    <a href={href} target="_blank" rel="noreferrer" className="native-social-button">
-      <span className="native-social-label">{label}</span>
-      <strong className="native-social-title">{title}</strong>
-      <span className="native-social-detail">{detail}</span>
-    </a>
-  );
-}
-
 function HomePage() {
   const latestPublication = substackPosts[0];
+  const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
+  const [visiblePastWorkCount, setVisiblePastWorkCount] = useState(0);
+  type PivotEntry = (typeof profile.resume.pivotEntries)[number];
+  function isPastWork(item: PivotEntry): item is Extract<PivotEntry, {type: 'Past Work'}> {
+    return item.type === 'Past Work';
+  }
+
+  function isPreludeEntry(
+    item: PivotEntry,
+  ): item is Exclude<PivotEntry, {type: 'Past Work'}> {
+    return item.type !== 'Past Work';
+  }
+
+  const pivotEntries = profile.resume.pivotEntries;
+  const pivotPrelude = pivotEntries.filter(isPreludeEntry) as unknown as PivotEntry[];
+  const pivotPastWork = pivotEntries.filter(isPastWork) as unknown as PivotEntry[];
+
+  useEffect(() => {
+    if (!isPastWorkExpanded) {
+      setVisiblePastWorkCount(0);
+      return;
+    }
+
+    setVisiblePastWorkCount(getPastWorkBatchSize());
+  }, [isPastWorkExpanded]);
+
+  useEffect(() => {
+    if (!isPastWorkExpanded) {
+      return;
+    }
+
+    function handleResize() {
+      setVisiblePastWorkCount((current) => Math.max(current, getPastWorkBatchSize()));
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isPastWorkExpanded]);
+
+  useEffect(() => {
+    if (!isPastWorkExpanded || visiblePastWorkCount >= pivotPastWork.length) {
+      return;
+    }
+
+    const sentinel = document.getElementById('past-work-sentinel');
+    if (!sentinel) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        setVisiblePastWorkCount((current) =>
+          Math.min(current + getPastWorkBatchSize(), pivotPastWork.length),
+        );
+      },
+      {rootMargin: '0px 0px 18% 0px'},
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [isPastWorkExpanded, pivotPastWork.length, visiblePastWorkCount]);
 
   return (
     <>
       <section className="panel panel-first">
-        <p className="eyebrow">NOW</p>
-        <div className="stack-list now-list">
+        <p className="eyebrow">SOFTWARE ENGINEER, AI FOUNDER, PRODUCT</p>
+        <div className="stack-list now-list home-fade-list">
           <div className="stack-item">
             <p className="micro-copy">
               <a href={profile.b2wUrl} target="_blank" rel="noreferrer" className="entity-link">
                 B2W-ai
               </a>
-              , Founder and CEO, building AI systems for architecture, construction, and engineering.
+              , Founder & CEO.
             </p>
           </div>
           <div className="stack-item">
@@ -747,13 +796,13 @@ function HomePage() {
               <a href={profile.wspUrl} target="_blank" rel="noreferrer" className="entity-link">
                 WSP
               </a>
-              {' '}Senior Data Analyst, architected transit data systems and improved data freshness by 80%.
+              , Senior Consultant.
             </p>
           </div>
           <div className="stack-item">
             <p className="micro-copy">
               <a href={latestPublication.url} target="_blank" rel="noreferrer" className="entity-link">
-                Rebuilding Washington D.C.&apos;s MetroBus Fleet Overhaul Program with AI
+                Rebuilding Washington D.C.'s MetroBus Fleet Overhaul Program with AI
               </a>
             </p>
           </div>
@@ -766,27 +815,101 @@ function HomePage() {
       </section>
 
       <section className="panel">
-        <p className="eyebrow">Links</p>
-        <div className="home-links-grid">
-          <NativeSocialButton
-            href={profile.githubUrl}
-            label="GitHub"
-            title={`@${profile.githubUsername}`}
-            detail="Code, repositories, and current activity."
-          />
-          <NativeSocialButton
-            href={profile.linkedinUrl}
-            label="LinkedIn"
-            title="Ali Ahmed"
-            detail="Professional history, network, and updates."
-          />
-          <NativeSocialButton
-            href={profile.substackUrl}
-            label="Substack"
-            title="@aliahmed312"
-            detail="Essays, case studies, and field notes."
-          />
+        <p className="eyebrow">Connect With Ali</p>
+        <div className="stack-list now-list home-fade-list">
+          <div className="stack-item">
+            <p className="micro-copy">
+              GitHub:{' '}
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="entity-link">
+                @{profile.githubUsername}
+              </a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              LinkedIn:{' '}
+              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" className="entity-link">
+                Ali Ahmed
+              </a>
+            </p>
+          </div>
+          <div className="stack-item">
+            <p className="micro-copy">
+              Substack:{' '}
+              <a href={profile.substackUrl} target="_blank" rel="noreferrer" className="entity-link">
+                @aliahmed312
+              </a>
+            </p>
+          </div>
         </div>
+      </section>
+
+      <section className="panel">
+        <button
+          type="button"
+          className="inline-link-button"
+          aria-expanded={isPastWorkExpanded}
+          onClick={() => setIsPastWorkExpanded((current) => !current)}
+        >
+          {isPastWorkExpanded ? 'Hide Past Work' : 'Expand Past Work'}
+        </button>
+        {isPastWorkExpanded ? (
+          <div className="disclosure-panel">
+            <div className="stack-list now-list">
+              {pivotPrelude.map((item, index) => (
+                <div
+                  key={`${item.type}-${item.organization}-${item.title}`}
+                  className="stack-item home-fade-item"
+                  style={{animationDelay: `${80 + index * 70}ms`}}
+                >
+                  <p className="micro-copy">
+                    {item.type === 'Academic' ? (
+                      <>
+                        <strong>{item.organization}</strong>
+                        {', '}
+                        {item.title}
+                      </>
+                    ) : item.type === 'Article' || item.type === 'Publication' ? (
+                      <>
+                        {'href' in item && item.href ? (
+                          <a href={item.href} target="_blank" rel="noreferrer" className="entity-link">
+                            {item.title}
+                          </a>
+                        ) : (
+                          item.title
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <strong>{item.organization}</strong>
+                        {', '}
+                        {item.title}
+                      </>
+                    )}
+                  </p>
+                </div>
+              ))}
+              {pivotPastWork.slice(0, visiblePastWorkCount).map((item, index) => (
+                <div
+                  key={`${item.type}-${item.organization}-${item.title}`}
+                  className="stack-item home-fade-item past-work-item"
+                  style={{animationDelay: `${180 + index * 70}ms`}}
+                >
+                  <p className="micro-copy">
+                    <strong>{item.organization}</strong>
+                    {', '}
+                    {item.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+            {visiblePastWorkCount < pivotPastWork.length ? (
+              <div id="past-work-sentinel" className="scroll-reveal-cue">
+                <p className="micro-copy">Scroll to reveal more.</p>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </section>
     </>
   );
@@ -1232,6 +1355,27 @@ function ResumePage() {
   ];
   const [activeResumeSection, setActiveResumeSection] = useState(resumeSections[0].id);
 
+  // Work-style animated hero heading
+  const heroWords = [
+    "AI", "Product", "Operator", "with",
+    "Engineering", "Range", "and", "Executive",
+    "Leverage."
+  ];
+
+  const heroDelays: number[] = [];
+  let heroCurrentDelay = 0;
+  for (let i = 0; i < heroWords.length; i++) {
+    heroDelays.push(heroCurrentDelay);
+    const word = heroWords[i];
+    let stepDelay = 0.08;
+    if (word.endsWith(',')) {
+      stepDelay = 0.38;
+    } else if (word.endsWith('.')) {
+      stepDelay = 0.65;
+    }
+    heroCurrentDelay += stepDelay;
+  }
+
   useEffect(() => {
     const sectionElements = resumeSections
       .map((section) => document.getElementById(section.id))
@@ -1278,27 +1422,95 @@ function ResumePage() {
       </nav>
 
       <section id="resume-overview" className="resume-hero resume-snap-section panel-first">
-        <div className="resume-hero-copy">
-          <p className="eyebrow">Resume</p>
-          <h1>AI product operator with engineering range.</h1>
-          <p>{resumeIntro}</p>
+        <div className="work-hero" style={{width: '100%', padding: '0 0 24px'}}>
+          <motion.h1
+            className="resume-hero-title"
+            initial="hidden"
+            animate="visible"
+          >
+            {heroWords.map((word, idx) => {
+              const isAnd = word === "and";
+              const isLeverage = word === "Leverage.";
+
+              if (isAnd) {
+                return (
+                  <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
+                    <motion.span
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
+                      style={{ display: 'inline-block' }}
+                    >
+                      and
+                    </motion.span>
+                    {" "}
+                    <motion.span
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: heroDelays[idx + 1], ease: "easeOut" }}
+                      style={{ display: 'inline-block' }}
+                    >
+                      Executive
+                    </motion.span>
+                  </span>
+                );
+              }
+
+              if (word === "Executive") {
+                return null;
+              }
+
+              if (isLeverage) {
+                return (
+                  <motion.span
+                    key={idx}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
+                    className="slant-highlight"
+                    style={{ marginRight: '0.24em' }}
+                  >
+                    {word}
+                  </motion.span>
+                );
+              }
+
+              return (
+                <motion.span
+                  key={idx}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
+                  style={{ display: 'inline-block', marginRight: '0.24em' }}
+                >
+                  {word}
+                </motion.span>
+              );
+            })}
+          </motion.h1>
         </div>
-        <aside className="resume-contact-card" aria-label="Contact details">
-          <p className="summary-title">{profile.name}</p>
-          <p className="micro-copy">{profile.headline}</p>
-          <div className="resume-contact-list">
-            {profile.resume.contactMethods.map((method) => (
-              <a key={method.label} href={method.href} target="_blank" rel="noreferrer">
-                <span>{method.label}</span>
-                <strong>{method.value}</strong>
-              </a>
-            ))}
-            <div>
-              <span>Location</span>
-              <strong>{profile.location}</strong>
-            </div>
+
+        <div className="resume-hero-contact">
+          <div className="resume-hero-copy">
+            <p>{resumeIntro}</p>
           </div>
-        </aside>
+          <aside className="resume-contact-card" aria-label="Contact details">
+            <p className="summary-title">{profile.name}</p>
+            <p className="micro-copy">{profile.headline}</p>
+            <div className="resume-contact-list">
+              {profile.resume.contactMethods.map((method) => (
+                <a key={method.label} href={method.href} target="_blank" rel="noreferrer">
+                  <span>{method.label}</span>
+                  <strong>{method.value}</strong>
+                </a>
+              ))}
+              <div>
+                <span>Location</span>
+                <strong>{profile.location}</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <section id="resume-proof" className="resume-snap-section resume-proof-section" aria-label="Career proof points">
