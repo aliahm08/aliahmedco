@@ -7,15 +7,6 @@ describe('App & Navigation Tests', () => {
     window.history.pushState({}, '', '/');
     render(<App />);
 
-    // Verify sections exist
-    const workHeader = screen.getByText('WORK');
-    const resumeHeader = screen.getByText('RESUME');
-    const writingHeader = screen.getByText('WRITING');
-
-    expect(workHeader).toBeInTheDocument();
-    expect(resumeHeader).toBeInTheDocument();
-    expect(writingHeader).toBeInTheDocument();
-
     // Verify links to subpages exist
     const workLinks = screen.getAllByRole('link', {name: /work/i});
     const resumeLinks = screen.getAllByRole('link', {name: /resume/i});
@@ -24,6 +15,32 @@ describe('App & Navigation Tests', () => {
     expect(workLinks.some(link => link.getAttribute('href') === '/work')).toBe(true);
     expect(resumeLinks.some(link => link.getAttribute('href') === '/resume')).toBe(true);
     expect(writingLinks.some(link => link.getAttribute('href') === '/writing')).toBe(true);
+  });
+
+  test('renders ResumePage with animated title and correct text', () => {
+    window.history.pushState({}, '', '/resume');
+    render(<App />);
+
+    // Verify sections exist in the side navigator
+    const experienceLink = screen.getByRole('link', { name: /03.*experience/i });
+    const educationLink = screen.getByRole('link', { name: /04.*education/i });
+    const capabilitiesLink = screen.getByRole('link', { name: /05.*capabilities/i });
+    const foundationLink = screen.getByRole('link', { name: /06.*foundation/i });
+
+    expect(experienceLink).toBeInTheDocument();
+    expect(educationLink).toBeInTheDocument();
+    expect(capabilitiesLink).toBeInTheDocument();
+    expect(foundationLink).toBeInTheDocument();
+
+    // Verify that the animated hero heading words are present
+    const firstWord = screen.getByText('Ali');
+    const lastWord = screen.getByText('decisions.');
+    expect(firstWord).toBeInTheDocument();
+    expect(lastWord).toBeInTheDocument();
+
+    // Verify the name and headline are removed from the contact card
+    const nameElement = screen.queryByText('Ali Ahmed', { selector: '.resume-contact-card .summary-title' });
+    expect(nameElement).not.toBeInTheDocument();
   });
 
   test('renders WritingPage without header and with direct article links', () => {

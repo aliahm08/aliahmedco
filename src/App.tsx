@@ -647,7 +647,7 @@ function WorkProjectStack(props: {
                 imageIndex={stackIndex % 4}
                 imageSrc={photo.src}
                 ariaLabel={photo.alt || `${props.project.title} photo ${stackIndex + 1}`}
-                className={offsetIndex === 0 ? 'is-front is-active' : ''}
+                className={`${offsetIndex === 0 ? 'is-front is-active' : ''} stack-depth-${Math.min(offsetIndex, 4)}`}
                 style={{
                   '--project-x': `${offset.x}px`,
                   '--project-y': `${offset.y}px`,
@@ -655,6 +655,7 @@ function WorkProjectStack(props: {
                   '--project-hover-y': `${offset.hoverY}px`,
                   '--project-rotation': `${offset.rotation}deg`,
                   '--project-hover-rotation': `${offset.hoverRotation}deg`,
+                  '--stack-depth': offsetIndex,
                 } as CSSProperties}
               />
             );
@@ -969,12 +970,12 @@ function WorkPage(props: {
     return matchesProductType && matchesRole && matchesGroup;
   });
   const activeProjectId = expandedProjectId;
-  const openProjectTray = (projectId: string, source: 'scroll' | 'click') => {
+  const openProjectTray = (projectId: string, source: 'hover' | 'touch' | 'focus' = 'hover') => {
     if (projectId === expandedProjectId) {
       return;
     }
 
-    if (source === 'click') {
+    if (source === 'touch' || source === 'hover' || source === 'focus') {
       setManualProjectId(projectId);
     }
 
@@ -1020,40 +1021,6 @@ function WorkPage(props: {
     };
   }, []);
 
-  useEffect(() => {
-    if (!groupProjects.length) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const centeredEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((left, right) => {
-            const viewportCenter = window.innerHeight / 2;
-            const leftCenter = left.boundingClientRect.top + left.boundingClientRect.height / 2;
-            const rightCenter = right.boundingClientRect.top + right.boundingClientRect.height / 2;
-            return Math.abs(leftCenter - viewportCenter) - Math.abs(rightCenter - viewportCenter);
-          })[0];
-
-        const nextId = centeredEntry?.target.getAttribute('data-project-id');
-        if (nextId && !manualProjectId && !pendingOpenRef.current) {
-          openProjectTray(nextId, 'scroll');
-        }
-      },
-      {rootMargin: '-38% 0% -38% 0%', threshold: 0},
-    );
-
-    groupProjects.forEach((project) => {
-      const element = projectRefs.current[project.id];
-      if (element) {
-        observer.observe(element);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [groupProjects, manualProjectId, expandedProjectId]);
-
   const heroWords = [
     "Hire", "Ali", "to", "Test", "Products,", 
     "Conceptualize", "Projects,", "and", "Launch", 
@@ -1065,11 +1032,11 @@ function WorkPage(props: {
   for (let i = 0; i < heroWords.length; i++) {
     delays.push(currentDelay);
     const word = heroWords[i];
-    let stepDelay = 0.08; // Base delay
+    let stepDelay = 0.055; // Base delay
     if (word.endsWith(',')) {
-      stepDelay = 0.38; // Longer pause at commas
+      stepDelay = 0.24; // Longer pause at commas
     } else if (word.endsWith('.')) {
-      stepDelay = 0.65; // Even longer pause at period
+      stepDelay = 0.4; // Even longer pause at period
     }
     currentDelay += stepDelay;
   }
@@ -1079,7 +1046,7 @@ function WorkPage(props: {
     if (stage === 'hero') {
       const timer = setTimeout(() => {
         setStage('content');
-      }, (totalDuration + 0.45) * 1000);
+      }, (totalDuration + 0.2) * 1000);
       return () => clearTimeout(timer);
     }
   }, [stage, totalDuration]);
@@ -1126,7 +1093,7 @@ function WorkPage(props: {
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
+                    transition={{ duration: 0.34, delay: delays[idx], ease: "easeOut" }}
                     style={{ display: 'inline-block' }}
                   >
                     at
@@ -1135,7 +1102,7 @@ function WorkPage(props: {
                   <motion.span
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: delays[idx + 1], ease: "easeOut" }}
+                    transition={{ duration: 0.34, delay: delays[idx + 1], ease: "easeOut" }}
                     className="slant-highlight"
                   >
                     10x.
@@ -1153,7 +1120,7 @@ function WorkPage(props: {
                 key={idx}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: delays[idx], ease: "easeOut" }}
+                transition={{ duration: 0.34, delay: delays[idx], ease: "easeOut" }}
                 style={{ display: 'inline-block', marginRight: '0.24em' }}
               >
                 {word}
@@ -1288,19 +1255,15 @@ function WorkPage(props: {
                     projectRefs.current[project.id] = element;
                   }}
                   className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
+                  onMouseEnter={() => openProjectTray(project.id, 'hover')}
                 >
                   <button
                     type="button"
                     className="landing-project-row"
                     aria-expanded={isExpanded}
+                    onFocus={() => openProjectTray(project.id, 'focus')}
                     onClick={() => {
-                      if (isExpanded) {
-                        props.onOpenProject(project.id);
-                        return;
-                      }
-
-                      openProjectTray(project.id, 'click');
-                      projectRefs.current[project.id]?.scrollIntoView({behavior: 'smooth', block: 'center'});
+                      openProjectTray(project.id, 'touch');
                     }}
                   >
                     <div className="project-row-details-grid">
@@ -1342,24 +1305,73 @@ function ResumePage() {
     {value: '$11M', label: 'seed raise supported at huupe'},
     {value: '1,500', label: 'growth copy tests managed'},
   ];
-  const resumeIntro =
-    'Ali turns ambiguous technical programs into clear product decisions. His work spans WSP enterprise delivery, Huupe growth, Autodesk R&D, and NASA systems prototyping, with $220M in managed project scope and hands-on execution across AI, robotics, spatial computing, and built-environment technology.';
-  const leadExperience = profile.resume.experience.slice(0, 6);
-  const earlierExperience = profile.resume.experience.slice(6);
   const resumeSections = [
     {id: 'resume-overview', label: 'Overview'},
-    {id: 'resume-proof', label: 'Proof'},
     {id: 'resume-experience', label: 'Experience'},
-    {id: 'resume-capabilities', label: 'Capabilities'},
+    {id: 'resume-education', label: 'Education'},
     {id: 'resume-foundation', label: 'Foundation'},
+    {id: 'resume-proof', label: 'Proof'},
   ];
   const [activeResumeSection, setActiveResumeSection] = useState(resumeSections[0].id);
+  const [pinnedExperienceId, setPinnedExperienceId] = useState<string>('experience-0');
+  const [expandedExperienceId, setExpandedExperienceId] = useState<string | null>('experience-0');
+  const [pendingExperienceId, setPendingExperienceId] = useState<string | null>(null);
+  const [hoveredExperienceId, setHoveredExperienceId] = useState<string | null>(null);
+
+  const [pinnedEducationId, setPinnedEducationId] = useState<string>('education-0');
+  const [expandedEducationId, setExpandedEducationId] = useState<string | null>('education-0');
+  const [pendingEducationId, setPendingEducationId] = useState<string | null>(null);
+  const [hoveredEducationId, setHoveredEducationId] = useState<string | null>(null);
+  const [resumeFocusFilter, setResumeFocusFilter] = useState(allLabel);
+  const [resumeSkillFilter, setResumeSkillFilter] = useState(allLabel);
+  const [resumeEnvironmentFilter, setResumeEnvironmentFilter] = useState(allLabel);
+  const [openResumeFilter, setOpenResumeFilter] = useState<'focus' | 'skill' | null>(null);
+
+  const handleExperienceEnter = (id: string) => {
+    setHoveredExperienceId(id);
+    setPinnedExperienceId(id);
+    if (id !== expandedExperienceId) {
+      setPendingExperienceId(id);
+      if (expandedExperienceId !== null) {
+        setExpandedExperienceId(null);
+      }
+    }
+  };
+
+  const handleExperienceLeave = (id: string) => {
+    setHoveredExperienceId(null);
+    if (pinnedExperienceId !== id) {
+      setPendingExperienceId(pinnedExperienceId);
+      if (expandedExperienceId === id) {
+        setExpandedExperienceId(null);
+      }
+    }
+  };
+
+  const handleEducationEnter = (id: string) => {
+    setHoveredEducationId(id);
+    setPinnedEducationId(id);
+    if (id !== expandedEducationId) {
+      setPendingEducationId(id);
+      if (expandedEducationId !== null) {
+        setExpandedEducationId(null);
+      }
+    }
+  };
+
+  const handleEducationLeave = (id: string) => {
+    setHoveredEducationId(null);
+    if (pinnedEducationId !== id) {
+      setPendingEducationId(pinnedEducationId);
+      if (expandedEducationId === id) {
+        setExpandedEducationId(null);
+      }
+    }
+  };
 
   // Work-style animated hero heading
   const heroWords = [
-    "AI", "Product", "Operator", "with",
-    "Engineering", "Range", "and", "Executive",
-    "Leverage."
+    "Ali", "transforms", "ambiguous", "technical", "programs", "into", "clear", "product", "decisions."
   ];
 
   const heroDelays: number[] = [];
@@ -1367,14 +1379,234 @@ function ResumePage() {
   for (let i = 0; i < heroWords.length; i++) {
     heroDelays.push(heroCurrentDelay);
     const word = heroWords[i];
-    let stepDelay = 0.08;
+    let stepDelay = 0.055;
     if (word.endsWith(',')) {
-      stepDelay = 0.38;
+      stepDelay = 0.24;
     } else if (word.endsWith('.')) {
-      stepDelay = 0.65;
+      stepDelay = 0.4;
     }
     heroCurrentDelay += stepDelay;
   }
+
+  const [resumeStage, setResumeStage] = useState<'hero' | 'content'>('hero');
+
+  useEffect(() => {
+    if (resumeStage === 'hero') {
+      const timer = setTimeout(() => {
+        setResumeStage('content');
+      }, (heroCurrentDelay + 0.2) * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resumeStage, heroCurrentDelay]);
+
+  // Unified Chronological Experience Items
+  const experienceItems = [
+    {
+      title: 'Senior Analyst',
+      company: 'WSP',
+      period: 'Sept 2024 - Dec 2025',
+      location: 'Washington, D.C.',
+      tags: ['Advanced AI & ML'],
+      skillSections: ['Programming', 'Data analytics', 'AI tools'],
+      environment: 'Enterprise',
+      skills: ['TypeScript', 'Codex', 'Python', 'Risk analytics'],
+      bullets: [
+        'Built an internal analytics tool with TypeScript and Codex to analyze emerging safety risks with 86% accuracy.',
+        'Developed a machine learning workflow in Python that identified potential recalls with 79% success and supported $600k in renewals.',
+      ]
+    },
+    {
+      title: 'Analyst',
+      company: 'WSP',
+      period: 'Sept 2023 - Sept 2024',
+      location: 'Washington, D.C.',
+      tags: ['B2B SaaS Products'],
+      skillSections: ['AI tools', 'Infrastructure'],
+      environment: 'Enterprise',
+      skills: ['Agile delivery', 'SharePoint', 'AI agents', 'Data models'],
+      bullets: [
+        'Tracked 14 resources through agile delivery to support safety risk training and improve project delivery speed by 80%.',
+        'Researched system data models and taxonomy cleanup patterns to support a SharePoint AI agent workflow.',
+      ]
+    },
+    {
+      title: 'Junior Analyst',
+      company: 'WSP',
+      period: 'Sept 2022 - Sept 2023',
+      location: 'Washington, D.C.',
+      tags: ['B2B SaaS Products'],
+      skillSections: ['Data analytics', 'Infrastructure'],
+      environment: 'Enterprise',
+      skills: ['Workflow automation', 'Clustering', 'Operations analysis'],
+      bullets: [
+        'Automated 12 reporting workflows using clustering and operational checkpoint analysis.',
+        'Expanded report completeness by 25% to support more proactive operational measures.',
+      ]
+    },
+    {
+      title: 'Design Manager',
+      company: 'LaunchGood',
+      period: '2021 - 2022',
+      location: 'Remote',
+      tags: ['AR/VR/XR Ecosystems'],
+      skillSections: ['AI tools', 'Programming'],
+      environment: 'Scale-up',
+      skills: ['Design systems', 'Figma', 'Notion', 'A/B testing'],
+      bullets: [
+        'Managed design systems to create unity between UX and customer engagement design processes.',
+        'Met with design teams weekly to ensure consistency in Notion documentation with Figma embeds.',
+        'Oversaw KPI development for brand performance using 1,500 copywriting A/B tests with Notion AI and Python.',
+      ]
+    },
+    {
+      title: 'Hardware Engineer',
+      company: 'huupe',
+      period: '2019 - 2022',
+      location: 'New York, NY',
+      tags: ['Consumer Hardware'],
+      skillSections: ['Data analytics', 'AI tools'],
+      environment: 'Startup',
+      skills: ['Computer vision', 'LiDAR', '3D rendering', 'Technical briefs'],
+      bullets: [
+        'Designed computer vision workflows to assess vision black zones and improve 3D scope by 15% for LiDAR integration.',
+        'Rendered 3D elements in a real-time engine to interpret athlete movement for AI-powered sporting goods.',
+        'Supported founders with technical briefs and design renderings that helped close $11M in seed funding.',
+      ]
+    },
+    {
+      title: 'Architectural Designer',
+      company: 'Norman Foster Foundation',
+      period: '2019 - 2020',
+      location: 'Madrid, Spain',
+      tags: ['AR/VR/XR Ecosystems'],
+      skillSections: ['Data analytics'],
+      environment: 'Enterprise',
+      skills: ['Urban systems', 'Research synthesis', 'MIT Media Lab'],
+      bullets: [
+        'Collaborated with Lord Norman Foster and MIT Media Lab on diagnosing slum dwelling worldwide for a sustainable alternative.',
+        'Selected as one of ten global designers for the initiative.',
+      ]
+    },
+    {
+      title: 'Space Suit Engineer',
+      company: 'NASA',
+      period: '2018 - 2019',
+      location: 'Houston, TX',
+      tags: ['Consumer Hardware'],
+      skillSections: ['Data analytics', 'AI tools'],
+      environment: 'Enterprise',
+      skills: ['Materials testing', 'Soft goods', 'Computer vision', 'HUD prototyping'],
+      bullets: [
+        'Focused on materials testing and мягкие goods hardware prototyping for self-egress.',
+        'Trained computer vision models for object recognition integrated into space suit helmet heads-up displays.',
+        'Prototyped soft goods hardware for self-egress implemented in a Mars suit cockpit.',
+      ]
+    },
+    {
+      title: 'AR Exhibits Engineer',
+      company: 'Autodesk',
+      period: '2017',
+      location: 'San Francisco, CA',
+      tags: ['AR/VR/XR Ecosystems'],
+      skillSections: ['Programming'],
+      environment: 'Enterprise',
+      skills: ['Augmented reality', 'Exhibit systems', 'Product storytelling'],
+      bullets: [
+        'Worked on immersive product storytelling and exhibition experiences in augmented reality.',
+      ]
+    },
+    {
+      title: 'Design Engineer',
+      company: 'Bragi',
+      period: '2016 - 2017',
+      location: 'Munich, Germany',
+      tags: ['Consumer Hardware'],
+      skillSections: ['Infrastructure'],
+      environment: 'Startup',
+      skills: ['Wearables', 'Interface design', 'Consumer IoT'],
+      bullets: [
+        'Designed soft and hard goods hardware interfaces for hearable technology and consumer IoT wearables.',
+      ]
+    },
+    {
+      title: 'Applied Innovation Engineer',
+      company: 'Autodesk',
+      period: '2016',
+      location: 'San Francisco, CA',
+      tags: ['AR/VR/XR Ecosystems'],
+      skillSections: ['Programming', 'Data analytics'],
+      environment: 'Enterprise',
+      skills: ['Robotics', '3D printing', 'FEA animation', 'Executive demos'],
+      bullets: [
+        'Presented software functionality within a $4M software development effort directly to CEO Carl Bass.',
+        'Tested design environments for a 15% UX optimization through robotics, 3D-print generation, and FEA animation.',
+      ]
+    }
+  ];
+
+  // Chronological Education Items
+  const educationItems = [
+    {
+      title: 'Master of Architecture',
+      company: 'Columbia University',
+      period: '2020 - 2023',
+      location: 'New York, NY',
+      tags: ['AR/VR/XR Ecosystems'],
+      skills: ['Architecture', 'Systems thinking', 'Design research'],
+      bullets: [
+        'Studied architecture at GSAPP, layering design culture and systems thinking onto an engineering foundation.',
+      ]
+    },
+    {
+      title: 'BS, Mechanical Engineering',
+      company: 'The George Washington University',
+      period: '2014 - 2018',
+      location: 'Washington, D.C.',
+      tags: ['Consumer Hardware'],
+      skills: ['Mechanical engineering', 'Technical analysis', 'Prototyping'],
+      bullets: [
+        'Mechanical engineering training that grounded the technical side of the career before pivots into product and design.',
+      ]
+    }
+  ];
+
+  const resumeFocusOptions = Array.from(new Set(experienceItems.flatMap((item) => item.tags))).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const resumeSkillOptions = Array.from(new Set(experienceItems.flatMap((item) => item.skillSections))).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const resumeEnvironmentOptions = Array.from(new Set(experienceItems.map((item) => item.environment))).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const filteredExperienceItems = experienceItems
+    .map((item, idx) => ({item, itemId: `experience-${idx}`}))
+    .filter(({item}) => {
+      const focusMatches = resumeFocusFilter === allLabel || item.tags.includes(resumeFocusFilter);
+      const skillMatches = resumeSkillFilter === allLabel || item.skillSections.includes(resumeSkillFilter);
+      const environmentMatches = resumeEnvironmentFilter === allLabel || item.environment === resumeEnvironmentFilter;
+      return focusMatches && skillMatches && environmentMatches;
+    });
+  const hasResumeFilter =
+    resumeFocusFilter !== allLabel || resumeSkillFilter !== allLabel || resumeEnvironmentFilter !== allLabel;
+  const resumeFocusFilterLabel = resumeFocusFilter === allLabel ? 'Focus Areas' : resumeFocusFilter;
+  const resumeSkillFilterLabel = resumeSkillFilter === allLabel ? 'Skills' : resumeSkillFilter;
+  useEffect(() => {
+    const visibleIds = filteredExperienceItems.map(({itemId}) => itemId);
+    const nextVisibleId = visibleIds[0] ?? null;
+
+    setOpenResumeFilter(null);
+    setPendingExperienceId(null);
+    setHoveredExperienceId(null);
+
+    if (!nextVisibleId) {
+      setExpandedExperienceId(null);
+      return;
+    }
+
+    setPinnedExperienceId((current) => (visibleIds.includes(current) ? current : nextVisibleId));
+    setExpandedExperienceId((current) => (current && visibleIds.includes(current) ? current : nextVisibleId));
+  }, [resumeFocusFilter, resumeSkillFilter, resumeEnvironmentFilter]);
 
   useEffect(() => {
     const sectionElements = resumeSections
@@ -1404,7 +1636,7 @@ function ResumePage() {
     sectionElements.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, []);
+  }, [resumeStage]);
 
   return (
     <div className="resume-page">
@@ -1429,58 +1661,15 @@ function ResumePage() {
             animate="visible"
           >
             {heroWords.map((word, idx) => {
-              const isAnd = word === "and";
-              const isLeverage = word === "Leverage.";
-
-              if (isAnd) {
-                return (
-                  <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
-                    <motion.span
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
-                      style={{ display: 'inline-block' }}
-                    >
-                      and
-                    </motion.span>
-                    {" "}
-                    <motion.span
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: heroDelays[idx + 1], ease: "easeOut" }}
-                      style={{ display: 'inline-block' }}
-                    >
-                      Executive
-                    </motion.span>
-                  </span>
-                );
-              }
-
-              if (word === "Executive") {
-                return null;
-              }
-
-              if (isLeverage) {
-                return (
-                  <motion.span
-                    key={idx}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
-                    className="slant-highlight"
-                    style={{ marginRight: '0.24em' }}
-                  >
-                    {word}
-                  </motion.span>
-                );
-              }
+              const isTransforms = word === "transforms";
 
               return (
                 <motion.span
                   key={idx}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: heroDelays[idx], ease: "easeOut" }}
+                  transition={{ duration: 0.34, delay: heroDelays[idx], ease: "easeOut" }}
+                  className={isTransforms ? 'slant-highlight' : undefined}
                   style={{ display: 'inline-block', marginRight: '0.24em' }}
                 >
                   {word}
@@ -1490,158 +1679,647 @@ function ResumePage() {
           </motion.h1>
         </div>
 
-        <div className="resume-hero-contact">
-          <div className="resume-hero-copy">
-            <p>{resumeIntro}</p>
-          </div>
-          <aside className="resume-contact-card" aria-label="Contact details">
-            <p className="summary-title">{profile.name}</p>
-            <p className="micro-copy">{profile.headline}</p>
-            <div className="resume-contact-list">
-              {profile.resume.contactMethods.map((method) => (
-                <a key={method.label} href={method.href} target="_blank" rel="noreferrer">
-                  <span>{method.label}</span>
-                  <strong>{method.value}</strong>
-                </a>
-              ))}
-              <div>
-                <span>Location</span>
-                <strong>{profile.location}</strong>
-              </div>
-            </div>
-          </aside>
-        </div>
       </section>
 
-      <section id="resume-proof" className="resume-snap-section resume-proof-section" aria-label="Career proof points">
-        <div className="resume-section-heading">
-          <p className="eyebrow">Proof</p>
-          <h2>Signals a hiring manager can evaluate quickly.</h2>
-        </div>
-        <div className="resume-proof-grid">
-          {resumeStats.map((stat) => (
-            <article key={stat.label}>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="resume-experience" className="resume-section resume-snap-section">
-        <div className="resume-section-heading">
-          <p className="eyebrow">Experience</p>
-          <h2>Recent work with measurable operating leverage.</h2>
-        </div>
-        <div className="resume-role-grid">
-          {leadExperience.map((item) => (
-            <article key={`${item.company}-${item.title}-${item.period}`} className="resume-role">
-              <div className="resume-role-meta">
-                <span>{item.period}</span>
-                {'location' in item && item.location ? <span>{item.location}</span> : null}
-              </div>
-              <div className="resume-role-body">
-                <p className="resume-role-company">{item.company}</p>
-                <h3>{item.title}</h3>
-                {item.bullets.length ? (
-                  <p>{item.bullets[0]}</p>
-                ) : null}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="resume-capabilities" className="resume-section resume-systems-section resume-snap-section">
-        <div className="resume-section-heading">
-          <p className="eyebrow">Capabilities</p>
-          <h2>Product judgment backed by technical execution.</h2>
-        </div>
-        <div className="resume-capability-grid">
-          <article>
-            <h3>Focus</h3>
-            <div className="resume-chip-list">
-              {profile.resume.focusAreas.map((area) => (
-                <span key={area}>{area}</span>
-              ))}
-            </div>
-          </article>
-          <article>
-            <h3>Technical Toolkit</h3>
-            <div className="resume-skill-groups">
-              {profile.resume.technicalSkills.map((group) => (
-                <div key={group.label}>
-                  <strong>{group.label}</strong>
-                  <p>{group.items.join(', ')}</p>
+      <motion.div
+        className={`resume-content-flow ${resumeStage !== 'hero' ? 'is-visible' : ''}`}
+        initial={{opacity: 0, y: 16}}
+        animate={resumeStage !== 'hero' ? {opacity: 1, y: 0} : {opacity: 0, y: 16}}
+        transition={{duration: 0.7, ease: 'easeInOut'}}
+        style={{pointerEvents: resumeStage !== 'hero' ? 'auto' : 'none'}}
+        aria-hidden={resumeStage === 'hero'}
+      >
+          <div className="resume-work-filter-section home-fade-item" aria-label="Filter experience">
+              <div className="work-filter-grid">
+                <div className="work-filter-dropdown">
+                  <button
+                    type="button"
+                    className={`work-filter-trigger ${openResumeFilter === 'focus' ? 'is-open' : ''}`}
+                    aria-expanded={openResumeFilter === 'focus'}
+                    aria-controls="resume-focus-filter"
+                    onClick={() => setOpenResumeFilter((current) => (current === 'focus' ? null : 'focus'))}
+                  >
+                    {resumeFocusFilterLabel}
+                    <span aria-hidden="true">+</span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {openResumeFilter === 'focus' ? (
+                      <motion.div
+                        id="resume-focus-filter"
+                        className="work-filter-menu"
+                        initial={{height: 0, opacity: 0}}
+                        animate={{height: 'auto', opacity: 1}}
+                        exit={{height: 0, opacity: 0}}
+                        transition={{duration: 0.22, ease: 'easeInOut'}}
+                      >
+                        {[allLabel, ...resumeFocusOptions].map((area) => (
+                          <button
+                            key={area}
+                            type="button"
+                            className={`work-filter-option ${resumeFocusFilter === area ? 'is-active' : ''}`}
+                            onClick={() => {
+                              setResumeFocusFilter(area);
+                              setOpenResumeFilter(null);
+                            }}
+                          >
+                            {area === allLabel ? 'Focus Areas' : area}
+                          </button>
+                        ))}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </div>
-              ))}
-            </div>
-          </article>
-          <article>
-            <h3>Credentials</h3>
-            <p>{profile.resume.certifications.join(', ')}</p>
-          </article>
-        </div>
-      </section>
 
-      <section id="resume-foundation" className="resume-section resume-education-section resume-snap-section">
-        <div className="resume-section-heading">
-          <p className="eyebrow">Foundation</p>
-          <h2>Architecture, engineering, and earlier innovation work.</h2>
-        </div>
-        <div className="resume-foundation-grid">
-          <article>
-            <h3>Education</h3>
-            {profile.resume.education.map((entry) => (
-              <p key={entry}>{entry}</p>
-            ))}
-          </article>
-          <article>
-            <h3>Recognition</h3>
-            <p>{profile.resume.honors.join(', ')}</p>
-          </article>
-          <article>
-            <h3>Earlier Roles</h3>
-            <div className="resume-earlier-list">
-              {earlierExperience.map((item) => (
-                <p key={`${item.company}-${item.title}`}>
-                  <strong>{item.company}</strong>
-                  {' / '}
-                  {item.title}
-                  {' / '}
-                  <span>{item.period}</span>
-                </p>
+                <div className="work-filter-dropdown">
+                  <button
+                    type="button"
+                    className={`work-filter-trigger ${openResumeFilter === 'skill' ? 'is-open' : ''}`}
+                    aria-expanded={openResumeFilter === 'skill'}
+                    aria-controls="resume-skill-filter"
+                    onClick={() => setOpenResumeFilter((current) => (current === 'skill' ? null : 'skill'))}
+                  >
+                    {resumeSkillFilterLabel}
+                    <span aria-hidden="true">+</span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {openResumeFilter === 'skill' ? (
+                      <motion.div
+                        id="resume-skill-filter"
+                        className="work-filter-menu"
+                        initial={{height: 0, opacity: 0}}
+                        animate={{height: 'auto', opacity: 1}}
+                        exit={{height: 0, opacity: 0}}
+                        transition={{duration: 0.22, ease: 'easeInOut'}}
+                      >
+                        {[allLabel, ...resumeSkillOptions].map((skill) => (
+                          <button
+                            key={skill}
+                            type="button"
+                            className={`work-filter-option ${resumeSkillFilter === skill ? 'is-active' : ''}`}
+                            onClick={() => {
+                              setResumeSkillFilter(skill);
+                              setOpenResumeFilter(null);
+                            }}
+                          >
+                            {skill === allLabel ? 'Skills' : skill}
+                          </button>
+                        ))}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
+
+                <div className="work-group-tabs" aria-label="Filter experience by environment">
+                  {[allLabel, ...resumeEnvironmentOptions].map((environment) => (
+                    <button
+                      key={environment}
+                      type="button"
+                      className={`eyebrow work-group-tab ${resumeEnvironmentFilter === environment ? 'is-active' : ''}`}
+                      onClick={() => {
+                        setResumeEnvironmentFilter(environment);
+                        setOpenResumeFilter(null);
+                      }}
+                    >
+                      {environment}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {hasResumeFilter ? (
+                <div className="resume-filter-status">
+                  <button
+                    type="button"
+                    className="resume-filter-reset"
+                    onClick={() => {
+                      setResumeFocusFilter(allLabel);
+                      setResumeSkillFilter(allLabel);
+                      setResumeEnvironmentFilter(allLabel);
+                      setOpenResumeFilter(null);
+                    }}
+                  >
+                    Clear
+                  </button>
+                </div>
+              ) : null}
+            </div>
+
+          <section id="resume-experience" className="resume-section resume-snap-section">
+            <h3 className="resume-section-label">Experience</h3>
+            <div className="landing-project-strip work-accordion home-fade-list" style={{borderLeft: 'none', borderRight: 'none'}}>
+              {filteredExperienceItems.map(({item, itemId}) => {
+                const isExpanded = expandedExperienceId === itemId;
+
+                return (
+                  <article
+                    key={itemId}
+                    className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
+                    style={{borderTop: 'none'}}
+                    onMouseEnter={() => handleExperienceEnter(itemId)}
+                    onMouseLeave={() => handleExperienceLeave(itemId)}
+                  >
+                    <button
+                      type="button"
+                      className="landing-project-row"
+                      aria-expanded={isExpanded}
+                      onClick={() => {
+                        setPinnedExperienceId(itemId);
+                      }}
+                      style={{width: '100%', padding: '16px 0'}}
+                    >
+                      <div className="project-row-details-grid">
+                        <span className="resume-row-meta">
+                          <span>{item.period}</span>
+                          <span>{item.location}</span>
+                        </span>
+                        <strong style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            style={{
+                              transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                              transition: 'transform 0.2s ease',
+                              opacity: 0.5,
+                              flexShrink: 0
+                            }}
+                          >
+                            <polyline points="6 9 12 15 18 9" />
+                          </svg>
+                          {item.title}
+                        </strong>
+                        <span style={{textAlign: 'right'}}>
+                          {item.company}
+                        </span>
+                        {item.tags && (
+                          <div className="resume-item-tags">
+                            {item.tags.map((tag) => (
+                              <span key={tag} className="resume-tag">{tag}</span>
+                            ))}
+                            {isExpanded ? (
+                              <div className="resume-item-skills" aria-label={`${item.title} skills`}>
+                                {item.skills.map((skill) => (
+                                  <span key={skill}>{skill}</span>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => {
+                        setPendingExperienceId((currentPending) => {
+                          if (currentPending) {
+                            setExpandedExperienceId(currentPending);
+                          }
+                          return null;
+                        });
+                      }}
+                    >
+                      {isExpanded ? (
+                        <motion.div
+                          className="work-accordion-panel"
+                          initial={{height: 0, opacity: 0}}
+                          animate={{
+                            height: 'auto',
+                            opacity: 1,
+                            transition: {
+                              height: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
+                              opacity: { duration: 0.2 }
+                            }
+                          }}
+                          exit={{
+                            height: 0,
+                            opacity: 0,
+                            transition: {
+                              height: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+                              opacity: { duration: 0.15 }
+                            }
+                          }}
+                          style={{padding: '16px 0 24px'}}
+                        >
+                          <div style={{padding: '0 16px'}}>
+                            <ul className="bullet-list resume-subline-list home-fade-list" style={{margin: 0, paddingLeft: '20px'}}>
+                              {item.bullets.map((bullet, bulletIdx) => (
+                                <li key={bulletIdx}>
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </article>
+                );
+              })}
+              {!filteredExperienceItems.length ? (
+                <p className="resume-filter-empty">No experience items match those filters.</p>
+              ) : null}
+            </div>
+          </section>
+
+          <section id="resume-education" className="resume-section resume-snap-section">
+            <h3 className="resume-section-label">Education</h3>
+            <div className="landing-project-strip work-accordion home-fade-list" style={{borderLeft: 'none', borderRight: 'none'}}>
+              {educationItems.map((item, idx) => {
+                const itemId = `education-${idx}`;
+                const isExpanded = expandedEducationId === itemId;
+
+                return (
+                  <article
+                    key={itemId}
+                    className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
+                    style={{borderTop: 'none'}}
+                    onMouseEnter={() => handleEducationEnter(itemId)}
+                    onMouseLeave={() => handleEducationLeave(itemId)}
+                  >
+                    <button
+                      type="button"
+                      className="landing-project-row"
+                      aria-expanded={isExpanded}
+                      onClick={() => {
+                        setPinnedEducationId(itemId);
+                      }}
+                      style={{width: '100%', padding: '16px 0'}}
+                    >
+                      <div className="project-row-details-grid">
+                        <span className="resume-row-meta">
+                          <span>{item.period}</span>
+                          <span>{item.location}</span>
+                        </span>
+                        <strong style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            style={{
+                              transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                              transition: 'transform 0.2s ease',
+                              opacity: 0.5,
+                              flexShrink: 0
+                            }}
+                          >
+                            <polyline points="6 9 12 15 18 9" />
+                          </svg>
+                          {item.title}
+                        </strong>
+                        <span style={{textAlign: 'right'}}>
+                          {item.company}
+                        </span>
+                        {item.tags && (
+                          <div className="resume-item-tags">
+                            {item.tags.map((tag) => (
+                              <span key={tag} className="resume-tag">{tag}</span>
+                            ))}
+                            {isExpanded ? (
+                              <div className="resume-item-skills" aria-label={`${item.title} skills`}>
+                                {item.skills.map((skill) => (
+                                  <span key={skill}>{skill}</span>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => {
+                        setPendingEducationId((currentPending) => {
+                          if (currentPending) {
+                            setExpandedEducationId(currentPending);
+                          }
+                          return null;
+                        });
+                      }}
+                    >
+                      {isExpanded ? (
+                        <motion.div
+                          className="work-accordion-panel"
+                          initial={{height: 0, opacity: 0}}
+                          animate={{
+                            height: 'auto',
+                            opacity: 1,
+                            transition: {
+                              height: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
+                              opacity: { duration: 0.2 }
+                            }
+                          }}
+                          exit={{
+                            height: 0,
+                            opacity: 0,
+                            transition: {
+                              height: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+                              opacity: { duration: 0.15 }
+                            }
+                          }}
+                          style={{padding: '16px 0 24px'}}
+                        >
+                          <div style={{padding: '0 16px'}}>
+                            <ul className="bullet-list resume-subline-list home-fade-list" style={{margin: 0, paddingLeft: '20px'}}>
+                              {item.bullets.map((bullet, bulletIdx) => (
+                                <li key={bulletIdx}>
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <section id="resume-foundation" className="resume-section resume-snap-section">
+            <h3 className="resume-section-label">Foundation</h3>
+            <div className="resume-role-grid home-fade-list">
+              <article className="resume-role" style={{display: 'grid', alignContent: 'start', gap: '16px', padding: '18px'}}>
+                <h3>Recognition</h3>
+                <ul className="bullet-list" style={{margin: 0, paddingLeft: '20px'}}>
+                  {profile.resume.honors.map((honor) => (
+                    <li key={honor} style={{color: 'var(--portfolio-muted)'}}>{honor}</li>
+                  ))}
+                </ul>
+              </article>
+              <article className="resume-role" style={{display: 'grid', alignContent: 'start', gap: '16px', padding: '18px'}}>
+                <h3>Certifications</h3>
+                <ul className="bullet-list" style={{margin: 0, paddingLeft: '20px'}}>
+                  {profile.resume.certifications.map((cert) => (
+                    <li key={cert} style={{color: 'var(--portfolio-muted)'}}>{cert}</li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section id="resume-proof" className="resume-snap-section resume-proof-section" aria-label="Career proof points">
+            <h3 className="resume-section-label">Proof</h3>
+            <div className="resume-proof-grid home-fade-list">
+              {resumeStats.map((stat) => (
+                <article key={stat.label}>
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </article>
               ))}
             </div>
-          </article>
-        </div>
-      </section>
+          </section>
+      </motion.div>
     </div>
   );
 }
 
 function WritingPage() {
+  const [writingStage, setWritingStage] = useState<'hero' | 'content'>('hero');
+  const [writingTopicFilter, setWritingTopicFilter] = useState(allLabel);
+  const [writingTypeFilter, setWritingTypeFilter] = useState(allLabel);
+  const [openWritingFilter, setOpenWritingFilter] = useState<'topic' | 'type' | null>(null);
+  const heroWords = ['Writing', 'on', 'AI', 'Interfaces,', 'Operations,', 'and', 'Computer-Aided', 'Work.'];
+  const heroDelays: number[] = [];
+  let heroCurrentDelay = 0;
+
+  for (let i = 0; i < heroWords.length; i++) {
+    heroDelays.push(heroCurrentDelay);
+    const word = heroWords[i];
+    let stepDelay = 0.055;
+    if (word.endsWith(',')) {
+      stepDelay = 0.24;
+    } else if (word.endsWith('.')) {
+      stepDelay = 0.4;
+    }
+    heroCurrentDelay += stepDelay;
+  }
+
+  useEffect(() => {
+    if (writingStage === 'hero') {
+      const timer = setTimeout(() => {
+        setWritingStage('content');
+      }, (heroCurrentDelay + 0.2) * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [writingStage, heroCurrentDelay]);
+
+  const writingItems = substackPosts.map((post) => ({
+    ...post,
+    topic: post.title.includes('MetroBus') ? 'Operations' : 'AI Interfaces',
+    type: post.description.toLowerCase().includes('project') ? 'Project Notes' : 'Essay',
+  }));
+  const writingTopics = Array.from(new Set(writingItems.map((post) => post.topic))).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const writingTypes = Array.from(new Set(writingItems.map((post) => post.type))).sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const filteredWritingItems = writingItems.filter((post) => {
+    const topicMatches = writingTopicFilter === allLabel || post.topic === writingTopicFilter;
+    const typeMatches = writingTypeFilter === allLabel || post.type === writingTypeFilter;
+    return topicMatches && typeMatches;
+  });
+  const writingTopicFilterLabel = writingTopicFilter === allLabel ? 'Topics' : writingTopicFilter;
+  const writingTypeFilterLabel = writingTypeFilter === allLabel ? 'Types' : writingTypeFilter;
+  const hasWritingFilter = writingTopicFilter !== allLabel || writingTypeFilter !== allLabel;
+
   return (
-    <section className="writing-archive">
-      <div className="writing-row-list">
-        {substackPosts.map((post) => (
-          <article key={post.url} className="writing-row-item">
-            <a
-              href={post.url}
-              target="_blank"
-              rel="noreferrer"
-              className="writing-row-trigger"
-              style={{textDecoration: 'none'}}
-            >
-              <span>{formatLongDate(post.publishedAt)}</span>
-              <strong>
-                {post.title}
-              </strong>
-            </a>
-          </article>
-        ))}
-      </div>
-    </section>
+    <div className="writing-page">
+      <section className="work-hero writing-hero-section">
+        <motion.h1
+          className="work-hero-title"
+          initial="hidden"
+          animate="visible"
+        >
+          {heroWords.map((word, idx) => {
+            const isComputer = word === 'Computer-Aided';
+            const isWork = word === 'Work.';
+
+            if (isComputer) {
+              return (
+                <span key={idx} style={{ display: 'inline-block', whiteSpace: 'nowrap', marginRight: '0.24em' }}>
+                  <motion.span
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.34, delay: heroDelays[idx], ease: 'easeOut' }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    Computer-Aided
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.34, delay: heroDelays[idx + 1], ease: 'easeOut' }}
+                    className="slant-highlight"
+                  >
+                    Work.
+                  </motion.span>
+                </span>
+              );
+            }
+
+            if (isWork) {
+              return null;
+            }
+
+            return (
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: heroDelays[idx], ease: 'easeOut' }}
+                style={{ display: 'inline-block', marginRight: '0.24em' }}
+              >
+                {word}
+              </motion.span>
+            );
+          })}
+        </motion.h1>
+      </section>
+
+      <motion.div
+        className={`writing-content-flow ${writingStage !== 'hero' ? 'is-visible' : ''}`}
+        initial={{opacity: 0, y: 16}}
+        animate={writingStage !== 'hero' ? {opacity: 1, y: 0} : {opacity: 0, y: 16}}
+        transition={{duration: 0.7, ease: 'easeInOut'}}
+        style={{pointerEvents: writingStage !== 'hero' ? 'auto' : 'none'}}
+        aria-hidden={writingStage === 'hero'}
+      >
+        <div className="writing-filter-section home-fade-item" aria-label="Filter writing">
+          <div className="work-filter-grid">
+            <div className="work-filter-dropdown">
+              <button
+                type="button"
+                className={`work-filter-trigger ${openWritingFilter === 'topic' ? 'is-open' : ''}`}
+                aria-expanded={openWritingFilter === 'topic'}
+                aria-controls="writing-topic-filter"
+                onClick={() => setOpenWritingFilter((current) => (current === 'topic' ? null : 'topic'))}
+              >
+                {writingTopicFilterLabel}
+                <span aria-hidden="true">+</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openWritingFilter === 'topic' ? (
+                  <motion.div
+                    id="writing-topic-filter"
+                    className="work-filter-menu"
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.22, ease: 'easeInOut'}}
+                  >
+                    {[allLabel, ...writingTopics].map((topic) => (
+                      <button
+                        key={topic}
+                        type="button"
+                        className={`work-filter-option ${writingTopicFilter === topic ? 'is-active' : ''}`}
+                        onClick={() => {
+                          setWritingTopicFilter(topic);
+                          setOpenWritingFilter(null);
+                        }}
+                      >
+                        {topic === allLabel ? 'Topics' : topic}
+                      </button>
+                    ))}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+
+            <div className="work-filter-dropdown">
+              <button
+                type="button"
+                className={`work-filter-trigger ${openWritingFilter === 'type' ? 'is-open' : ''}`}
+                aria-expanded={openWritingFilter === 'type'}
+                aria-controls="writing-type-filter"
+                onClick={() => setOpenWritingFilter((current) => (current === 'type' ? null : 'type'))}
+              >
+                {writingTypeFilterLabel}
+                <span aria-hidden="true">+</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openWritingFilter === 'type' ? (
+                  <motion.div
+                    id="writing-type-filter"
+                    className="work-filter-menu"
+                    initial={{height: 0, opacity: 0}}
+                    animate={{height: 'auto', opacity: 1}}
+                    exit={{height: 0, opacity: 0}}
+                    transition={{duration: 0.22, ease: 'easeInOut'}}
+                  >
+                    {[allLabel, ...writingTypes].map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        className={`work-filter-option ${writingTypeFilter === type ? 'is-active' : ''}`}
+                        onClick={() => {
+                          setWritingTypeFilter(type);
+                          setOpenWritingFilter(null);
+                        }}
+                      >
+                        {type === allLabel ? 'Types' : type}
+                      </button>
+                    ))}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+          </div>
+          {hasWritingFilter ? (
+            <div className="writing-filter-status">
+              <button
+                type="button"
+                className="resume-filter-reset"
+                onClick={() => {
+                  setWritingTopicFilter(allLabel);
+                  setWritingTypeFilter(allLabel);
+                  setOpenWritingFilter(null);
+                }}
+              >
+                Clear
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        <section className="writing-archive">
+          <div className="writing-row-list home-fade-list">
+            {filteredWritingItems.map((post) => (
+              <article key={post.url} className="writing-row-item">
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="writing-row-trigger"
+                  style={{textDecoration: 'none'}}
+                >
+                  <span>{formatLongDate(post.publishedAt)}</span>
+                  <strong>
+                    {post.title}
+                  </strong>
+                </a>
+              </article>
+            ))}
+            {!filteredWritingItems.length ? (
+              <p className="micro-copy empty-state">No writing matches those filters.</p>
+            ) : null}
+          </div>
+        </section>
+      </motion.div>
+    </div>
   );
 }
 
