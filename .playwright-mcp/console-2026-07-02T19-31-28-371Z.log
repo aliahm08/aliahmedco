@@ -1,0 +1,488 @@
+[     449ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[   80980ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/index.css?t=1783020769342:0
+[   80980ms] [ERROR] [vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[ 1212006ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 1742719ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 1754690ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 1801317ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783022489656:0
+[ 1801318ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[ 1862615ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 1912103ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 1924046ms] [INFO] Launched external handler for 'mailto:aliahm1208@gmail.com'. @ http://localhost:3002/resume:0
+[ 1934468ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 2080975ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 2085375ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[ 2088977ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[16213948ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[16221522ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[16225079ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[16225377ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[18775055ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[19170016ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[19170161ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[22220933ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[23090125ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[23091205ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24726108ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24813912ms] [ERROR] The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [wsp-signal-engine, [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object], ] [hero, wsp-signal-engine, [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object], ] @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5625
+[24819447ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24820806ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24821748ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24823014ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24824357ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24825619ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24827047ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24828602ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24832078ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24833088ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24834147ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24835007ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24841015ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[24945521ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[25021606ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[25208004ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[26060043ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[26081663ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[26091696ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[26092000ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[26810167ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27578630ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27578593ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27584414ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27584433ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27584433ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27588949ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27588956ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27588956ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27592954ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27592962ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27592960ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27594307ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27594323ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27594315ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27594465ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27594472ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27594472ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27638607ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27638615ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27638614ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27639005ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27639012ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27639011ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27639419ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27639433ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27639426ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27639698ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27639704ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27639704ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27656514ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27656521ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27656519ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27656719ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27656727ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27656724ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27656891ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27656897ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27656897ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27657097ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27657105ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27657103ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27657297ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27657302ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27657302ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27660771ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27662835ms] ReferenceError: NativeSocialButton is not defined
+    at HomePage (http://localhost:3002/src/App.tsx?t=1783048255436:1151:11)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[27662810ms] [WARNING] %s
+
+%s
+ An error occurred in the <HomePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[27667049ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[27689694ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[27689797ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[68422446ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[68422599ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[155534685ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[155534816ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[182075654ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[182075868ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189042646ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189044056ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189044733ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189046452ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189047108ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189093571ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189094408ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189095801ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189096219ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189096418ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189224507ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189418941ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189422654ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189439176ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189607986ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783210296333:0
+[189607986ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[189612541ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783210300893:0
+[189612541ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[189615800ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783210304150:0
+[189615801ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[189619313ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783210307675:0
+[189619313ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[189622366ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783210310652:0
+[189622366ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[189628276ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189669787ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189896709ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[189919454ms] [INFO] Launched external handler for 'mailto:aliahm1208@gmail.com'. @ http://localhost:3002/resume:0
+[189919626ms] [INFO] Launched external handler for 'mailto:aliahm1208@gmail.com'. @ http://localhost:3002/resume:0
+[190045821ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[190207415ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[190247422ms] ReferenceError: resumeIntroRemainder is not defined
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783210935643:2316:151)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[190247422ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[190250620ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[190250630ms] ReferenceError: resumeIntroRemainder is not defined
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783210935643:2316:151)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[190250629ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[190251583ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[190255013ms] [INFO] Launched external handler for 'mailto:aliahm1208@gmail.com'. @ http://localhost:3002/resume:0
+[190255364ms] [INFO] Launched external handler for 'mailto:aliahm1208@gmail.com'. @ http://localhost:3002/resume:0
+[190255494ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/index.css?t=1783210943861:0
+[190255494ms] [ERROR] [vite] Failed to reload /src/index.css. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[190257175ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[190397202ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[191332381ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[191335589ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[191502267ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[191506322ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[191542743ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:3002/@vite/client:963
+[191551058ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[195894995ms] ReferenceError: activeExperienceId is not defined
+    at http://localhost:3002/src/App.tsx?t=1783216583168:2492:28
+    at Array.map (<anonymous>)
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783216583168:2490:183)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+[195894995ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[195903547ms] ReferenceError: activeEducationId is not defined
+    at http://localhost:3002/src/App.tsx?t=1783216591804:2677:28
+    at Array.map (<anonymous>)
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783216591804:2675:182)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+[195903548ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[196064660ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[196070040ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[196142678ms] [ERROR] The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [] [content] @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5625
+[196819425ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[197759294ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[198323671ms] [ERROR] The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [All, All] [All, All, All] @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5625
+[198423463ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783219111806:0
+[198423463ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3002/@vite/client:881
+[198431307ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/src/App.tsx?t=1783219111806:0
+[198446375ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:20100
+[198574735ms] ReferenceError: resumeEnvironmentFilterLabel is not defined
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783219262934:2681:19)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[198574735ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
+[198591414ms] ReferenceError: resumeEnvironmentFilterLabel is not defined
+    at ResumePage (http://localhost:3002/src/App.tsx?t=1783219277904:2586:19)
+    at Object.react_stack_bottom_frame (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:18507:20)
+    at renderWithHooks (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:5652:24)
+    at updateFunctionComponent (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:7473:21)
+    at beginWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:8523:20)
+    at runWithFiberInDEV (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:995:72)
+    at performUnitOfWork (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12559:98)
+    at workLoopSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12422:43)
+    at renderRootSync (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:12406:13)
+    at performWorkOnRoot (http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:11825:37)
+[198591414ms] [WARNING] %s
+
+%s
+ An error occurred in the <ResumePage> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3002/node_modules/.vite/deps/react-dom_client.js?v=458a34a2:6963
