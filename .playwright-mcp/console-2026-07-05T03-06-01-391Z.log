@@ -1,0 +1,20 @@
+[     631ms] [LOG] Didomi country: US @ :7
+[     664ms] [LOG] www.wsp.com @ https://www.wsp.com/scripts/Nexio.Foundation.Theming.WSP.min.js:2
+[     824ms] [LOG] Content Container: .content-start @ :2
+[     824ms] [LOG] Content End Element: .main-footer @ :2
+[    1060ms] [LOG] Didomi ready — bootstrapping disagree-injector... @ :5
+[    1060ms] [LOG] Geo: US VA @ :12
+[    1060ms] [LOG] Injecting Disagree button now. @ :35
+[    1060ms] [LOG] Injected immediately because buttons were present. @ :83
+[    1077ms] [WARNING] Unable to locate Google Analytics gtag function. @ https://extend.vimeocdn.com/ga4/133749612.js:1
+[    2584ms] [LOG] Disagree clicked @ :57
+[    2599ms] [LOG] User disagree saved. @ :61
+[    2599ms] [LOG] Didomi notice hidden. @ :67
+[    3464ms] [LOG] Content Started @ :5
+[    3652ms] TypeError: Cannot read properties of null (reading 'paused')
+    at toggleButtonVisibility (<anonymous>:10:27)
+    at <anonymous>:30:9
+[    3652ms] TypeError: Cannot read properties of null (reading 'paused')
+    at togglemobButtonVisibility (<anonymous>:10:27)
+    at <anonymous>:29:9
+[   20560ms] [LOG] Content Ended @ :5
