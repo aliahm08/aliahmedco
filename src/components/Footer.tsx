@@ -7,7 +7,7 @@ function navigateTo(route: AppRoute) {
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-function InternalLink(props: {href: AppRoute; children: ReactNode; isCurrent?: boolean}) {
+function InternalLink(props: {href: AppRoute; children: ReactNode; isCurrent?: boolean; key?: string}) {
   return (
     <a
       href={props.href}

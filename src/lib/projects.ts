@@ -27,6 +27,7 @@ export type ProjectDetail = ProjectIndexItem & {
 const indexPath = '/data/projects-index.json';
 const detailPath = (projectId: string) => `/data/projects/${projectId}.json`;
 const uploadedMediaProjectIds = new Set([
+  'nomads-nobles-classified-shoe-design',
   'autodesk-applied-innovation',
   'huupe-product-concept',
   'nasa-testing',

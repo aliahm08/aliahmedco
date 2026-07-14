@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Classified shoe design proposal</title>
+  <desc id="desc">Abstract editorial artwork for Nomads and Nobles in cream, black, and red.</desc>
+  <rect width="1200" height="800" fill="#f4f0e9"/>
+  <path d="M179 538c92-18 191-93 259-231 28-57 86-76 138-38l111 81c50 37 112 62 174 73l150 27c42 8 66 36 57 68-8 28-39 46-82 49l-564 40c-103 7-187-2-243-69Z" fill="#181715"/>
+  <path d="M411 460c125 4 282 11 470 24" fill="none" stroke="#f4f0e9" stroke-width="12" stroke-linecap="round"/>
+  <path d="m566 273 73 184M626 300l66 163M688 342l47 126" stroke="#bf4c3b" stroke-width="8"/>
+  <rect x="56" y="52" width="232" height="42" fill="#bf4c3b"/>
+  <text x="72" y="81" fill="#fff" font-family="Arial, sans-serif" font-size="20" letter-spacing="4">CLASSIFIED</text>
+  <text x="56" y="742" fill="#181715" font-family="Arial, sans-serif" font-size="22" letter-spacing="3">NOMADS &amp; NOBLES / PROPOSAL 01</text>
+</svg>

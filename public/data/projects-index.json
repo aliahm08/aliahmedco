@@ -1,5 +1,25 @@
 [
   {
+    "id": "nomads-nobles-classified-shoe-design",
+    "title": "Classified Shoe Design",
+    "company": "Nomads & Nobles",
+    "client": "Project Proposal",
+    "year": "2026",
+    "location": "Confidential",
+    "teaser": "A 24-month program spanning design, prototyping, production engineering, and manufacturer-ready handoff.",
+    "productType": "Product Concept",
+    "role": "Product Design",
+    "scale": "Startup",
+    "poster": "/projects/nomads-nobles-classified-shoe.svg",
+    "accent": "#bf4c3b",
+    "tags": ["Footwear", "Creative Direction", "Product Design", "Confidential"],
+    "metrics": [
+      {"label": "Status", "value": "Proposal"},
+      {"label": "Scope", "value": "3 phases"},
+      {"label": "Output", "value": "75% build"}
+    ]
+  },
+  {
     "id": "washington-dc-metro-ai-platform",
     "title": "Automated Reporting Tools",
     "company": "Washington DC Metro",

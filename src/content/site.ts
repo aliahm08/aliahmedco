@@ -1,4 +1,4 @@
-export type AppRoute = '/' | '/portfolio' | '/projects' | '/work' | '/resume' | '/writing';
+export type AppRoute = '/' | '/portfolio' | '/projects' | '/work' | '/work/classified-shoe-design-nomads-nobles' | '/resume' | '/writing';
 
 export type RouteMeta = {
   title: string;
@@ -68,6 +68,13 @@ export const routeMeta: Record<AppRoute, RouteMeta> = {
     description:
       'Selected work from Ali Ahmed showing AI product development, analytics systems, hardware prototyping, and technical storytelling across WSP, NASA, Autodesk, huupe, and more.',
     canonicalPath: '/work',
+  },
+  '/work/classified-shoe-design-nomads-nobles': {
+    title: 'Classified Shoe Design Proposal | Nomads & Nobles',
+    description:
+      'An end-to-end footwear development proposal covering design, prototyping, production engineering, and manufacturer-ready handoff.',
+    canonicalPath: '/work/classified-shoe-design-nomads-nobles',
+    robots: 'noindex, nofollow',
   },
   '/resume': {
     title: 'Resume | Ali Ahmed Co',

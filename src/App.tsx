@@ -36,6 +36,7 @@ const routeDefaultView: Record<AppRoute, ViewMode> = {
   '/portfolio': 'index',
   '/projects': 'grid',
   '/work': 'groups',
+  '/work/classified-shoe-design-nomads-nobles': 'groups',
   '/resume': 'index',
   '/writing': 'index',
 };
@@ -51,6 +52,7 @@ function normalizeRoute(pathname: string): AppRoute | null {
     normalizedPathname === '/' ||
     normalizedPathname === '/portfolio' ||
     normalizedPathname === '/work' ||
+    normalizedPathname === '/work/classified-shoe-design-nomads-nobles' ||
     normalizedPathname === '/resume' ||
     normalizedPathname === '/writing'
   ) {
@@ -983,11 +985,10 @@ function WorkPage(props: {
       window.clearTimeout(pendingOpenRef.current);
     }
 
-    setExpandedProjectId(null);
     pendingOpenRef.current = window.setTimeout(() => {
       setExpandedProjectId(projectId);
       pendingOpenRef.current = null;
-    }, 180);
+    }, 80);
   };
 
   useEffect(() => {
@@ -1255,14 +1256,26 @@ function WorkPage(props: {
                     projectRefs.current[project.id] = element;
                   }}
                   className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
-                  onMouseEnter={() => openProjectTray(project.id, 'hover')}
+                  onMouseEnter={() => {
+                    if (project.id !== 'nomads-nobles-classified-shoe-design') {
+                      openProjectTray(project.id, 'hover');
+                    }
+                  }}
                 >
                   <button
                     type="button"
                     className="landing-project-row"
                     aria-expanded={isExpanded}
-                    onFocus={() => openProjectTray(project.id, 'focus')}
+                    onFocus={() => {
+                      if (project.id !== 'nomads-nobles-classified-shoe-design') {
+                        openProjectTray(project.id, 'focus');
+                      }
+                    }}
                     onClick={() => {
+                      if (project.id === 'nomads-nobles-classified-shoe-design') {
+                        navigateTo('/work/classified-shoe-design-nomads-nobles');
+                        return;
+                      }
                       openProjectTray(project.id, 'touch');
                     }}
                   >
@@ -1276,10 +1289,10 @@ function WorkPage(props: {
                     {isExpanded ? (
                       <motion.div
                         className="work-accordion-panel"
-                        initial={{height: 0, opacity: 0}}
-                        animate={{height: 'auto', opacity: 1}}
-                        exit={{height: 0, opacity: 0}}
-                        transition={{duration: 0.34, ease: 'easeInOut'}}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        transition={{duration: 0.16, ease: 'easeOut'}}
                       >
                         <WorkProjectStack
                           projects={props.projects}
@@ -1294,6 +1307,541 @@ function WorkPage(props: {
           </div>
         </section>
       </motion.div>
+    </div>
+  );
+}
+
+function ShoeDesignProposalPage() {
+  const [selectedApproachId, setSelectedApproachId] = useState('fully-custom');
+  const [builderStep, setBuilderStep] = useState(0);
+  const scopeSectionRef = useRef<HTMLDivElement>(null);
+  const developmentSectionRef = useRef<HTMLDivElement>(null);
+  const estimateSectionRef = useRef<HTMLDivElement>(null);
+  const [selectedServiceIds, setSelectedServiceIds] = useState(['design', 'prototyping', 'engineering']);
+  const [selectedAdditionalServiceIds, setSelectedAdditionalServiceIds] = useState<string[]>([]);
+  const [estimateConfirmed, setEstimateConfirmed] = useState(false);
+  const developmentPhases = [
+    {
+      id: 'design',
+      number: '01',
+      name: 'Design',
+      months: 6,
+      fee: 60000,
+      build: '0–15% build',
+      monthly: '$10,000 / month',
+      duration: '6 months',
+      total: '$60,000 total services',
+      description: 'Establish the product vision and resolve it into a launch-ready design package that can enter physical development.',
+      deliveries: [
+        'Creative direction and intended-wearer definition',
+        'Concept system, silhouette, materials, color, and signature details',
+        'Design development, technical views, and decision documentation',
+        'Launch-ready design handoff for prototyping',
+      ],
+    },
+    {
+      id: 'prototyping',
+      number: '02',
+      name: 'Prototyping',
+      months: 8,
+      fee: 120000,
+      build: '15–30% build',
+      monthly: '$15,000 / month',
+      duration: '8 months',
+      total: '$120,000 total services',
+      description: 'Turn the approved design into physical prototypes, using material, construction, fit, and wear feedback to identify the right product direction.',
+      deliveries: [
+        'Prototype strategy, technical brief, and specialist team',
+        'Material and construction trials',
+        'Physical prototype rounds and documented reviews',
+        'Fit, comfort, wear, and visual validation',
+        'Approved prototype and engineering requirements',
+      ],
+    },
+    {
+      id: 'engineering',
+      number: '03',
+      name: 'Engineering',
+      months: 10,
+      fee: 200000,
+      build: '30–75% build',
+      monthly: '$20,000 / month',
+      duration: '10 months',
+      total: '$200,000 total services',
+      description: 'Work with model makers and production specialists to engineer the ideal shoe into a reproducible, quality-controlled, and shippable product.',
+      deliveries: [
+        'Model-maker coordination and engineered footwear architecture',
+        'Last, outsole, upper, pattern, and component resolution',
+        'Production tech pack, bill of materials, tolerances, and grading',
+        'Size-set, fit, durability, and production validation',
+        'Manufacturer-ready package and sealed production standard',
+      ],
+    },
+  ];
+  const traditionalFirmRoutes = [
+    {
+      id: 'private-label',
+      name: 'Private-label existing shoe',
+      development: '$10,000–$30,000',
+      inventory: '$10,000–$40,000',
+      total: '$20,000–$70,000',
+      developmentMin: 10000,
+      developmentMax: 30000,
+      inventoryMin: 10000,
+      inventoryMax: 40000,
+      recommendedServices: ['design'],
+      description: 'Select an existing factory shoe and customize branding, colors, and packaging with minimal product engineering.',
+    },
+    {
+      id: 'customized-platform',
+      name: 'Customized existing sole/platform',
+      development: '$35,000–$100,000',
+      inventory: '$20,000–$75,000',
+      total: '$55,000–$175,000',
+      developmentMin: 35000,
+      developmentMax: 100000,
+      inventoryMin: 20000,
+      inventoryMax: 75000,
+      recommendedServices: ['design', 'prototyping'],
+      description: 'Develop a distinct upper, material package, and brand expression around an existing last and sole platform.',
+    },
+    {
+      id: 'fully-custom',
+      name: 'Fully custom premium shoe',
+      development: '$100,000–$300,000',
+      inventory: '$30,000–$120,000',
+      total: '$130,000–$420,000',
+      developmentMin: 100000,
+      developmentMax: 300000,
+      inventoryMin: 30000,
+      inventoryMax: 120000,
+      recommendedServices: ['design', 'prototyping', 'engineering'],
+      description: 'Create an original silhouette, fit, construction, prototypes, tooling, and production system for a proprietary product.',
+    },
+    {
+      id: 'technical-performance',
+      name: 'Technical running/performance shoe',
+      development: '$250,000–$750,000+',
+      inventory: '$50,000–$200,000',
+      total: '$300,000–$950,000+',
+      developmentMin: 250000,
+      developmentMax: 750000,
+      inventoryMin: 50000,
+      inventoryMax: 200000,
+      recommendedServices: ['design', 'prototyping', 'engineering'],
+      description: 'Add advanced biomechanics, performance engineering, laboratory validation, specialized materials, and more complex tooling.',
+    },
+  ];
+  const selectedApproach = traditionalFirmRoutes.find((approach) => approach.id === selectedApproachId) ?? traditionalFirmRoutes[2];
+  const additionalServices = [
+    {id: 'factory-sourcing', name: 'Factory sourcing and audit', fee: 25000, description: 'Identify, qualify, compare, and document suitable footwear manufacturing partners.'},
+    {id: 'testing-qa', name: 'Testing and quality program', fee: 30000, description: 'Define validation criteria, coordinate testing, and establish production quality controls.'},
+    {id: 'packaging-launch', name: 'Packaging and launch system', fee: 15000, description: 'Develop packaging requirements, product information, and launch-ready production assets.'},
+    {id: 'production-oversight', name: 'Production oversight', fee: 40000, description: 'Support pre-production approval, inspection coordination, issue resolution, and delivery reporting.'},
+  ];
+  const selectedServices = developmentPhases.filter((service) => selectedServiceIds.includes(service.id));
+  const selectedAdditionalServices = additionalServices.filter((service) => selectedAdditionalServiceIds.includes(service.id));
+  const aliServicesTotal = [...selectedServices, ...selectedAdditionalServices].reduce((sum, service) => sum + service.fee, 0);
+  const totalMonths = selectedServices.reduce((sum, service) => sum + service.months, 0);
+  const manufacturerReadiness = selectedServiceIds.includes('engineering')
+    ? '75%'
+    : selectedServiceIds.includes('prototyping')
+      ? '30%'
+      : selectedServiceIds.includes('design')
+        ? '15%'
+        : '0%';
+  const formatCurrency = (value: number) => new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD', maximumFractionDigits: 0}).format(value);
+  const configuredEstimateMin = selectedApproach.developmentMin + selectedApproach.inventoryMin + aliServicesTotal;
+  const configuredEstimateMax = selectedApproach.developmentMax + selectedApproach.inventoryMax + aliServicesTotal;
+  const configuredEstimate = `${formatCurrency(configuredEstimateMin)}–${formatCurrency(configuredEstimateMax)}${selectedApproach.id === 'technical-performance' ? '+' : ''}`;
+  let timelineCursor = 1;
+  const configuredTimeline = selectedServices.map((service) => {
+    const start = timelineCursor;
+    const end = timelineCursor + service.months - 1;
+    timelineCursor = end + 1;
+    return {
+      period: start === end ? `Month ${start}` : `Months ${start}–${end}`,
+      name: service.name,
+      output: service.deliveries.join('; '),
+    };
+  });
+  const selectApproach = (approachId: string) => {
+    const approach = traditionalFirmRoutes.find((item) => item.id === approachId);
+    setSelectedApproachId(approachId);
+    setSelectedServiceIds(approach?.recommendedServices ?? ['design']);
+    setSelectedAdditionalServiceIds(approachId === 'technical-performance' ? ['testing-qa'] : []);
+    setEstimateConfirmed(false);
+  };
+  const toggleSelection = (id: string, current: string[], update: (value: string[]) => void) => {
+    update(current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+    setEstimateConfirmed(false);
+  };
+  const moveToBuilderStep = (step: number) => {
+    const sectionRefs = [scopeSectionRef, developmentSectionRef, estimateSectionRef];
+    setBuilderStep(step);
+    window.requestAnimationFrame(() => {
+      sectionRefs[step]?.current?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  };
+  const downloadConfiguredProposal = async () => {
+    const {downloadProposalPdf} = await import('./lib/proposalPdf');
+    downloadProposalPdf({
+      approach: selectedApproach.name,
+      approachDescription: selectedApproach.description,
+      services: selectedServices.map((service) => ({
+        name: service.name,
+        duration: service.duration,
+        fee: formatCurrency(service.fee),
+        summary: service.description,
+      })),
+      additionalServices: selectedAdditionalServices.map((service) => ({
+        name: service.name,
+        fee: formatCurrency(service.fee),
+      })),
+      timeline: configuredTimeline,
+      aliServicesTotal: formatCurrency(aliServicesTotal),
+      developmentTooling: selectedApproach.development,
+      initialInventory: selectedApproach.inventory,
+      estimatedTotal: configuredEstimate,
+    });
+  };
+  return (
+    <div className="proposal-page">
+      <section className="proposal-hero">
+        <div className="proposal-kicker">
+          <span>Project proposal</span>
+          <span>Prepared for Nomads &amp; Nobles</span>
+        </div>
+        <motion.h1
+          initial={{opacity: 0, y: 14}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.55, ease: 'easeOut'}}
+        >
+          Classified shoe design<span className="proposal-dot">.</span>
+        </motion.h1>
+        <motion.p
+          initial={{opacity: 0, y: 10}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.5, delay: 0.16, ease: 'easeOut'}}
+        >
+          An end-to-end development program that takes the shoe from creative direction through
+          prototyping and production engineering, then hands a reproducible product to manufacturing.
+        </motion.p>
+        <div className="proposal-hero-meta">
+          <span>Ali Ahmed Co.</span>
+          <span>Confidential concept engagement</span>
+          <span>July 2026</span>
+        </div>
+      </section>
+
+      <section className="proposal-section proposal-overview">
+        <p className="proposal-section-label">The opportunity</p>
+        <div className="proposal-lede">
+          <h2>Make the mystery tangible.</h2>
+          <div>
+            <p>
+              The strongest classified product is not merely hidden. It feels deliberate before it
+              is revealed. This engagement creates the product logic, form, and story needed to make
+              that promise credible.
+            </p>
+            <p>
+              Nomads &amp; Nobles does not need to arrive with an established footwear network. Ali
+              will assemble and coordinate the designers, developers, engineers, sourcing partners,
+              and manufacturers required to move the product into production.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="proposal-section proposal-builder-section">
+        <nav className="proposal-builder-progress" aria-label="Proposal builder progress">
+          {['Scope', 'Development Plan', 'Timeline & Estimate'].map((label, index) => (
+            <button
+              key={label}
+              type="button"
+              className={builderStep === index ? 'is-active' : builderStep > index ? 'is-complete' : ''}
+              disabled={index > builderStep}
+              onClick={() => index <= builderStep && moveToBuilderStep(index)}
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              {label}
+            </button>
+          ))}
+        </nav>
+      <div ref={scopeSectionRef} id="proposal-scope" className="proposal-builder-slide proposal-approach-selector">
+        <div className="proposal-section-heading">
+          <p className="proposal-section-label">Choose a product route</p>
+          <h2>From creative direction to launch-ready handoff.</h2>
+        </div>
+        <div className="proposal-approach-tabs" role="tablist" aria-label="Footwear development approaches">
+          {traditionalFirmRoutes.map((approach, index) => (
+            <button
+              key={approach.id}
+              id={`approach-tab-${approach.id}`}
+              type="button"
+              role="tab"
+              aria-selected={selectedApproach.id === approach.id}
+              aria-controls="approach-estimate-panel"
+              className={selectedApproach.id === approach.id ? 'is-active' : ''}
+              onClick={() => selectApproach(approach.id)}
+            >
+              <small className="proposal-approach-option-number">{`Option ${String(index + 1).padStart(2, '0')}`}</small>
+              <span className="proposal-approach-option-name">{approach.name}</span>
+              <strong>{approach.total}</strong>
+              <span className="proposal-approach-option-action">
+                <i aria-hidden="true" />
+                {selectedApproach.id === approach.id ? 'Selected' : 'Select option'}
+              </span>
+            </button>
+          ))}
+        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={selectedApproach.id}
+            id="approach-estimate-panel"
+            role="tabpanel"
+            aria-labelledby={`approach-tab-${selectedApproach.id}`}
+            className="proposal-approach-panel"
+            initial={{opacity: 0, y: 8}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -6}}
+            transition={{duration: 0.2, ease: 'easeOut'}}
+          >
+            <div className="proposal-approach-panel-intro">
+              <p className="proposal-section-label">Selected approach</p>
+              <h3>{selectedApproach.name}</h3>
+              <p>{selectedApproach.description}</p>
+            </div>
+            <dl>
+              <div><dt>Development and tooling</dt><dd>{selectedApproach.development}</dd></div>
+              <div><dt>Initial inventory</dt><dd>{selectedApproach.inventory}</dd></div>
+              <div className="proposal-approach-total"><dt>Approximate total before marketing</dt><dd>{selectedApproach.total}</dd></div>
+            </dl>
+          </motion.div>
+        </AnimatePresence>
+        <p className="proposal-approach-note">
+          Planning estimates only. Marketing, customer fulfillment, returns, and ongoing operations are excluded.
+        </p>
+        <div className="proposal-builder-actions">
+          <span>Selected: {selectedApproach.name}</span>
+          <button type="button" className="proposal-builder-next" onClick={() => moveToBuilderStep(1)}>
+            Proceed to Development Plan <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div ref={developmentSectionRef} id="proposal-development-plan" className="proposal-builder-slide proposal-development-builder">
+        <div className="proposal-section-heading">
+          <p className="proposal-section-label">Development plan</p>
+          <h2>Choose the services that move your product forward.</h2>
+        </div>
+        <p className="proposal-builder-context">
+          Recommended for <strong>{selectedApproach.name}</strong>. Your scope is prepopulated, but
+          every service can be added or removed before the estimate is prepared.
+        </p>
+        <div className="proposal-development-summary">
+          <div><span>{totalMonths || '—'}{totalMonths ? ' months' : ''}</span><small>Configured core timeline</small></div>
+          <div><span>{formatCurrency(aliServicesTotal)}</span><small>Selected Ali Ahmed services</small></div>
+          <div><span>{manufacturerReadiness}</span><small>Projected product build</small></div>
+        </div>
+        <fieldset className="proposal-development-phases">
+          <legend className="proposal-section-label">Core development services</legend>
+          {developmentPhases.map((phase) => (
+            <label
+              key={phase.number}
+              className={`proposal-development-phase${selectedServiceIds.includes(phase.id) ? ' is-selected' : ''}`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedServiceIds.includes(phase.id)}
+                onChange={() => toggleSelection(phase.id, selectedServiceIds, setSelectedServiceIds)}
+              />
+              <div className="proposal-development-phase-intro">
+                <div className="proposal-development-phase-number">
+                  <span>Service {phase.number}</span>
+                  <span>{phase.build}</span>
+                </div>
+                <div className="proposal-service-title">
+                  <span className="proposal-service-check" aria-hidden="true">✓</span>
+                  <h3>{phase.name}</h3>
+                </div>
+                <p>{phase.description}</p>
+              </div>
+              <div className="proposal-development-phase-commercials">
+                <strong>{phase.monthly}</strong>
+                <span>{phase.duration}</span>
+                <span>{phase.total}</span>
+                <small>Payable at the start of each month</small>
+              </div>
+              <div className="proposal-development-phase-deliveries">
+                <p className="proposal-section-label">Associated deliveries</p>
+                <ul>
+                  {phase.deliveries.map((delivery) => <li key={delivery}>{delivery}</li>)}
+                </ul>
+              </div>
+            </label>
+          ))}
+        </fieldset>
+        <fieldset className="proposal-additional-services">
+          <legend className="proposal-section-label">Additional services</legend>
+          <div className="proposal-additional-grid">
+            {additionalServices.map((service) => (
+              <label
+                key={service.id}
+                className={selectedAdditionalServiceIds.includes(service.id) ? 'is-selected' : ''}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedAdditionalServiceIds.includes(service.id)}
+                  onChange={() => toggleSelection(service.id, selectedAdditionalServiceIds, setSelectedAdditionalServiceIds)}
+                />
+                <span className="proposal-service-check" aria-hidden="true">✓</span>
+                <strong>{service.name}</strong>
+                <span>{service.description}</span>
+                <small>{formatCurrency(service.fee)} fixed service fee</small>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div className="proposal-manufacturer-handoff">
+          <div><span>75%</span><strong>Manufacturer-ready</strong></div>
+          <div><span>25%</span><strong>Manufacturing and market launch</strong></div>
+          <p>
+            The remaining 25% sits with the selected manufacturer: tooling completion, production,
+            quality control, packaging, freight, and market delivery. These costs are client-funded
+            and contracted separately from Ali Ahmed services.
+          </p>
+        </div>
+        <div className="proposal-builder-actions">
+          <button type="button" className="proposal-builder-back" onClick={() => moveToBuilderStep(0)}>← Back to Scope</button>
+          <span>{selectedServices.length} core service{selectedServices.length === 1 ? '' : 's'} selected</span>
+          <button
+            type="button"
+            className="proposal-builder-next"
+            disabled={selectedServices.length === 0}
+            onClick={() => moveToBuilderStep(2)}
+          >
+            Build Timeline &amp; Estimate <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div ref={estimateSectionRef} id="proposal-timeline-estimate" className="proposal-builder-slide proposal-market-benchmark">
+        <div className="proposal-section-heading">
+          <p className="proposal-section-label">Timeline &amp; estimate</p>
+          <h2>Your configured development proposal.</h2>
+        </div>
+        <div className="proposal-estimate-hero">
+          <div>
+            <small>Configured planning range</small>
+            <span>{configuredEstimate}</span>
+            <strong>{selectedApproach.name}</strong>
+          </div>
+          <p>
+            This combines your selected Ali Ahmed services with the market benchmark for external
+            development, tooling, and initial inventory. External costs remain client-funded and are
+            only incurred with written approval.
+          </p>
+        </div>
+        <div className="proposal-configured-grid">
+          <div className="proposal-configured-timeline">
+            <p className="proposal-section-label">Configured timeline</p>
+            <div>
+              {configuredTimeline.map((item) => (
+                <article key={item.name}>
+                  <span>{item.period}</span>
+                  <strong>{item.name}</strong>
+                  <p>{item.output}</p>
+                </article>
+              ))}
+              {selectedAdditionalServices.length > 0 ? (
+                <article>
+                  <span>Alongside core phases</span>
+                  <strong>Additional specialist services</strong>
+                  <p>{selectedAdditionalServices.map((service) => service.name).join(' · ')}</p>
+                </article>
+              ) : null}
+            </div>
+          </div>
+          <div className="proposal-configured-estimate">
+            <p className="proposal-section-label">Basic estimate</p>
+            <dl>
+              <div><dt>Ali Ahmed services</dt><dd>{formatCurrency(aliServicesTotal)}</dd></div>
+              <div><dt>External development and tooling</dt><dd>{selectedApproach.development}</dd></div>
+              <div><dt>Initial inventory</dt><dd>{selectedApproach.inventory}</dd></div>
+              <div className="proposal-configured-total"><dt>Approximate total before marketing</dt><dd>{configuredEstimate}</dd></div>
+            </dl>
+          </div>
+        </div>
+        <div className="proposal-market-context">
+          <p className="proposal-section-label">Market benchmark</p>
+          <p>
+            A traditional senior footwear team can cost approximately $500,000–$1.2 million in its
+            first year before factory production and inventory. This configured model creates one
+            accountable path while keeping materials, tooling, testing, inventory, and factory
+            spending visible and client-approved.
+          </p>
+        </div>
+        <p className="proposal-benchmark-disclaimer">
+          Preliminary planning estimate—not a fixed quote. Final cost depends on scope, sample rounds,
+          factory minimums, materials, testing, freight, and production decisions. Marketing, customer
+          fulfillment, returns, and post-launch operations are not included.
+        </p>
+        <label className={`proposal-estimate-confirmation${estimateConfirmed ? ' is-confirmed' : ''}`}>
+          <input
+            type="checkbox"
+            checked={estimateConfirmed}
+            onChange={(event) => setEstimateConfirmed(event.target.checked)}
+          />
+          <span className="proposal-service-check" aria-hidden="true">✓</span>
+          <span>
+            <strong>Confirm this configuration</strong>
+            <small>I understand this is a preliminary planning estimate and external costs are paid directly by the client.</small>
+          </span>
+        </label>
+        <div className="proposal-builder-actions proposal-download-actions">
+          <button type="button" className="proposal-builder-back" onClick={() => moveToBuilderStep(1)}>← Edit Development Plan</button>
+          <button
+            type="button"
+            className="proposal-builder-next"
+            disabled={!estimateConfirmed}
+            onClick={downloadConfiguredProposal}
+          >
+            Download Configured Proposal <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
+      </section>
+
+      <section className="proposal-section proposal-working-model">
+        <p className="proposal-section-label">Working model</p>
+        <div className="proposal-facts">
+          <div><span>Cadence</span><strong>One working review each week</strong></div>
+          <div><span>Collaboration</span><strong>Shared decisions, documented after each review</strong></div>
+          <div><span>Feedback</span><strong>One consolidated response per review round</strong></div>
+          <div><span>Payment</span><strong>Monthly service fee due before each month begins</strong></div>
+          <div><span>External costs</span><strong>100% client-funded with written approval before purchase</strong></div>
+          <div><span>Configured program</span><strong>Defined by the selected scope and services above</strong></div>
+        </div>
+      </section>
+
+      <section className="proposal-acceptance">
+        <p className="proposal-section-label">Next step</p>
+        <h2>Ready to open the file?</h2>
+        <p>
+          Download and confirm the configured proposal, then attach it to your kickoff email. The
+          statement of work will confirm the monthly service schedule, external-cost authorization
+          process, dependencies, revision limits, and ownership before work begins.
+        </p>
+        <a
+          className="proposal-cta"
+          href={`mailto:${profile.email}?subject=Nomads%20%26%20Nobles%20shoe%20development%20kickoff&body=Please%20attach%20the%20configured%20proposal%20you%20downloaded%20from%20the%20proposal%20builder%20before%20sending.`}
+        >
+          Approve and Schedule Kickoff <span aria-hidden="true">↗</span>
+        </a>
+        <small className="proposal-attachment-note">Attach “Nomads-and-Nobles-Development-Proposal.pdf” to this email.</small>
+        <SmartLink href="/work" className="proposal-back-link">← Back to work</SmartLink>
+      </section>
     </div>
   );
 }
@@ -2382,7 +2930,7 @@ export default function App() {
       setViewMode(nextView);
     }
     
-    if (route === '/work') {
+    if (route === '/work' || route === '/work/classified-shoe-design-nomads-nobles') {
       document.body.classList.add('work-page-active');
     } else {
       document.body.classList.remove('work-page-active');
@@ -2485,9 +3033,10 @@ export default function App() {
   };
   const usesPortfolioShell = route === '/portfolio';
   const isWorkRoute = route === '/work';
+  const isProposalRoute = route === '/work/classified-shoe-design-nomads-nobles';
 
   return (
-    <div className={`site-shell ${usesPortfolioShell ? 'site-shell--portfolio' : ''} ${isWorkRoute ? 'site-shell--work' : ''}`}>
+    <div className={`site-shell ${usesPortfolioShell ? 'site-shell--portfolio' : ''} ${isWorkRoute || isProposalRoute ? 'site-shell--work' : ''}`}>
       <header className="topbar">
         <div className="topbar-inner">
           <SmartLink href="/" className="wordmark">
@@ -2545,6 +3094,8 @@ export default function App() {
             projects={projects}
             onOpenProject={openProject}
           />
+        ) : route === '/work/classified-shoe-design-nomads-nobles' ? (
+          <ShoeDesignProposalPage />
         ) : route === '/resume' ? (
           <ResumePage />
         ) : (
