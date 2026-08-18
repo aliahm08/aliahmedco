@@ -8,7 +8,7 @@
   "productType": "Design for Robotics",
   "role": "Robotics Engineer",
   "scale": "Enterprise",
-  "poster": "/projects/ge-design-for-robotics.svg",
+  "poster": "/projects/ge-robotics-inspection.svg",
   "accent": "#005e9d",
   "tags": [
     "Robotics",
@@ -46,7 +46,7 @@
   ],
   "gallery": [
     {
-      "src": "/projects/ge-design-for-robotics.svg",
+      "src": "/projects/ge-robotics-inspection.svg",
       "alt": "Inspection Crawlers",
       "title": "Inspection Sensor System",
       "label": "Robotics + Computer Vision",

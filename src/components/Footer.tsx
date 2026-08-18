@@ -1,6 +1,6 @@
 import {ReactNode} from 'react';
 import {profile} from '../content/profile';
-import {AppRoute, navItems, site} from '../content/site';
+import {AppRoute, navItems, SiteRoute, site} from '../content/site';
 
 function navigateTo(route: AppRoute) {
   window.history.pushState({}, '', route);
@@ -33,7 +33,7 @@ function InternalLink(props: {href: AppRoute; children: ReactNode; isCurrent?: b
   );
 }
 
-export default function Footer(props: {route: AppRoute | null}) {
+export default function Footer(props: {route: SiteRoute | null}) {
   const year = new Date().getFullYear();
 
   return (

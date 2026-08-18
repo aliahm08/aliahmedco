@@ -30,7 +30,7 @@
     "productType": "AI Platform",
     "role": "Product + Engineering",
     "scale": "Enterprise",
-    "poster": "/projects/washington-dc-metro-ai-platform.svg",
+    "poster": "/project-media/washington-dc-metro-ai-platform/chatgpt-image-jan-22-2026-at-12-55-40-pm.png",
     "accent": "#c86f31",
     "tags": [
       "TypeScript",
@@ -64,7 +64,7 @@
     "productType": "Operations System",
     "role": "Design Management",
     "scale": "Scale-up",
-    "poster": "/projects/launchgood-operations-system.svg",
+    "poster": "/projects/launchgood-design-loop.svg",
     "accent": "#1f6e62",
     "tags": [
       "Figma",
@@ -98,7 +98,7 @@
     "productType": "Product Concept",
     "role": "Hardware + Product",
     "scale": "Startup",
-    "poster": "/projects/huupe-product-concept.svg",
+    "poster": "/project-media/huupe-product-concept/huupe-show2.png",
     "accent": "#ae6048",
     "tags": [
       "Computer Vision",
@@ -132,7 +132,7 @@
     "productType": "Testing",
     "role": "Engineer",
     "scale": "Federal",
-    "poster": "/projects/nasa-testing.svg",
+    "poster": "/project-media/nasa-testing/nasa-hero.jpg",
     "accent": "#456b88",
     "tags": [
       "Computer Vision",
@@ -166,7 +166,7 @@
     "productType": "Intelligent Wayfinding",
     "role": "Innovation Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/autodesk-intelligent-wayfinding.svg",
+    "poster": "/project-media/autodesk-intelligent-wayfinding/autodesk-exhibit-show1.png",
     "accent": "#8d6842",
     "tags": [
       "Robotics",
@@ -200,7 +200,7 @@
     "productType": "Smart Devices",
     "role": "Product Engineering",
     "scale": "Startup",
-    "poster": "/projects/bragi-smart-devices.svg",
+    "poster": "/projects/bragi-dash.svg",
     "accent": "#2f3136",
     "tags": [
       "Hardware",
@@ -233,7 +233,7 @@
     "productType": "Applied Innovation",
     "role": "Innovation Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/autodesk-applied-innovation.svg",
+    "poster": "/project-media/autodesk-applied-innovation/autodesk-show1.png",
     "accent": "#0696d7",
     "tags": [
       "Generative Design",
@@ -266,7 +266,7 @@
     "productType": "DigitalX Workshop",
     "role": "Design Engineering",
     "scale": "Non-profit",
-    "poster": "/projects/norman-foster-digitalx-workshop.svg",
+    "poster": "/project-media/norman-foster-digitalx-workshop/norman-foster-foundation-hero.jpg",
     "accent": "#bf4c3b",
     "tags": [
       "Architecture",
@@ -299,7 +299,7 @@
     "productType": "Design for Robotics",
     "role": "Robotics Engineer",
     "scale": "Enterprise",
-    "poster": "/projects/ge-design-for-robotics.svg",
+    "poster": "/projects/ge-robotics-inspection.svg",
     "accent": "#005e9d",
     "tags": [
       "Robotics",
@@ -332,7 +332,7 @@
     "productType": "Promotion",
     "role": "Product Design",
     "scale": "Scale-up",
-    "poster": "/projects/makerbot-promotion.svg",
+    "poster": "/projects/makerbot-replicator.svg",
     "accent": "#e62e2e",
     "tags": [
       "3D Printing",
@@ -365,7 +365,7 @@
     "productType": "ChargedUp Solar",
     "role": "Computational Designer",
     "scale": "Enterprise",
-    "poster": "/projects/gensler-chargedup-solar.svg",
+    "poster": "/projects/gensler-spatial.svg",
     "accent": "#ff3b30",
     "tags": [
       "Computational Design",

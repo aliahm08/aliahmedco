@@ -8,7 +8,7 @@
   "productType": "Intelligent Wayfinding",
   "role": "Innovation Engineer",
   "scale": "Enterprise",
-  "poster": "/projects/autodesk-intelligent-wayfinding.svg",
+  "poster": "/project-media/autodesk-intelligent-wayfinding/autodesk-exhibit-show1.png",
   "accent": "#8d6842",
   "tags": [
     "Robotics",
@@ -46,11 +46,18 @@
   ],
   "gallery": [
     {
-      "src": "/projects/autodesk-intelligent-wayfinding.svg",
-      "alt": "Poster for Autodesk Exhibit Systems.",
-      "title": "Executive Prototype Demo",
-      "label": "Robotics-Driven UX Demo",
-      "caption": "Ali presented software functionality inside a $4M development effort and tested robotics-driven UX environments for senior review."
+      "src": "/project-media/autodesk-intelligent-wayfinding/autodesk-exhibit-show1.png",
+      "alt": "Autodesk Pier 9 exhibit welcome kiosk.",
+      "title": "Exhibit Storyboard",
+      "label": "Pier 9 Exhibit",
+      "caption": "The exhibit framing made advanced manufacturing concepts understandable beyond the engineering team."
+    },
+    {
+      "src": "/project-media/autodesk-intelligent-wayfinding/autodesk-kiosk-know1.png",
+      "alt": "Autodesk Pier 9 exhibit kiosk in the workshop.",
+      "title": "Kiosk Interaction Study",
+      "label": "Demo Interaction Model",
+      "caption": "The kiosk study turned technical capability into a tangible interaction model for demos and review."
     }
   ]
 }

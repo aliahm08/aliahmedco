@@ -8,7 +8,7 @@
   "productType": "ChargedUp Solar",
   "role": "Computational Designer",
   "scale": "Enterprise",
-  "poster": "/projects/gensler-chargedup-solar.svg",
+  "poster": "/projects/gensler-spatial.svg",
   "accent": "#ff3b30",
   "tags": [
     "Computational Design",
@@ -46,7 +46,7 @@
   ],
   "gallery": [
     {
-      "src": "/projects/gensler-chargedup-solar.svg",
+      "src": "/projects/gensler-spatial.svg",
       "alt": "Spatial Analytics",
       "title": "Workplace Utilization Model",
       "label": "Computational Design Analytics",

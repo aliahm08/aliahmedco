@@ -29,6 +29,7 @@ const detailPath = (projectId: string) => `/data/projects/${projectId}.json`;
 const uploadedMediaProjectIds = new Set([
   'nomads-nobles-classified-shoe-design',
   'autodesk-applied-innovation',
+  'autodesk-intelligent-wayfinding',
   'huupe-product-concept',
   'nasa-testing',
   'norman-foster-digitalx-workshop',

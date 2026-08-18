@@ -8,7 +8,7 @@
   "productType": "Promotion",
   "role": "Product Design",
   "scale": "Scale-up",
-  "poster": "/projects/makerbot-promotion.svg",
+  "poster": "/projects/makerbot-replicator.svg",
   "accent": "#e62e2e",
   "tags": [
     "3D Printing",
@@ -46,7 +46,7 @@
   ],
   "gallery": [
     {
-      "src": "/projects/makerbot-promotion.svg",
+      "src": "/projects/makerbot-replicator.svg",
       "alt": "Replicator Ecosystem",
       "title": "Desktop Fabrication Workflow",
       "label": "Mechanical Product Design",

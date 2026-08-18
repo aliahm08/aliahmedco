@@ -1,9 +1,11 @@
 export type AppRoute = '/' | '/portfolio' | '/projects' | '/work' | '/work/classified-shoe-design-nomads-nobles' | '/resume' | '/writing';
+export type ProjectRoute = `/work/${string}`;
+export type SiteRoute = AppRoute | ProjectRoute;
 
 export type RouteMeta = {
   title: string;
   description: string;
-  canonicalPath: AppRoute;
+  canonicalPath: SiteRoute;
   robots?: string;
 };
 

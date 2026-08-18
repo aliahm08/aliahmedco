@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import {useSeo} from './components/Seo';
 import {substackPosts} from './content/substackPosts';
 import {profile} from './content/profile';
-import {AppRoute, navItems, routeMeta, site} from './content/site';
+import {AppRoute, navItems, ProjectRoute, routeMeta, RouteMeta, SiteRoute, site} from './content/site';
 import {
   loadProjectIndex,
   loadProjectDetail,
@@ -41,7 +41,26 @@ const routeDefaultView: Record<AppRoute, ViewMode> = {
   '/writing': 'index',
 };
 
-function normalizeRoute(pathname: string): AppRoute | null {
+function defaultViewForRoute(route: SiteRoute | null): ViewMode {
+  return route && route in routeDefaultView ? routeDefaultView[route as AppRoute] : 'index';
+}
+
+const proposalProjectId = 'nomads-nobles-classified-shoe-design';
+const proposalRoute = '/work/classified-shoe-design-nomads-nobles' as const;
+
+function projectPath(projectId: string): ProjectRoute {
+  return projectId === proposalProjectId ? proposalRoute : `/work/${projectId}`;
+}
+
+function getProjectRouteId(route: SiteRoute | null) {
+  if (!route || !route.startsWith('/work/') || route === proposalRoute) {
+    return null;
+  }
+
+  return route.slice('/work/'.length);
+}
+
+function normalizeRoute(pathname: string): SiteRoute | null {
   const normalizedPathname = pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
 
   if (normalizedPathname === '/projects') {
@@ -59,10 +78,14 @@ function normalizeRoute(pathname: string): AppRoute | null {
     return normalizedPathname;
   }
 
+  if (/^\/work\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalizedPathname)) {
+    return normalizedPathname as ProjectRoute;
+  }
+
   return null;
 }
 
-function navigateTo(route: AppRoute) {
+function navigateTo(route: SiteRoute) {
   window.history.pushState({}, '', route);
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
@@ -712,6 +735,235 @@ function WorkProjectStack(props: {
   );
 }
 
+function ProjectDetailPage(props: {
+  project: ProjectIndexItem;
+  projects: ProjectIndexItem[];
+}) {
+  const [detail, setDetail] = useState<ProjectDetail | null>(null);
+  const [detailError, setDetailError] = useState('');
+  const [activeProjectSection, setActiveProjectSection] = useState('project-overview');
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setDetail(null);
+    setDetailError('');
+
+    loadProjectDetail(props.project.id, controller.signal)
+      .then(setDetail)
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+        setDetailError('This project page could not be loaded.');
+      });
+
+    return () => controller.abort();
+  }, [props.project.id]);
+
+  const projectIndex = props.projects.findIndex((project) => project.id === props.project.id);
+  const previousProject = projectIndex > 0 ? props.projects[projectIndex - 1] : null;
+  const nextProject = projectIndex >= 0 && projectIndex < props.projects.length - 1
+    ? props.projects[projectIndex + 1]
+    : null;
+  const heroImage = detail?.gallery[0];
+  const projectSections = [
+    {id: 'project-overview', label: 'Overview'},
+    {id: 'project-details', label: 'Details'},
+    ...(detail
+      ? [
+          {id: 'project-story', label: 'Story'},
+          {id: 'project-contributions', label: 'Contributions'},
+          ...(detail.gallery.length > 1 ? [{id: 'project-gallery', label: 'Gallery'}] : []),
+          {id: 'project-capabilities', label: 'Capabilities'},
+        ]
+      : []),
+  ];
+
+  useEffect(() => {
+    setActiveProjectSection('project-overview');
+
+    const sectionElements = projectSections
+      .map((section) => document.getElementById(section.id))
+      .filter((element): element is HTMLElement => Boolean(element));
+
+    if (!sectionElements.length) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+
+        if (visibleSection?.target.id) {
+          setActiveProjectSection(visibleSection.target.id);
+        }
+      },
+      {
+        rootMargin: '-24% 0px -52% 0px',
+        threshold: [0, 0.2, 0.45, 0.7],
+      },
+    );
+
+    sectionElements.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [detail, props.project.id]);
+
+  return (
+    <article className="project-detail-page" style={{'--project-detail-accent': props.project.accent} as CSSProperties}>
+      <aside className="project-section-nav" aria-label="Project sections">
+        <p>Project sections</p>
+        <nav>
+          {projectSections.map((section, index) => (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              className={`project-section-nav-item${activeProjectSection === section.id ? ' is-active' : ''}`}
+              aria-current={activeProjectSection === section.id ? 'location' : undefined}
+              onClick={() => setActiveProjectSection(section.id)}
+            >
+              <i aria-hidden="true" />
+              <span><small>{String(index + 1).padStart(2, '0')}</small>{section.label}</span>
+            </a>
+          ))}
+        </nav>
+      </aside>
+
+      <header id="project-overview" className="project-detail-hero">
+        <a
+          href="/work"
+          className="project-detail-back"
+          onClick={(event) => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+              return;
+            }
+            event.preventDefault();
+            navigateTo('/work');
+          }}
+        >
+          <span aria-hidden="true">←</span> All work
+        </a>
+        <div className="project-detail-kicker">
+          <span>{props.project.company}</span>
+          <span>{props.project.year}</span>
+          <span>{props.project.location}</span>
+        </div>
+        <h1>{props.project.title}</h1>
+        <p className="project-detail-headline">{detail?.headline ?? props.project.teaser}</p>
+      </header>
+
+      <section className={`project-detail-hero-media ${heroImage ? 'has-image' : ''}`} aria-label="Project cover image">
+        {heroImage ? (
+          <img src={heroImage.src} alt={heroImage.alt || `${props.project.title} project cover`} />
+        ) : (
+          <GeneratedProjectImage project={props.project} imageIndex={0} imageSrc={props.project.poster} />
+        )}
+      </section>
+
+      <section id="project-details" className="project-detail-facts" aria-label="Project facts">
+        <dl>
+          <div><dt>Client</dt><dd>{props.project.client}</dd></div>
+          <div><dt>Type</dt><dd>{props.project.productType}</dd></div>
+          <div><dt>Role</dt><dd>{props.project.role}</dd></div>
+          <div><dt>Scale</dt><dd>{props.project.scale}</dd></div>
+        </dl>
+        <div className="project-detail-metrics">
+          {props.project.metrics.map((metric) => (
+            <div key={metric.label}>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {detailError ? <p className="empty-state">{detailError}</p> : null}
+      {!detail && !detailError ? <p className="project-detail-loading">Loading project details…</p> : null}
+
+      {detail ? (
+        <>
+          <section id="project-story" className="project-detail-story">
+            <div>
+              <p className="eyebrow">The challenge</p>
+              <p>{detail.challenge}</p>
+            </div>
+            <div>
+              <p className="eyebrow">The outcome</p>
+              <p>{detail.outcome}</p>
+            </div>
+          </section>
+
+          <section id="project-contributions" className="project-detail-contributions">
+            <p className="eyebrow">Selected contributions</p>
+            <ol>
+              {detail.bullets.map((bullet, index) => (
+                <li key={bullet}>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <p>{bullet}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {detail.gallery.length > 1 ? (
+            <section id="project-gallery" className="project-detail-gallery" aria-label={`${props.project.title} gallery`}>
+              {detail.gallery.slice(1).map((image, index) => (
+                <figure key={`${image.src}-${index}`} className={index % 2 ? 'is-offset' : ''}>
+                  <div className="project-detail-gallery-image">
+                    <img src={image.src} alt={image.alt || image.title || `${props.project.title} image ${index + 2}`} />
+                  </div>
+                  <figcaption>
+                    <span>{image.label ?? `Project view ${String(index + 2).padStart(2, '0')}`}</span>
+                    <strong>{image.title ?? props.project.title}</strong>
+                    <p>{image.caption}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </section>
+          ) : null}
+
+          <section id="project-capabilities" className="project-detail-capabilities">
+            <p className="eyebrow">Capabilities</p>
+            <ul>
+              {detail.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
+            </ul>
+          </section>
+        </>
+      ) : null}
+
+      <nav className="project-detail-pagination" aria-label="Project navigation">
+        {previousProject ? (
+          <a
+            href={projectPath(previousProject.id)}
+            onClick={(event) => {
+              if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              navigateTo(projectPath(previousProject.id));
+            }}
+          >
+            <span>Previous project</span>
+            <strong>← {previousProject.title}</strong>
+          </a>
+        ) : <span />}
+        {nextProject ? (
+          <a
+            href={projectPath(nextProject.id)}
+            onClick={(event) => {
+              if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              navigateTo(projectPath(nextProject.id));
+            }}
+          >
+            <span>Next project</span>
+            <strong>{nextProject.title} →</strong>
+          </a>
+        ) : <span />}
+      </nav>
+    </article>
+  );
+}
+
 function HomePage() {
   const latestPublication = substackPosts[0];
   const [isPastWorkExpanded, setIsPastWorkExpanded] = useState(false);
@@ -927,10 +1179,6 @@ function WorkPage(props: {
   const [activeGroup, setActiveGroup] = useState('All');
   const [openFilter, setOpenFilter] = useState<'product' | 'role' | null>(null);
   const [stage, setStage] = useState<'hero' | 'content' | 'open'>('hero');
-  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
-  const [manualProjectId, setManualProjectId] = useState<string | null>(null);
-  const projectRefs = useRef<Record<string, HTMLElement | null>>({});
-  const pendingOpenRef = useRef<number | null>(null);
 
   const productTypes = ['Advanced AI', 'B2B SaaS', 'Consumer Product'];
   const roles = ['Management', 'Design', 'Development'];
@@ -965,63 +1213,18 @@ function WorkPage(props: {
     return project.scale === 'Federal' ? 'Enterprise' : project.scale;
   };
 
-  const groupProjects = props.projects.filter((project) => {
+  const openProposals = props.projects.filter((project) =>
+    project.metrics.some((metric) => metric.label === 'Status' && metric.value === 'Proposal'),
+  );
+  const portfolioProjects = props.projects.filter((project) =>
+    !openProposals.some((proposal) => proposal.id === project.id),
+  );
+  const groupProjects = portfolioProjects.filter((project) => {
     const matchesProductType = productTypeFilter === allLabel || productTypeForProject(project) === productTypeFilter;
     const matchesRole = roleFilter === allLabel || roleForProject(project) === roleFilter;
     const matchesGroup = activeGroup === 'All' || groupForProject(project) === activeGroup;
     return matchesProductType && matchesRole && matchesGroup;
   });
-  const activeProjectId = expandedProjectId;
-  const openProjectTray = (projectId: string, source: 'hover' | 'touch' | 'focus' = 'hover') => {
-    if (projectId === expandedProjectId) {
-      return;
-    }
-
-    if (source === 'touch' || source === 'hover' || source === 'focus') {
-      setManualProjectId(projectId);
-    }
-
-    if (pendingOpenRef.current) {
-      window.clearTimeout(pendingOpenRef.current);
-    }
-
-    pendingOpenRef.current = window.setTimeout(() => {
-      setExpandedProjectId(projectId);
-      pendingOpenRef.current = null;
-    }, 80);
-  };
-
-  useEffect(() => {
-    if (stage !== 'open') {
-      return;
-    }
-
-    if (!groupProjects.length) {
-      setExpandedProjectId(null);
-      return;
-    }
-
-    if (manualProjectId && !groupProjects.some((project) => project.id === manualProjectId)) {
-      setManualProjectId(null);
-    }
-
-    if (!pendingOpenRef.current && (!activeProjectId || !groupProjects.some((project) => project.id === activeProjectId))) {
-      setExpandedProjectId(groupProjects[0].id);
-    }
-  }, [stage, activeProjectId, groupProjects, manualProjectId]);
-
-  useEffect(() => {
-    setManualProjectId(null);
-  }, [productTypeFilter, roleFilter, activeGroup]);
-
-  useEffect(() => {
-    return () => {
-      if (pendingOpenRef.current) {
-        window.clearTimeout(pendingOpenRef.current);
-      }
-    };
-  }, []);
-
   const heroWords = [
     "Hire", "Ali", "to", "Test", "Products,", 
     "Conceptualize", "Projects,", "and", "Launch", 
@@ -1241,70 +1444,54 @@ function WorkPage(props: {
           </div>
 
           <div className="landing-project-strip work-accordion" aria-label={`${activeGroup} projects`}>
-            {!groupProjects.length ? (
+            {props.projects.length > 0 && !groupProjects.length ? (
               <p className="micro-copy empty-state">No projects match those filters.</p>
             ) : null}
-            {groupProjects.map((project) => {
-              const isExpanded = activeProjectId === project.id;
-
-              return (
+            {groupProjects.map((project) => (
                 <article
                   key={project.id}
-                  id={`project-accordion-${project.id}`}
                   data-project-id={project.id}
-                  ref={(element) => {
-                    projectRefs.current[project.id] = element;
-                  }}
-                  className={`work-accordion-item ${isExpanded ? 'is-active' : ''}`}
-                  onMouseEnter={() => {
-                    if (project.id !== 'nomads-nobles-classified-shoe-design') {
-                      openProjectTray(project.id, 'hover');
-                    }
-                  }}
+                  className="work-accordion-item"
                 >
                   <button
                     type="button"
                     className="landing-project-row"
-                    aria-expanded={isExpanded}
-                    onFocus={() => {
-                      if (project.id !== 'nomads-nobles-classified-shoe-design') {
-                        openProjectTray(project.id, 'focus');
-                      }
-                    }}
-                    onClick={() => {
-                      if (project.id === 'nomads-nobles-classified-shoe-design') {
-                        navigateTo('/work/classified-shoe-design-nomads-nobles');
-                        return;
-                      }
-                      openProjectTray(project.id, 'touch');
-                    }}
+                    aria-label={`View ${project.title} project page`}
+                    onClick={() => props.onOpenProject(project.id)}
                   >
                     <div className="project-row-details-grid">
                       <span>{project.company}</span>
                       <strong>{project.client}</strong>
-                      <span>{project.productType}</span>
+                      <span>{project.productType} <i className="project-row-arrow" aria-hidden="true">→</i></span>
                     </div>
                   </button>
-                  <AnimatePresence initial={false} mode="wait">
-                    {isExpanded ? (
-                      <motion.div
-                        className="work-accordion-panel"
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
-                        transition={{duration: 0.16, ease: 'easeOut'}}
-                      >
-                        <WorkProjectStack
-                          projects={props.projects}
-                          project={project}
-                        />
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
                 </article>
-              );
-            })}
+            ))}
           </div>
+
+          {openProposals.length ? (
+            <section className="work-open-proposals" aria-labelledby="open-proposals-heading">
+              <header className="work-open-proposals-header">
+                <h2 id="open-proposals-heading">Open Proposals</h2>
+                <span>{String(openProposals.length).padStart(2, '0')}</span>
+              </header>
+              <ul className="work-open-proposals-list">
+                {openProposals.map((proposal) => (
+                  <li key={proposal.id}>
+                    <button
+                      type="button"
+                      className="work-open-proposal-row"
+                      onClick={() => navigateTo('/work/classified-shoe-design-nomads-nobles')}
+                    >
+                      <span>{proposal.company}</span>
+                      <strong>{proposal.title}</strong>
+                      <span className="work-open-proposal-action">View proposal <i aria-hidden="true">→</i></span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </section>
       </motion.div>
     </div>
@@ -2885,11 +3072,11 @@ function NotFoundPage() {
 }
 
 export default function App() {
-  const [route, setRoute] = useState<AppRoute | null>(normalizeRoute(window.location.pathname));
+  const [route, setRoute] = useState<SiteRoute | null>(normalizeRoute(window.location.pathname));
   const [projects, setProjects] = useState<ProjectIndexItem[]>([]);
   const [projectError, setProjectError] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>(route ? routeDefaultView[route] : 'index');
+  const [viewMode, setViewMode] = useState<ViewMode>(defaultViewForRoute(route));
   const [preview, setPreview] = useState<{
     item: ProjectIndexItem | null;
     x: number;
@@ -2908,8 +3095,28 @@ export default function App() {
   });
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const projectRouteId = getProjectRouteId(route);
+  const projectRouteProject = projectRouteId
+    ? projects.find((project) => project.id === projectRouteId) ?? null
+    : null;
   const resolvedRoute = route ?? '/';
-  useSeo(resolvedRoute, routeMeta[resolvedRoute]);
+  const resolvedMeta: RouteMeta = projectRouteProject
+    ? {
+        title: `${projectRouteProject.title} | ${projectRouteProject.company} | Ali Ahmed Co`,
+        description: projectRouteProject.teaser,
+        canonicalPath: projectPath(projectRouteProject.id),
+      }
+    : route && route in routeMeta
+      ? routeMeta[route as AppRoute]
+      : projectRouteId
+        ? {
+            title: 'Project | Ali Ahmed Co',
+            description: 'Selected product, engineering, and design work by Ali Ahmed.',
+            canonicalPath: route as ProjectRoute,
+            robots: 'noindex, follow',
+          }
+        : routeMeta['/'];
+  useSeo(resolvedRoute, resolvedMeta);
 
   useEffect(() => {
     function handlePopState() {
@@ -2925,12 +3132,12 @@ export default function App() {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    const nextView = route ? routeDefaultView[route] : 'index';
+    const nextView = defaultViewForRoute(route);
     if (route === '/portfolio' || route === '/projects' || route === '/work') {
       setViewMode(nextView);
     }
     
-    if (route === '/work' || route === '/work/classified-shoe-design-nomads-nobles') {
+    if (route?.startsWith('/work')) {
       document.body.classList.add('work-page-active');
     } else {
       document.body.classList.remove('work-page-active');
@@ -2993,17 +3200,10 @@ export default function App() {
     setFilters((current) => ({...current, [key]: value}));
   }
 
-  function selectProject(projectId: string) {
-    startTransition(() => {
-      setSelectedProjectId(projectId);
-    });
-  }
-
   function openProject(projectId: string) {
     startTransition(() => {
       setSelectedProjectId(projectId);
-      setViewMode('grid');
-      navigateTo('/work');
+      navigateTo(projectPath(projectId));
     });
   }
 
@@ -3025,14 +3225,14 @@ export default function App() {
     activeId: selectedProjectId,
     viewMode,
     filters,
-    onSelect: selectProject,
+    onSelect: openProject,
     onViewModeChange: setViewMode,
     onFilterChange: updateFilter,
     onPreviewMove: movePreview,
     onPreviewLeave: hidePreview,
   };
   const usesPortfolioShell = route === '/portfolio';
-  const isWorkRoute = route === '/work';
+  const isWorkRoute = route?.startsWith('/work') ?? false;
   const isProposalRoute = route === '/work/classified-shoe-design-nomads-nobles';
 
   return (
@@ -3083,7 +3283,7 @@ export default function App() {
             activeId={selectedProjectId}
             viewMode={viewMode}
             filters={filters}
-            onSelect={selectProject}
+            onSelect={openProject}
             onViewModeChange={setViewMode}
             onFilterChange={updateFilter}
             onPreviewMove={movePreview}
@@ -3096,6 +3296,14 @@ export default function App() {
           />
         ) : route === '/work/classified-shoe-design-nomads-nobles' ? (
           <ShoeDesignProposalPage />
+        ) : projectRouteId ? (
+          projectRouteProject ? (
+            <ProjectDetailPage project={projectRouteProject} projects={projects} />
+          ) : projects.length ? (
+            <NotFoundPage />
+          ) : (
+            <section className="empty-state">Loading project…</section>
+          )
         ) : route === '/resume' ? (
           <ResumePage />
         ) : (

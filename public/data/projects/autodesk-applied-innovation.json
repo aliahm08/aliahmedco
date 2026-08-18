@@ -8,7 +8,7 @@
   "productType": "Applied Innovation",
   "role": "Innovation Engineer",
   "scale": "Enterprise",
-  "poster": "/projects/autodesk-applied-innovation.svg",
+  "poster": "/project-media/autodesk-applied-innovation/autodesk-show1.png",
   "accent": "#0696d7",
   "tags": [
     "Generative Design",
@@ -53,25 +53,11 @@
       "caption": "Ali used critique sessions to translate generative design research into product and manufacturing decisions."
     },
     {
-      "src": "/project-media/autodesk-applied-innovation/autodesk-exhibit-show1.png",
-      "alt": "Generative Workflows image 2",
-      "title": "Exhibit Storyboard",
-      "label": "Advanced Manufacturing Story",
-      "caption": "The exhibit framing made advanced manufacturing concepts understandable beyond the engineering team."
-    },
-    {
       "src": "/project-media/autodesk-applied-innovation/autodesk-know1.png",
-      "alt": "Generative Workflows image 3",
+      "alt": "Generative Workflows image 2",
       "title": "Workflow Critique",
       "label": "UX + Fabrication Logic",
       "caption": "Ali helped bridge research, UX, and fabrication logic so the workflow could be judged as a usable product path."
-    },
-    {
-      "src": "/project-media/autodesk-applied-innovation/autodesk-kiosk-know1.png",
-      "alt": "Generative Workflows image 4",
-      "title": "Kiosk Interaction Study",
-      "label": "Demo Interaction Model",
-      "caption": "The kiosk study turned technical capability into a tangible interaction model for demos and review."
     }
   ]
 }

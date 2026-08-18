@@ -8,7 +8,7 @@
   "productType": "Operations System",
   "role": "Design Management",
   "scale": "Scale-up",
-  "poster": "/projects/launchgood-operations-system.svg",
+  "poster": "/projects/launchgood-design-loop.svg",
   "accent": "#1f6e62",
   "tags": [
     "Figma",
@@ -47,7 +47,7 @@
   ],
   "gallery": [
     {
-      "src": "/projects/launchgood-operations-system.svg",
+      "src": "/projects/launchgood-design-loop.svg",
       "alt": "Poster for LaunchGood Design Loop.",
       "title": "Growth Experiment System",
       "label": "Design Systems + KPI Testing",

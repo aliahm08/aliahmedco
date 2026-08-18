@@ -8,7 +8,7 @@
   "productType": "Smart Devices",
   "role": "Product Engineering",
   "scale": "Startup",
-  "poster": "/projects/bragi-smart-devices.svg",
+  "poster": "/projects/bragi-dash.svg",
   "accent": "#2f3136",
   "tags": [
     "Hardware",
@@ -46,7 +46,7 @@
   ],
   "gallery": [
     {
-      "src": "/projects/bragi-smart-devices.svg",
+      "src": "/projects/bragi-dash.svg",
       "alt": "The Dash",
       "title": "Wearable Product Proof",
       "label": "Hardware Product Design",

@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {AppRoute, RouteMeta, site} from '../content/site';
+import {RouteMeta, SiteRoute, site} from '../content/site';
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
   let element = document.head.querySelector(selector) as HTMLMetaElement | null;
@@ -33,11 +33,11 @@ function upsertJsonLd(id: string, value: unknown) {
   element.textContent = JSON.stringify(value);
 }
 
-function absoluteUrl(path: AppRoute) {
+function absoluteUrl(path: SiteRoute) {
   return new URL(path, site.domain).toString();
 }
 
-export function useSeo(route: AppRoute, meta: RouteMeta) {
+export function useSeo(route: SiteRoute, meta: RouteMeta) {
   useEffect(() => {
     document.title = meta.title;
     document.documentElement.lang = 'en';
